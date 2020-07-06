@@ -86,7 +86,12 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在github上使用hexo写博客，测试</p>
+        <p>在github上使用hexo写博客，测试踩了很多坑</p>
+<p>我在最后进行测试的时候，准备使用ssh密匙来防止一遍又一遍的密码输入</p>
+<p>这时候有一个问题：如果你在yml配置中给的repo中的网址是https:的形式，那么你始终需要进行密码的输入，我们需要将yml文件中的https:  —&gt;  http:</p>
+<p>这样就可以使用ssh登陆</p>
+<p>我们常用的git命令有 hexo  s （表示md文件更改后只需要刷新浏览器便可以看到修改的文件内容）</p>
+<p>hexo d -g 部署文档到github博客上</p>
 
       
     </div>

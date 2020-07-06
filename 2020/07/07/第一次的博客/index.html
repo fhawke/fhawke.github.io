@@ -7,15 +7,15 @@
   
   <title>第一次的博客 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="在github上使用hexo写博客，测试">
+  <meta name="description" content="在github上使用hexo写博客，测试踩了很多坑 我在最后进行测试的时候，准备使用ssh密匙来防止一遍又一遍的密码输入 这时候有一个问题：如果你在yml配置中给的repo中的网址是https:的形式，那么你始终需要进行密码的输入，我们需要将yml文件中的https:  —&gt;  http: 这样就可以使用ssh登陆 我们常用的git命令有 hexo  s （表示md文件更改后只需要刷新浏览器">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第一次的博客">
 <meta property="og:url" content="http://yoursite.com/2020/07/07/%E7%AC%AC%E4%B8%80%E6%AC%A1%E7%9A%84%E5%8D%9A%E5%AE%A2/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="在github上使用hexo写博客，测试">
+<meta property="og:description" content="在github上使用hexo写博客，测试踩了很多坑 我在最后进行测试的时候，准备使用ssh密匙来防止一遍又一遍的密码输入 这时候有一个问题：如果你在yml配置中给的repo中的网址是https:的形式，那么你始终需要进行密码的输入，我们需要将yml文件中的https:  —&gt;  http: 这样就可以使用ssh登陆 我们常用的git命令有 hexo  s （表示md文件更改后只需要刷新浏览器">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-07-06T16:30:23.000Z">
-<meta property="article:modified_time" content="2020-07-06T16:33:33.546Z">
+<meta property="article:modified_time" content="2020-07-06T16:50:20.871Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -88,7 +88,12 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在github上使用hexo写博客，测试</p>
+        <p>在github上使用hexo写博客，测试踩了很多坑</p>
+<p>我在最后进行测试的时候，准备使用ssh密匙来防止一遍又一遍的密码输入</p>
+<p>这时候有一个问题：如果你在yml配置中给的repo中的网址是https:的形式，那么你始终需要进行密码的输入，我们需要将yml文件中的https:  —&gt;  http:</p>
+<p>这样就可以使用ssh登陆</p>
+<p>我们常用的git命令有 hexo  s （表示md文件更改后只需要刷新浏览器便可以看到修改的文件内容）</p>
+<p>hexo d -g 部署文档到github博客上</p>
 
       
     </div>
