@@ -17,12 +17,6 @@
 
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
 ]]></content>
-      <categories>
-        <category>第二次分类</category>
-      </categories>
-      <tags>
-        <tag>tags</tag>
-      </tags>
   </entry>
   <entry>
     <title>面试题 16.11. 跳水板</title>
@@ -73,9 +67,6 @@ k = <span class="hljs-number">3</span>
 
 
 ]]></content>
-      <categories>
-        <category>LeetCode每日一题</category>
-      </categories>
       <tags>
         <tag>easy</tag>
       </tags>
