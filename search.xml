@@ -19,12 +19,53 @@
 ]]></content>
   </entry>
   <entry>
-    <title>test1</title>
-    <url>/2020/07/07/test1/</url>
-    <content><![CDATA[<p>Hello World!</p>
+    <title>面试题 16.11. 跳水板</title>
+    <url>/2020/07/08/%E9%9D%A2%E8%AF%95%E9%A2%98-16-11-%E8%B7%B3%E6%B0%B4%E6%9D%BF/</url>
+    <content><![CDATA[<h4 id="面试题-16-11-跳水板"><a href="#面试题-16-11-跳水板" class="headerlink" title="面试题 16.11. 跳水板"></a><a href="https://leetcode-cn.com/problems/diving-board-lcci/" target="_blank" rel="noopener">面试题 16.11. 跳水板</a></h4><p>难度简单37收藏分享切换为英文关注反馈</p>
+<p>你正在使用一堆木板建造跳水板。有两种类型的木板，其中长度较短的木板长度为<code>shorter</code>，长度较长的木板长度为<code>longer</code>。你必须正好使用<code>k</code>块木板。编写一个方法，生成跳水板所有可能的长度。</p>
+<p>返回的长度需要从小到大排列。</p>
+<p><strong>示例：</strong></p>
+<pre><code class="hljs angelscript">输入：
+shorter = <span class="hljs-number">1</span>
+longer = <span class="hljs-number">2</span>
+k = <span class="hljs-number">3</span>
+输出： &#123;<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>&#125;</code></pre>
+
+<p><strong>提示：</strong></p>
+<ul>
+<li>0 &lt; shorter &lt;= longer</li>
+<li>0 &lt;= k &lt;= 100000</li>
+</ul>
+<p><strong>解题思路：</strong></p>
+<p>​    很简单的一道题目，题目给出k的范围是0~100000，那么就知道需要用O(n)的时间复杂度</p>
+<p>​    题意中只需要设置一个变量i，就可以得到shorter的数量i和longer的数量k-i，那么Length = (k - i) * shorter + i * longer;</p>
+<p>​    显然，这是个一次关系，变换可得 Length = (longer - shorter) * i + k * shorter;</p>
+<p>​    那么我们给出以下代码，便可通过测试</p>
+<pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">divingBoard</span><span class="hljs-params">(<span class="hljs-keyword">int</span> shorter, <span class="hljs-keyword">int</span> longer, <span class="hljs-keyword">int</span> k)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(k == <span class="hljs-number">0</span>)
+        &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;();
+        &#125;
+        <span class="hljs-keyword">if</span>(shorter == longer)
+        &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&#123;longer*k&#125;;
+        &#125;
+        
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">ves</span><span class="hljs-params">(k+<span class="hljs-number">1</span>)</span></span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; ves.<span class="hljs-built_in">size</span>();i++)
+        &#123;
+            ves.at(i) = (k - i) * shorter + i * longer;
+        &#125;
+        <span class="hljs-keyword">return</span> ves;
+    &#125;
+&#125;;</code></pre>
+
+
+
+
+
 ]]></content>
-      <tags>
-        <tag>error</tag>
-      </tags>
   </entry>
 </search>
