@@ -77,8 +77,9 @@ k = <span class="hljs-number">3</span>
   <entry>
     <title>ACM-UCF pentastic</title>
     <url>/2020/07/19/ACM-UCF-pentastic/</url>
-    <content><![CDATA[<p><img src="/2020/07/19/ACM-UCF-pentastic/F:%5Chexo%5Csource_posts%5CACM-UCF-pentastic%5CY%5B50WK518U9FC0QRV06VJ4D.png" srcset="/img/loading.gif" alt></p>
-<p><img src="/2020/07/19/ACM-UCF-pentastic/F:%5Chexo%5Csource_posts%5CACM-UCF-pentastic%5Cimage-20200719114428334.png" srcset="/img/loading.gif" alt="image-20200719114428334"></p>
+    <content><![CDATA[<p><img src="/2020/07/19/ACM-UCF-pentastic/Y%5B50WK518U9FC0QRV06VJ4D.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/07/19/ACM-UCF-pentastic/QMIROO@DB6EL%5DX%7DGRSAMPXM.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/07/19/ACM-UCF-pentastic/image-20200719114428334.png" srcset="/img/loading.gif" alt></p>
 <pre><code class="hljs c++">
 <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span>
 <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;cstdio&gt;</span></span>
