@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>ACM-UCF-PacMan</title>
+    <link href="/2020/07/19/ACM-UCF-PacMan/"/>
+    <url>/2020/07/19/ACM-UCF-PacMan/</url>
+    
+    <content type="html"><![CDATA[<p><img src="/2020/07/19/ACM-UCF-PacMan/QQ%E5%9B%BE%E7%89%8720200719135942.png" srcset="/img/loading.gif" alt></p><p><img src="/2020/07/19/ACM-UCF-PacMan/QQ%E5%9B%BE%E7%89%8720200719140201.png" srcset="/img/loading.gif" alt></p><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;cstdio&gt;</span></span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;cstdlib&gt;</span></span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;cstring&gt;</span></span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;algorithm&gt;</span></span><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;<span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> MAX=<span class="hljs-number">105</span>;<span class="hljs-keyword">int</span> board[MAX][MAX];<span class="hljs-comment">//存储游戏板信息</span><span class="hljs-keyword">int</span> best[MAX][MAX];<span class="hljs-comment">//存储最好分数</span><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;    <span class="hljs-keyword">int</span> n, r, c;<span class="hljs-comment">//游戏板数n，游戏板的行数r和列数c</span>    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d"</span>, &amp;n);    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> t=<span class="hljs-number">1</span>; t&lt;=n; t++) &#123;        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d %d"</span>, &amp;r, &amp;c);        <span class="hljs-comment">//读取游戏板中信息</span>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>; i&lt;r; i++) &#123;            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=<span class="hljs-number">0</span>; j&lt;c; j++) &#123;                <span class="hljs-comment">//将pacman的起点和终点标记为0</span>                <span class="hljs-keyword">if</span>((!i &amp;&amp; !j) || (i==r<span class="hljs-number">-1</span> &amp;&amp; j==c<span class="hljs-number">-1</span>)) &#123;                    <span class="hljs-keyword">char</span> temp;                    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">" %c"</span>, &amp;temp);                    board[i][j]=<span class="hljs-number">0</span>;                &#125;                <span class="hljs-keyword">else</span>                    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d"</span>, &amp;board[i][j]);            &#125;        &#125;        <span class="hljs-built_in">memset</span>(best, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(best));        <span class="hljs-comment">//填写第一行的最好分数</span>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>; i&lt;c; i++)            best[<span class="hljs-number">0</span>][i]=best[<span class="hljs-number">0</span>][i<span class="hljs-number">-1</span>]+board[<span class="hljs-number">0</span>][i];        <span class="hljs-comment">//填写第一列的最好分数</span>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>; i&lt;r; i++)            best[i][<span class="hljs-number">0</span>]=best[i<span class="hljs-number">-1</span>][<span class="hljs-number">0</span>]+board[i][<span class="hljs-number">0</span>];        <span class="hljs-comment">//循环遍历每个可能的Pac Man子问题并解决它</span>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>; i&lt;r; i++) &#123;            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=<span class="hljs-number">1</span>; j&lt;c; j++) &#123;                best[i][j]=<span class="hljs-built_in">max</span>(best[i<span class="hljs-number">-1</span>][j], best[i][j<span class="hljs-number">-1</span>])+board[i][j];            &#125;        &#125;        <span class="hljs-comment">//输出最终结果</span>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"Game Board #%d: %d\n"</span>, t, best[r<span class="hljs-number">-1</span>][c<span class="hljs-number">-1</span>]);        <span class="hljs-keyword">if</span>(t&lt;n) <span class="hljs-built_in">printf</span>(<span class="hljs-string">"\n"</span>);    &#125;    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>ACM Constest</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>easy</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>ACM-UCF pentastic</title>
     <link href="/2020/07/19/ACM-UCF-pentastic/"/>
     <url>/2020/07/19/ACM-UCF-pentastic/</url>
