@@ -146,7 +146,7 @@ k = <span class="hljs-number">3</span>
 
 ]]></content>
       <categories>
-        <category>ACM Constest</category>
+        <category>ACM Contest 2014</category>
       </categories>
       <tags>
         <tag>easy</tag>
@@ -207,10 +207,66 @@ k = <span class="hljs-number">3</span>
 
 ]]></content>
       <categories>
-        <category>ACM Constest</category>
+        <category>ACM Contest 2014</category>
       </categories>
       <tags>
         <tag>easy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ACM-UCF-Constant</title>
+    <url>/2020/07/19/ACM-UCF-Constant/</url>
+    <content><![CDATA[<p><img src="/2020/07/19/ACM-UCF-Constant/QQ%E5%9B%BE%E7%89%8720200719153321.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/07/19/ACM-UCF-Constant/QQ%E5%9B%BE%E7%89%8720200719153342.png" srcset="/img/loading.gif" alt></p>
+<p><img src="/2020/07/19/ACM-UCF-Constant/QQ%E5%9B%BE%E7%89%8720200719153403.png" srcset="/img/loading.gif" alt></p>
+<pre><code class="hljs c++"><span class="hljs-comment">/*</span>
+<span class="hljs-comment">dp背包问题 恰好装满 每个物品可取多次 </span>
+<span class="hljs-comment">*/</span> 
+<span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;bits/stdc++.h&gt;</span></span>
+<span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;
+<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> ll long long</span>
+
+<span class="hljs-keyword">int</span> C[<span class="hljs-number">8</span>];
+<span class="hljs-keyword">int</span> N;
+ll memo[<span class="hljs-number">8</span>][<span class="hljs-number">100</span>];
+
+<span class="hljs-function">ll <span class="hljs-title">go</span><span class="hljs-params">(<span class="hljs-keyword">int</span> c, <span class="hljs-keyword">int</span> n)</span></span>
+<span class="hljs-function"></span>&#123;
+    <span class="hljs-keyword">if</span>(n == N)
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">if</span>(n&gt;N || c==<span class="hljs-number">8</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span>(memo[c][n] &gt; <span class="hljs-number">-1</span>)
+        <span class="hljs-keyword">return</span> memo[c][n];
+    <span class="hljs-keyword">return</span> memo[c][n] = go(c, n+C[c]) + go(c+<span class="hljs-number">1</span>, n);
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>
+<span class="hljs-function"></span>&#123;
+<span class="hljs-comment">//    freopen("constant.in", "r", stdin);</span>
+<span class="hljs-comment">//    freopen("constant.out", "w", stdout);</span>
+    <span class="hljs-keyword">int</span> T;
+    <span class="hljs-built_in">cin</span>&gt;&gt;T;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> cas=<span class="hljs-number">1</span>; cas&lt;=T; cas++)
+    &#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>; i&lt;<span class="hljs-number">8</span>; i++)
+            <span class="hljs-built_in">cin</span>&gt;&gt;C[i];
+        <span class="hljs-built_in">cin</span>&gt;&gt;N;
+
+        <span class="hljs-built_in">memset</span>(memo, <span class="hljs-number">-1</span>, <span class="hljs-keyword">sizeof</span>(memo));
+
+        ll res = go(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"Equation #%d: %I64d\n"</span>, cas, res);
+    &#125;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+&#125;</code></pre>
+
+]]></content>
+      <categories>
+        <category>ACM Contest 2014</category>
+      </categories>
+      <tags>
+        <tag>medium</tag>
       </tags>
   </entry>
 </search>
