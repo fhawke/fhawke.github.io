@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  <title>springboot-security-demo - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fhawke</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-09-09 19:42">
+      September 9, 2020 pm
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.1k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      16
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <h4 id="在这里一并介绍SpringBoot的基本布局和项目开始"><a href="#在这里一并介绍SpringBoot的基本布局和项目开始" class="headerlink" title="在这里一并介绍SpringBoot的基本布局和项目开始"></a>在这里一并介绍SpringBoot的基本布局和项目开始</h4><p><strong>1. SpringBoot （IDEA）快速开始</strong></p>
+<ol>
+<li><p>引入 pom.xml 文件，在IDEA中可以直接导入web,security,mysql,mybatis等各种需要的模块</p>
+<ol start="2">
+<li><p>等待创建完成，然后建立各层次</p>
+</li>
+<li><p>在java包下，创建以下目录：config , controller , dao , domain(entity) , security , util ,service</p>
+<p>这些类大概包括了基本项目的构造，有利于降低耦合度</p>
+<p>controller:  表现层，与web页面和html交互，可以使用 addAttribute 把变量放到前端界面，然后通过EL表达式在前端页面取值，进行操作</p>
+</li>
+</ol>
+</li>
+</ol>
+<pre><code>config: 配置层，一些基本的配置，这里也可以用applications.yml/application.properites 来配置，因为对于SpringBoot，“约定大于配置” ，我们一般通过约定来规划配置，在这里我使用了java文件进行配置，更为麻烦，一般config定义配置类
+
+
+
+dao: 数据库交互层，dao层中的方法一般定义为接口，让service实现，这里定义的是mapper的方法，即是数据库基本操作语句，这里可以使用mybatis-plus使用逆向工程生成dao和mapper
+
+
+
+domain: 别名entity ， 也就是实体类，这里的定义一般与数据库的键值相同，这样会避免冲突的发生
+
+
+
+serivce: 这里有两种方法，我一般倾向于创建一个service接口与dao的代码完全相同，然后创建serviceimpl类来实现service接口，降低程序耦合性
+
+
+
+util: 工具类，看业务逻辑需要什么便可以自己定义，在这个项目定义了MD5密码加密
+
+**2. 使用mybatis连接数据库**
+
+在appication.properties中
+
+<pre><code class="hljs properties"><span class="hljs-meta">ms.db.driverClassName</span>=<span class="hljs-string">com.mysql.cj.jdbc.Driver</span>
+<span class="hljs-meta">ms.db.url</span>=<span class="hljs-string">jdbc:mysql://localhost:3306/cache?characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=Asia/Shanghai</span>
+<span class="hljs-meta">ms.db.username</span>=<span class="hljs-string">root</span>
+<span class="hljs-meta">ms.db.password</span>=<span class="hljs-string">123456</span>
+<span class="hljs-meta">ms.db.maxActive</span>=<span class="hljs-string">500</span>
+
+<span class="hljs-meta">logging.level.org.springframework.security</span>= <span class="hljs-string">INFO</span>
+<span class="hljs-meta">spring.thymeleaf.cache</span>=<span class="hljs-string">false</span>
+<span class="hljs-meta">spring.main.allow-bean-definition-overriding</span>=<span class="hljs-string">true</span></code></pre>
+
+
+
+这里有一个需要注意的地方，ms.db.url需要设置一个serverTimezone，如果不这么做在springboot启动时会报错
+
+
+
+
+
+这里是Mybatis基本设置
+
+<pre><code class="hljs java">ComboPooledDataSource dataSource = <span class="hljs-keyword">new</span> ComboPooledDataSource();
+dataSource.setDriverClass(env.getProperty(<span class="hljs-string">"ms.db.driverClassName"</span>));
+dataSource.setJdbcUrl(env.getProperty(<span class="hljs-string">"ms.db.url"</span>));
+dataSource.setUser(env.getProperty(<span class="hljs-string">"ms.db.username"</span>));
+dataSource.setPassword(env.getProperty(<span class="hljs-string">"ms.db.password"</span>));
+dataSource.setMaxPoolSize(<span class="hljs-number">20</span>);
+dataSource.setMinPoolSize(<span class="hljs-number">5</span>);
+dataSource.setInitialPoolSize(<span class="hljs-number">10</span>);
+dataSource.setMaxIdleTime(<span class="hljs-number">300</span>);
+dataSource.setAcquireIncrement(<span class="hljs-number">5</span>);
+dataSource.setIdleConnectionTestPeriod(<span class="hljs-number">60</span>);</code></pre>
+
+**3. SpringSecurity基本配置**·
+
+重写2个configure方法，一个定义身份权限，一个定义拦截器，拦截各种请求和静态资源等等
+
+<pre><code class="hljs java"><span class="hljs-meta">@Configuration</span>
+<span class="hljs-meta">@EnableWebSecurity</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">WebSecurityConfig</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">WebSecurityConfigurerAdapter</span> </span>&#123;
+
+    <span class="hljs-meta">@Bean</span>
+    <span class="hljs-function">UserDetailsService <span class="hljs-title">customUserService</span><span class="hljs-params">()</span></span>&#123; <span class="hljs-comment">//注册UserDetailsService 的bean</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> CustomUserService();
+    &#125;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">configure</span><span class="hljs-params">(AuthenticationManagerBuilder auth)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+        auth.userDetailsService(customUserService()).passwordEncoder(<span class="hljs-keyword">new</span> PasswordEncoder()&#123;
+
+            <span class="hljs-meta">@Override</span>
+            <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">encode</span><span class="hljs-params">(CharSequence rawPassword)</span> </span>&#123;
+                <span class="hljs-keyword">return</span> MD5Util.encode((String)rawPassword);
+            &#125;
+
+            <span class="hljs-meta">@Override</span>
+            <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">matches</span><span class="hljs-params">(CharSequence rawPassword, String encodedPassword)</span> </span>&#123;
+                <span class="hljs-keyword">return</span> encodedPassword.equals(MD5Util.encode((String)rawPassword));
+            &#125;&#125;); <span class="hljs-comment">//user Details Service验证</span>
+    &#125;
+    <span class="hljs-meta">@Override</span> <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">configure</span><span class="hljs-params">(HttpSecurity http)</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;
+        http.authorizeRequests()
+                .antMatchers(<span class="hljs-string">"/css/**"</span>).permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginPage(<span class="hljs-string">"/login"</span>)
+                .failureUrl(<span class="hljs-string">"/login?error"</span>)
+                .permitAll()
+                .and()
+                .logout()
+                .permitAll();
+    &#125;
+&#125;</code></pre>
+
+
+
+
+
+
+
+
+
+这里是 service 层，实现UserDetailSercvice(SpringSecurity接口) ，添加用户权限
+
+<pre><code class="hljs java"><span class="hljs-meta">@Service</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CustomUserService</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">UserDetailsService</span> </span>&#123; <span class="hljs-comment">//自定义UserDetailsService 接口</span>
+
+    <span class="hljs-meta">@Autowired</span>
+    UserDao userDao;
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-function"><span class="hljs-keyword">public</span> UserDetails <span class="hljs-title">loadUserByUsername</span><span class="hljs-params">(String username)</span> </span>&#123; <span class="hljs-comment">//重写loadUserByUsername 方法获得 userdetails 类型用户</span>
+
+        SysUser user = userDao.findByUserName(username);
+        <span class="hljs-keyword">if</span>(user == <span class="hljs-keyword">null</span>)&#123;
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> UsernameNotFoundException(<span class="hljs-string">"用户名不存在"</span>);
+        &#125;
+        <span class="hljs-comment">//System.out.println(user.getPassword());</span>
+        <span class="hljs-comment">//System.out.println("用户名为"+user.getUsername());</span>
+        List&lt;SimpleGrantedAuthority&gt; authorities = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();
+        <span class="hljs-comment">//用于添加用户的权限。只要把用户权限添加到authorities 就万事大吉。</span>
+        <span class="hljs-keyword">for</span>(SysRole role:user.getRoles())
+        &#123;
+            System.out.println(role.getId());
+            authorities.add(<span class="hljs-keyword">new</span> SimpleGrantedAuthority(role.getName()));
+            System.out.println(role.getName());
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> org.springframework.security.core.userdetails.User(user.getUsername(),
+                user.getPassword(), authorities);
+
+    &#125;
+&#125;</code></pre>
+
+**4. util工具类(md5)**
+
+MD5加密工具，将数据库密码进行加密，明文存储模式不能使用
+
+<pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MD5Util</span> </span>&#123;
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String SALT = <span class="hljs-string">"tamboo"</span>;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title">encode</span><span class="hljs-params">(String password)</span> </span>&#123;
+        password = password + SALT;
+        MessageDigest md5 = <span class="hljs-keyword">null</span>;
+        <span class="hljs-keyword">try</span> &#123;
+            md5 = MessageDigest.getInstance(<span class="hljs-string">"MD5"</span>);
+        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> RuntimeException(e);
+        &#125;
+        <span class="hljs-keyword">char</span>[] charArray = password.toCharArray();
+        <span class="hljs-keyword">byte</span>[] byteArray = <span class="hljs-keyword">new</span> <span class="hljs-keyword">byte</span>[charArray.length];
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; charArray.length; i++)
+            byteArray[i] = (<span class="hljs-keyword">byte</span>) charArray[i];
+        <span class="hljs-keyword">byte</span>[] md5Bytes = md5.digest(byteArray);
+        StringBuffer hexValue = <span class="hljs-keyword">new</span> StringBuffer();
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; md5Bytes.length; i++) &#123;
+            <span class="hljs-keyword">int</span> val = ((<span class="hljs-keyword">int</span>) md5Bytes[i]) &amp; <span class="hljs-number">0xff</span>;
+            <span class="hljs-keyword">if</span> (val &lt; <span class="hljs-number">16</span>) &#123;
+                hexValue.append(<span class="hljs-string">"0"</span>);
+            &#125;
+
+            hexValue.append(Integer.toHexString(val));
+        &#125;
+        <span class="hljs-keyword">return</span> hexValue.toString();
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+        System.out.println(MD5Util.encode(<span class="hljs-string">"abel"</span>));
+
+    &#125;
+&#125;</code></pre>
+
+**5.踩坑**
+
+调试过程：
+
+在SpringBoot启动类中，在Spring Boot2.x版本中@SpringBootApplication已经包含了@ComponentScan，无需再进行配置
+
+在controller层中，如果加@RestController，那么在方法中return &quot;login&quot;    并不会跳转到login.html页面，因为@RestController方法是@ResponseBody 和 @Controller方法的合成,
+
+直接用@Controller方法,return &quot;login&quot;，这样就会跳转到login.html页面</code></pre>
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/SSM%E5%AE%9E%E4%BE%8B/">SSM实例</a>
+                    
+                  </div>
+                
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/08/07/RequestMapping%E9%94%99%E8%AF%AF/">
+                        <span class="hidden-mobile">@RequestMapping错误</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "springboot-security-demo&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
