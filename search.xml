@@ -464,4 +464,81 @@ dataSource.setIdleConnectionTestPeriod(<span class="hljs-number">60</span>);</co
         <category>SSM实例</category>
       </categories>
   </entry>
+  <entry>
+    <title>重建二叉树</title>
+    <url>/2020/09/15/%E9%87%8D%E5%BB%BA%E4%BA%8C%E5%8F%89%E6%A0%91/</url>
+    <content><![CDATA[<h4 id="剑指-Offer-07-重建二叉树"><a href="#剑指-Offer-07-重建二叉树" class="headerlink" title="剑指 Offer 07. 重建二叉树"></a><a href="https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/" target="_blank" rel="noopener">剑指 Offer 07. 重建二叉树</a></h4><h2 id="输入某二叉树的前序遍历和中序遍历的结果，请重建该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。"><a href="#输入某二叉树的前序遍历和中序遍历的结果，请重建该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。" class="headerlink" title="输入某二叉树的前序遍历和中序遍历的结果，请重建该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。"></a><strong>输入某二叉树的前序遍历和中序遍历的结果，请重建该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。</strong></h2><p>例如，给出</p>
+<pre><code class="hljs angelscript">前序遍历 preorder = [<span class="hljs-number">3</span>,<span class="hljs-number">9</span>,<span class="hljs-number">20</span>,<span class="hljs-number">15</span>,<span class="hljs-number">7</span>]
+中序遍历 inorder = [<span class="hljs-number">9</span>,<span class="hljs-number">3</span>,<span class="hljs-number">15</span>,<span class="hljs-number">20</span>,<span class="hljs-number">7</span>]</code></pre>
+
+<pre><code class="hljs angelscript"><span class="hljs-number">3</span>
+  / \
+ <span class="hljs-number">9</span>  <span class="hljs-number">20</span>
+   /  \
+  <span class="hljs-number">15</span>   <span class="hljs-number">7</span></code></pre>
+
+<p><strong>限制：</strong>0 &lt;= 节点个数 &lt;= 5000</p>
+<h2 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h2><p>​    </p>
+<h5 id="首先，我们了解二叉树基本遍历知识："><a href="#首先，我们了解二叉树基本遍历知识：" class="headerlink" title="首先，我们了解二叉树基本遍历知识："></a>首先，我们了解二叉树基本遍历知识：</h5><p>​        前序遍历特点： 节点按照【根节点|左子树|右子树】排序，以题目为例：【3|9|20 15 7】</p>
+<p>​        中序遍历特点： 节点按照【左子树|根节点|右子树】排序，以题目为例：【9|3|15 20 7】</p>
+<p>​    题目中指定：输入的前序遍历和中序遍历的结果都不含重复的数字，表明树中节点唯一</p>
+<p>​    </p>
+<h5 id="根据以上特点，按照顺序"><a href="#根据以上特点，按照顺序" class="headerlink" title="根据以上特点，按照顺序"></a>根据以上特点，按照顺序</h5><pre><code>1. 前序遍历的首个节点即是根节点`root`的值
+  2. 在中序遍历中搜索根节点`root`的索引，可将中序遍历划分为【左子树|根节点|右子树】
+  3. 根据中序遍历中的左（右）子树的节点数量，可以将前序遍历划分为【根节点|左子树|右子树】</code></pre><p><strong>自此可以确定三个节点的关系</strong>：</p>
+<pre><code>1. 树的根节点 
+ 2. 左子树根节点 
+ 3. 右子树根节点（即前序遍历中左（右）子树的首个元素）</code></pre><p>那么我们可以使用<strong>递归</strong>的方法进行处理：每轮确定三个节点的关系</p>
+<h4 id="递归："><a href="#递归：" class="headerlink" title="递归："></a>递归：</h4><ul>
+<li><p><strong>递归参数</strong>： 前序遍历中根节点索引为<code>pre_root</code>, 中序遍历左边界<code>in_left</code>, 中序遍历右边界 <code>in_right</code></p>
+</li>
+<li><p><strong>终止条件</strong>： 当<code>in_left&gt;in_right</code> ，子树中序遍历为空，说明已经越过了叶子节点，返回<code>NULL</code></p>
+</li>
+<li><p><strong>递推工作</strong></p>
+<ol>
+<li><strong>建立根节点root</strong>：值为前序遍历中索引为pre_root的节点值</li>
+<li><strong>搜索根节点root在中序遍历中的索引，确定左右子树</strong>：这里我们使用哈希表dic预存储中序遍历的值与索引的对应关系</li>
+<li><strong>构建根节点root的左子树和右子树</strong>：通过调用递归函数 <code>recur()</code> 开始下一层递归<ul>
+<li><strong>左子树</strong>：根节点索引为<code>pre_root+1</code>,中序遍历的左右边界分别为<code>in_left</code> 和 <code>i-1</code></li>
+<li><strong>右子树</strong>：根节点索引为<code>i - in_left + pre_root + 1</code> （即：根节点索引+左子树长度+1），中序遍历的左右边界分别为 <code>i+1</code> 和  <code>in_right</code></li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><strong>返回值</strong>：返回<code>root</code>，含义：当前递归层级建立的根节点root为上一递归层的根节点的左或右节点</li>
+</ul>
+<h4 id="代码展示："><a href="#代码展示：" class="headerlink" title="代码展示："></a>代码展示：</h4><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>&#123;
+    HashMap&lt;Integer, Integer&gt; dic = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
+    <span class="hljs-keyword">int</span>[] po;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> TreeNode <span class="hljs-title">buildTree</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] preorder, <span class="hljs-keyword">int</span>[] inorder)</span> </span>&#123;
+        po = preorder;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; inorder.length; i++) 
+            dic.put(inorder[i], i);
+        <span class="hljs-keyword">return</span> recur(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, inorder.length - <span class="hljs-number">1</span>);
+    &#125;
+    <span class="hljs-function">TreeNode <span class="hljs-title">recur</span><span class="hljs-params">(<span class="hljs-keyword">int</span> pre_root, <span class="hljs-keyword">int</span> in_left, <span class="hljs-keyword">int</span> in_right)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(in_left &gt; in_right) <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+        TreeNode root = <span class="hljs-keyword">new</span> TreeNode(po[pre_root]);
+        <span class="hljs-keyword">int</span> i = dic.get(po[pre_root]);
+        root.left = recur(pre_root + <span class="hljs-number">1</span>, in_left, i - <span class="hljs-number">1</span>);
+        root.right = recur(pre_root + i - in_left + <span class="hljs-number">1</span>, i + <span class="hljs-number">1</span>, in_right);
+        <span class="hljs-keyword">return</span> root;
+    &#125;
+&#125;
+
+作者：jyd
+链接：https:<span class="hljs-comment">//leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/solution/mian-shi-ti-07-zhong-jian-er-cha-shu-di-gui-fa-qin/</span>
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</code></pre>
+
+]]></content>
+      <categories>
+        <category>剑指offer</category>
+      </categories>
+      <tags>
+        <tag>数据结构</tag>
+      </tags>
+  </entry>
 </search>
