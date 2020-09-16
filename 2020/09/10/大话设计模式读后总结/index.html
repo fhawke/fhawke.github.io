@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
-  <title>重建二叉树 - Hexo</title>
+  <title>大话设计模式读后总结 - Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -152,8 +152,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-09-15 16:22">
-      September 15, 2020 pm
+    <time datetime="2020-09-10 12:13">
+      September 10, 2020 pm
     </time>
   </div>
 
@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      830 字
+      500 字
     </span>
   
 
@@ -173,7 +173,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      10
+      5
        分钟
     </span>
   
@@ -208,72 +208,27 @@
           <div class="post-content mx-auto" id="post">
             
             <article class="markdown-body">
-              <h4 id="剑指-Offer-07-重建二叉树"><a href="#剑指-Offer-07-重建二叉树" class="headerlink" title="剑指 Offer 07. 重建二叉树"></a><a href="https://leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/" target="_blank" rel="noopener">剑指 Offer 07. 重建二叉树</a></h4><h2 id="输入某二叉树的前序遍历和中序遍历的结果，请重建该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。"><a href="#输入某二叉树的前序遍历和中序遍历的结果，请重建该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。" class="headerlink" title="输入某二叉树的前序遍历和中序遍历的结果，请重建该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。"></a><strong>输入某二叉树的前序遍历和中序遍历的结果，请重建该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。</strong></h2><p>例如，给出</p>
-<pre><code class="hljs angelscript">前序遍历 preorder = [<span class="hljs-number">3</span>,<span class="hljs-number">9</span>,<span class="hljs-number">20</span>,<span class="hljs-number">15</span>,<span class="hljs-number">7</span>]
-中序遍历 inorder = [<span class="hljs-number">9</span>,<span class="hljs-number">3</span>,<span class="hljs-number">15</span>,<span class="hljs-number">20</span>,<span class="hljs-number">7</span>]</code></pre>
-
-<pre><code class="hljs angelscript"><span class="hljs-number">3</span>
-  / \
- <span class="hljs-number">9</span>  <span class="hljs-number">20</span>
-   /  \
-  <span class="hljs-number">15</span>   <span class="hljs-number">7</span></code></pre>
-
-<p><strong>限制：</strong>0 &lt;= 节点个数 &lt;= 5000</p>
-<h2 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h2><p>​    </p>
-<h5 id="首先，我们了解二叉树基本遍历知识："><a href="#首先，我们了解二叉树基本遍历知识：" class="headerlink" title="首先，我们了解二叉树基本遍历知识："></a>首先，我们了解二叉树基本遍历知识：</h5><p>​        前序遍历特点： 节点按照【根节点|左子树|右子树】排序，以题目为例：【3|9|20 15 7】</p>
-<p>​        中序遍历特点： 节点按照【左子树|根节点|右子树】排序，以题目为例：【9|3|15 20 7】</p>
-<p>​    题目中指定：输入的前序遍历和中序遍历的结果都不含重复的数字，表明树中节点唯一</p>
-<p>​    </p>
-<h5 id="根据以上特点，按照顺序"><a href="#根据以上特点，按照顺序" class="headerlink" title="根据以上特点，按照顺序"></a>根据以上特点，按照顺序</h5><pre><code>1. 前序遍历的首个节点即是根节点`root`的值
-  2. 在中序遍历中搜索根节点`root`的索引，可将中序遍历划分为【左子树|根节点|右子树】
-  3. 根据中序遍历中的左（右）子树的节点数量，可以将前序遍历划分为【根节点|左子树|右子树】</code></pre><p><strong>自此可以确定三个节点的关系</strong>：</p>
-<pre><code>1. 树的根节点 
- 2. 左子树根节点 
- 3. 右子树根节点（即前序遍历中左（右）子树的首个元素）</code></pre><p>那么我们可以使用<strong>递归</strong>的方法进行处理：每轮确定三个节点的关系</p>
-<h4 id="递归："><a href="#递归：" class="headerlink" title="递归："></a>递归：</h4><ul>
-<li><p><strong>递归参数</strong>： 前序遍历中根节点索引为<code>pre_root</code>, 中序遍历左边界<code>in_left</code>, 中序遍历右边界 <code>in_right</code></p>
-</li>
-<li><p><strong>终止条件</strong>： 当<code>in_left&gt;in_right</code> ，子树中序遍历为空，说明已经越过了叶子节点，返回<code>NULL</code></p>
-</li>
-<li><p><strong>递推工作</strong></p>
-<ol>
-<li><strong>建立根节点root</strong>：值为前序遍历中索引为pre_root的节点值</li>
-<li><strong>搜索根节点root在中序遍历中的索引，确定左右子树</strong>：这里我们使用哈希表dic预存储中序遍历的值与索引的对应关系</li>
-<li><strong>构建根节点root的左子树和右子树</strong>：通过调用递归函数 <code>recur()</code> 开始下一层递归<ul>
-<li><strong>左子树</strong>：根节点索引为<code>pre_root+1</code>,中序遍历的左右边界分别为<code>in_left</code> 和 <code>i-1</code></li>
-<li><strong>右子树</strong>：根节点索引为<code>i - in_left + pre_root + 1</code> （即：根节点索引+左子树长度+1），中序遍历的左右边界分别为 <code>i+1</code> 和  <code>in_right</code></li>
-</ul>
-</li>
-</ol>
-</li>
-</ul>
-<ul>
-<li><strong>返回值</strong>：返回<code>root</code>，含义：当前递归层级建立的根节点root为上一递归层的根节点的左或右节点</li>
-</ul>
-<h4 id="代码展示："><a href="#代码展示：" class="headerlink" title="代码展示："></a>代码展示：</h4><pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>&#123;
-    HashMap&lt;Integer, Integer&gt; dic = <span class="hljs-keyword">new</span> HashMap&lt;&gt;();
-    <span class="hljs-keyword">int</span>[] po;
-    <span class="hljs-function"><span class="hljs-keyword">public</span> TreeNode <span class="hljs-title">buildTree</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] preorder, <span class="hljs-keyword">int</span>[] inorder)</span> </span>&#123;
-        po = preorder;
-        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; inorder.length; i++) 
-            dic.put(inorder[i], i);
-        <span class="hljs-keyword">return</span> recur(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, inorder.length - <span class="hljs-number">1</span>);
-    &#125;
-    <span class="hljs-function">TreeNode <span class="hljs-title">recur</span><span class="hljs-params">(<span class="hljs-keyword">int</span> pre_root, <span class="hljs-keyword">int</span> in_left, <span class="hljs-keyword">int</span> in_right)</span> </span>&#123;
-        <span class="hljs-keyword">if</span>(in_left &gt; in_right) <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
-        TreeNode root = <span class="hljs-keyword">new</span> TreeNode(po[pre_root]);
-        <span class="hljs-keyword">int</span> i = dic.get(po[pre_root]);
-        root.left = recur(pre_root + <span class="hljs-number">1</span>, in_left, i - <span class="hljs-number">1</span>);
-        root.right = recur(pre_root + i - in_left + <span class="hljs-number">1</span>, i + <span class="hljs-number">1</span>, in_right);
-        <span class="hljs-keyword">return</span> root;
-    &#125;
-&#125;
-
-作者：jyd
-链接：https:<span class="hljs-comment">//leetcode-cn.com/problems/zhong-jian-er-cha-shu-lcof/solution/mian-shi-ti-07-zhong-jian-er-cha-shu-di-gui-fa-qin/</span>
-来源：力扣（LeetCode）
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</code></pre>
-
+              <h1 id="花了7天上午的时间读完《大话设计模式》，随笔记录一下自己的收获"><a href="#花了7天上午的时间读完《大话设计模式》，随笔记录一下自己的收获" class="headerlink" title="花了7天上午的时间读完《大话设计模式》，随笔记录一下自己的收获"></a>花了7天上午的时间读完《大话设计模式》，随笔记录一下自己的收获</h1><h2 id="设计模式七大原则"><a href="#设计模式七大原则" class="headerlink" title="设计模式七大原则"></a>设计模式七大原则</h2><p><strong>1. 开闭原则</strong></p>
+<p>​        开放-封闭原则 </p>
+<p>​        大意：对于修改，我们应该封闭，对于扩展，我们应该开放。</p>
+<p>​    当应用的需求改变时，在不修改软件的源代码前提下，可以扩展模块的功能，满足业务需求（低耦合）</p>
+<p><strong>2. 里氏替换原则</strong></p>
+<p>​        大意：子类可以扩展父类的功能，但不能改变父类原有的功能，也就是说子类在继承父类时，除了添加新的方法完成扩展以外，尽量不要重写父类的方法（低耦合）</p>
+<p><strong>3.依赖倒置原则</strong></p>
+<p>​    面向接口编程</p>
+<p>​        大意：高层模块不应该依赖底层模块，他们都应该依赖抽象，抽象不应该依赖细节，细节应该依赖抽象（低耦合）</p>
+<p><strong>4. 单一职责原则</strong></p>
+<p>​        单一功能原则</p>
+<p>​        大意：一个类应该有且仅有一个引起他变化的原因，否则类就应该被拆分（高内聚）</p>
+<p><strong>5.接口隔离原则</strong></p>
+<p>​        大意：程序员应该将臃肿庞大的接口拆分为更小和更具体的接口，让接口只包含客户感兴趣的方法（高内聚）</p>
+<p><strong>6.迪米特原则</strong></p>
+<p>​        大意：当两个类无需直接通信时，那么就不应该发生直接的相互调用，可以通过第三方转发该调用（低耦合）</p>
+<p><strong>合成复用原则</strong></p>
+<p>​    组合/聚合复用原则</p>
+<p>​        大意：他要求在软件复用时，要尽量使用组合或者聚合等关联关系来实现，其次才考虑使用继承方法，如果要使用继承，必须严格遵守里氏代换原则，</p>
+<p>因为继承会破坏类的封闭性，继承会将父类的实现细节暴露，同时子类父类耦合度高，不符合设计原理。</p>
+<p>​        </p>
 
             </article>
             <hr>
@@ -283,7 +238,7 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/%E5%89%91%E6%8C%87offer/">剑指offer</a>
+                      <a class="hover-with-bg" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
                     
                   </div>
                 
@@ -291,7 +246,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+                      <a class="hover-with-bg" href="/tags/%E9%9A%8F%E7%AC%94/">随笔</a>
                     
                   </div>
                 
@@ -304,9 +259,9 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/09/16/%E7%9F%A9%E9%98%B5%E4%B8%AD%E7%9A%84%E8%B7%AF%E5%BE%84/">
+                      <a href="/2020/09/15/%E9%87%8D%E5%BB%BA%E4%BA%8C%E5%8F%89%E6%A0%91/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">矩阵中的路径</span>
+                        <span class="hidden-mobile">重建二叉树</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -314,8 +269,8 @@
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/09/10/%E5%A4%A7%E8%AF%9D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E8%AF%BB%E5%90%8E%E6%80%BB%E7%BB%93/">
-                        <span class="hidden-mobile">大话设计模式读后总结</span>
+                      <a href="/2020/09/09/springboot-security-demo/">
+                        <span class="hidden-mobile">springboot-security-demo</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -454,7 +409,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "重建二叉树&nbsp;",
+        "大话设计模式读后总结&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
