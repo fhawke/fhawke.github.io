@@ -230,7 +230,9 @@
 <p>那么就有三元表达式写法</p>
 <pre><code class="hljs java">(x + <span class="hljs-number">1</span>) % <span class="hljs-number">10</span> != <span class="hljs-number">0</span> ? s_x + <span class="hljs-number">1</span> : s_x - <span class="hljs-number">8</span></code></pre>
 
-<h4 id="搜索方向简化"><a href="#搜索方向简化" class="headerlink" title="搜索方向简化"></a>搜索方向简化</h4><pre><code>我们在搜索的过程中搜索方向可以缩减为向右和向下，而不必再向上和向左进行搜索。如下图，我们展示了 16 * 16 的地图随着限制条件 k 的放大，可行方格的变化趋势，每个格子里的值为行坐标和列坐标的数位之和，蓝色方格代表非障碍方格，即其值小于等于当前的限制条件 k。我们可以发现随着限制条件 k 的增大，(0, 0) 所在的蓝色方格区域内新加入的非障碍方格都可以由上方或左方的格子移动一步得到。而其他不连通的蓝色方格区域会随着 k 的增大而连通，且连通的时候也是由上方或左方的格子移动一步得到，因此我们可以将我们的搜索方向缩减为向右或向下。</code></pre><p><img src="/2020/09/16/%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9A%84%E8%BF%90%E5%8A%A8%E8%8C%83%E5%9B%B4/F:%5Chexo%5Csource_posts%5C%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9A%84%E8%BF%90%E5%8A%A8%E8%8C%83%E5%9B%B4%5C2019c08d97a5868606aa510808d9b1c147e484f95e3ee90819dd118387dcb4e4-%E5%B9%BB%E7%81%AF%E7%89%8710.jpg" srcset="/img/loading.gif" alt></p>
+<h4 id="搜索方向简化"><a href="#搜索方向简化" class="headerlink" title="搜索方向简化"></a>搜索方向简化</h4><p><strong>我们在搜索的过程中搜索方向可以缩减为向右和向下，而不必再向上和向左进行搜索。</strong></p>
+<p>如下图，我们展示了 16 * 16 的地图随着限制条件 k 的放大，可行方格的变化趋势，每个格子里的值为行坐标和列坐标的数位之和，蓝色方格代表非障碍方格，即其值小于等于当前的限制条件 k。我们可以发现随着限制条件 k 的增大，(0, 0) 所在的蓝色方格区域内新加入的非障碍方格都可以由上方或左方的格子移动一步得到。而其他不连通的蓝色方格区域会随着 k 的增大而连通，且连通的时候也是由上方或左方的格子移动一步得到，因此我们可以将我们的搜索方向缩减为向右或向下。</p>
+<p><img src="/2020/09/16/%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9A%84%E8%BF%90%E5%8A%A8%E8%8C%83%E5%9B%B4/F:%5Chexo%5Csource_posts%5C%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9A%84%E8%BF%90%E5%8A%A8%E8%8C%83%E5%9B%B4%5C2019c08d97a5868606aa510808d9b1c147e484f95e3ee90819dd118387dcb4e4-%E5%B9%BB%E7%81%AF%E7%89%8710.jpg" srcset="/img/loading.gif" alt></p>
 <h4 id="深度优先遍历DFS"><a href="#深度优先遍历DFS" class="headerlink" title="深度优先遍历DFS"></a>深度优先遍历DFS</h4><h5 id="算法解析："><a href="#算法解析：" class="headerlink" title="算法解析："></a>算法解析：</h5><ul>
 <li><strong>递归参数</strong>： 当前元素在矩阵中的行列索引 <code>i,j</code>，两者的数位和 <code>s1,s2</code></li>
 <li><strong>终止条件</strong>： 当行列索引不符合要求<strong>或</strong> 当前元素已经访问过（使用visit数组判断是否遍历），返回0，代表不计入可达解</li>
