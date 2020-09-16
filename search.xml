@@ -647,4 +647,64 @@ dataSource.setIdleConnectionTestPeriod(<span class="hljs-number">60</span>);</co
         <tag>随笔</tag>
       </tags>
   </entry>
+  <entry>
+    <title>机器人的运动范围</title>
+    <url>/2020/09/16/%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9A%84%E8%BF%90%E5%8A%A8%E8%8C%83%E5%9B%B4/</url>
+    <content><![CDATA[<h1 id="剑指-Offer-13-机器人的运动范围"><a href="#剑指-Offer-13-机器人的运动范围" class="headerlink" title="剑指 Offer 13. 机器人的运动范围"></a><a href="https://leetcode-cn.com/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/" target="_blank" rel="noopener">剑指 Offer 13. 机器人的运动范围</a></h1><h3 id="地上有一个m行n列的方格，从坐标-0-0-到坐标-m-1-n-1-。一个机器人从坐标-0-0-的格子开始移动，它每次可以向左、右、上、下移动一格（不能移动到方格外），也不能进入行坐标和列坐标的数位之和大于k的格子。例如，当k为18时，机器人能够进入方格-35-37-，因为3-5-3-7-18。但它不能进入方格-35-38-，因为3-5-3-8-19。请问该机器人能够到达多少个格子？"><a href="#地上有一个m行n列的方格，从坐标-0-0-到坐标-m-1-n-1-。一个机器人从坐标-0-0-的格子开始移动，它每次可以向左、右、上、下移动一格（不能移动到方格外），也不能进入行坐标和列坐标的数位之和大于k的格子。例如，当k为18时，机器人能够进入方格-35-37-，因为3-5-3-7-18。但它不能进入方格-35-38-，因为3-5-3-8-19。请问该机器人能够到达多少个格子？" class="headerlink" title="地上有一个m行n列的方格，从坐标 [0,0] 到坐标 [m-1,n-1] 。一个机器人从坐标 [0, 0] 的格子开始移动，它每次可以向左、右、上、下移动一格（不能移动到方格外），也不能进入行坐标和列坐标的数位之和大于k的格子。例如，当k为18时，机器人能够进入方格 [35, 37] ，因为3+5+3+7=18。但它不能进入方格 [35, 38]，因为3+5+3+8=19。请问该机器人能够到达多少个格子？"></a>地上有一个m行n列的方格，从坐标 [0,0] 到坐标 [m-1,n-1] 。一个机器人从坐标 [0, 0] 的格子开始移动，它每次可以向左、右、上、下移动一格（不能移动到方格外），也不能进入行坐标和列坐标的数位之和大于k的格子。例如，当k为18时，机器人能够进入方格 [35, 37] ，因为3+5+3+7=18。但它不能进入方格 [35, 38]，因为3+5+3+8=19。请问该机器人能够到达多少个格子？</h3><p><strong>示例 1：</strong></p>
+<pre><code class="hljs angelscript">输入：m = <span class="hljs-number">2</span>, n = <span class="hljs-number">3</span>, k = <span class="hljs-number">1</span>
+输出：<span class="hljs-number">3</span></code></pre>
+
+<p><strong>示例 2：</strong></p>
+<pre><code class="hljs angelscript">输入：m = <span class="hljs-number">3</span>, n = <span class="hljs-number">1</span>, k = <span class="hljs-number">0</span>
+输出：<span class="hljs-number">1</span></code></pre>
+
+<p><strong>提示：</strong></p>
+<ul>
+<li><code>1 &lt;= n,m &lt;= 100</code></li>
+<li><code>0 &lt;= k &lt;= 20</code></li>
+</ul>
+<h3 id="算法思路："><a href="#算法思路：" class="headerlink" title="算法思路："></a>算法思路：</h3><p>​    本题与 矩阵中的路径 类似，是典型的矩阵搜索问题，此类问题通常使用 <strong>DFS或BFS</strong>解决，此题还有2个优化的地方，分别是 <strong>数位之和计算</strong> 和 <strong>搜索方向简化</strong></p>
+<h4 id="数位之和计算"><a href="#数位之和计算" class="headerlink" title="数位之和计算"></a>数位之和计算</h4><p>​    依题意，<code>x -&gt; x+1</code> 的时候 数位之和的增量要分类计算</p>
+<ul>
+<li>​    如果（x+1)%10 = 0  那么 s(x+1) = s(x) - 8</li>
+<li>​    反之，那么s(x+1) = s(x) + 1</li>
+</ul>
+<p>那么就有三元表达式写法</p>
+<pre><code class="hljs java">(x + <span class="hljs-number">1</span>) % <span class="hljs-number">10</span> != <span class="hljs-number">0</span> ? s_x + <span class="hljs-number">1</span> : s_x - <span class="hljs-number">8</span></code></pre>
+
+<h4 id="搜索方向简化"><a href="#搜索方向简化" class="headerlink" title="搜索方向简化"></a>搜索方向简化</h4><pre><code>我们在搜索的过程中搜索方向可以缩减为向右和向下，而不必再向上和向左进行搜索。如下图，我们展示了 16 * 16 的地图随着限制条件 k 的放大，可行方格的变化趋势，每个格子里的值为行坐标和列坐标的数位之和，蓝色方格代表非障碍方格，即其值小于等于当前的限制条件 k。我们可以发现随着限制条件 k 的增大，(0, 0) 所在的蓝色方格区域内新加入的非障碍方格都可以由上方或左方的格子移动一步得到。而其他不连通的蓝色方格区域会随着 k 的增大而连通，且连通的时候也是由上方或左方的格子移动一步得到，因此我们可以将我们的搜索方向缩减为向右或向下。</code></pre><p><img src="/2020/09/16/%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9A%84%E8%BF%90%E5%8A%A8%E8%8C%83%E5%9B%B4/F:%5Chexo%5Csource_posts%5C%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9A%84%E8%BF%90%E5%8A%A8%E8%8C%83%E5%9B%B4%5C2019c08d97a5868606aa510808d9b1c147e484f95e3ee90819dd118387dcb4e4-%E5%B9%BB%E7%81%AF%E7%89%8710.jpg" srcset="/img/loading.gif" alt></p>
+<h4 id="深度优先遍历DFS"><a href="#深度优先遍历DFS" class="headerlink" title="深度优先遍历DFS"></a>深度优先遍历DFS</h4><h5 id="算法解析："><a href="#算法解析：" class="headerlink" title="算法解析："></a>算法解析：</h5><ul>
+<li><strong>递归参数</strong>： 当前元素在矩阵中的行列索引 <code>i,j</code>，两者的数位和 <code>s1,s2</code></li>
+<li><strong>终止条件</strong>： 当行列索引不符合要求<strong>或</strong> 当前元素已经访问过（使用visit数组判断是否遍历），返回0，代表不计入可达解</li>
+<li><strong>递推工作</strong><ul>
+<li>标记当前单元格，将索引 <code>i,j</code>存入visit中，代表已经被访问过</li>
+<li>搜索下一单元格，计算当前元素的 <strong>下，右</strong> 两个方向元素的数位和，并开启下层递归</li>
+<li><strong>回溯返回值</strong>：返回 <code>1 + 右方搜索的可达解总数 + 下方搜索的可达解总数</code>，代表从本单元格递归搜索的可达解总数</li>
+</ul>
+</li>
+</ul>
+<p><strong>AC代码</strong></p>
+<pre><code class="hljs java"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>&#123;
+    <span class="hljs-keyword">int</span> m, n, k;
+    <span class="hljs-keyword">boolean</span>[][] visited;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">movingCount</span><span class="hljs-params">(<span class="hljs-keyword">int</span> m, <span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> k)</span> </span>&#123;
+        <span class="hljs-keyword">this</span>.m = m; <span class="hljs-keyword">this</span>.n = n; <span class="hljs-keyword">this</span>.k = k;
+        <span class="hljs-keyword">this</span>.visited = <span class="hljs-keyword">new</span> <span class="hljs-keyword">boolean</span>[m][n];
+        <span class="hljs-keyword">return</span> dfs(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">dfs</span><span class="hljs-params">(<span class="hljs-keyword">int</span> i, <span class="hljs-keyword">int</span> j, <span class="hljs-keyword">int</span> si, <span class="hljs-keyword">int</span> sj)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(i &gt;= m || j &gt;= n || k &lt; si + sj || visited[i][j]) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+        visited[i][j] = <span class="hljs-keyword">true</span>;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + dfs(i + <span class="hljs-number">1</span>, j, (i + <span class="hljs-number">1</span>) % <span class="hljs-number">10</span> != <span class="hljs-number">0</span> ? si + <span class="hljs-number">1</span> : si - <span class="hljs-number">8</span>, sj) + dfs(i, j + <span class="hljs-number">1</span>, si, (j + <span class="hljs-number">1</span>) % <span class="hljs-number">10</span> != <span class="hljs-number">0</span> ? sj + <span class="hljs-number">1</span> : sj - <span class="hljs-number">8</span>);
+    &#125;
+&#125;</code></pre>
+
+]]></content>
+      <categories>
+        <category>剑指offer</category>
+      </categories>
+      <tags>
+        <tag>DFS</tag>
+      </tags>
+  </entry>
 </search>
