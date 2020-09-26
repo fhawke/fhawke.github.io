@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
-  <title>树的子结构 - Hexo</title>
+  <title>最长不含重复字符的子字符串 - Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -152,8 +152,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-09-20 15:26">
-      September 20, 2020 pm
+    <time datetime="2020-09-26 08:45">
+      September 26, 2020 am
     </time>
   </div>
 
@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      453 字
+      489 字
     </span>
   
 
@@ -208,66 +208,53 @@
           <div class="post-content mx-auto" id="post">
             
             <article class="markdown-body">
-              <h1 id="剑指-Offer-26-树的子结构"><a href="#剑指-Offer-26-树的子结构" class="headerlink" title="剑指 Offer 26. 树的子结构"></a><a href="https://leetcode-cn.com/problems/shu-de-zi-jie-gou-lcof/" target="_blank" rel="noopener">剑指 Offer 26. 树的子结构</a></h1><p>输入两棵二叉树A和B，判断B是不是A的子结构。(约定空树不是任意一个树的子结构)</p>
-<p>B是A的子结构， 即 A中有出现和B相同的结构和节点值。</p>
-<p>例如:<br><strong>给定的树 A:</strong>            </p>
-<p>   3<br>  / <br>  4  5<br> / <br> 1  2</p>
-<p><strong>给定的树 B：</strong></p>
-<p>  4<br> /<br> 1</p>
-<p><strong>返回 true，因为 B 与 A 的一个子树拥有相同的结构和节点值。</strong></p>
-<p><strong>示例 1：</strong></p>
-<pre><code class="hljs angelscript">输入：A = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>], B = [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]
-输出：<span class="hljs-literal">false</span></code></pre>
+              <h1 id="剑指-Offer-48-最长不含重复字符的子字符串"><a href="#剑指-Offer-48-最长不含重复字符的子字符串" class="headerlink" title="剑指 Offer 48. 最长不含重复字符的子字符串"></a><a href="https://leetcode-cn.com/problems/zui-chang-bu-han-zhong-fu-zi-fu-de-zi-zi-fu-chuan-lcof/" target="_blank" rel="noopener">剑指 Offer 48. 最长不含重复字符的子字符串</a></h1><p><strong>请从字符串中找出一个最长的不包含重复字符的子字符串，计算该最长子字符串的长度。</strong></p>
+<pre><code class="hljs makefile"><span class="hljs-section">输入: "abcabcbb"</span>
+<span class="hljs-section">输出: 3 </span>
+<span class="hljs-section">解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。</span></code></pre>
 
+<pre><code class="hljs makefile"><span class="hljs-section">输入: "bbbbb"</span>
+<span class="hljs-section">输出: 1</span>
+<span class="hljs-section">解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。</span></code></pre>
 
+<pre><code class="hljs makefile"><span class="hljs-section">输入: "pwwkew"</span>
+<span class="hljs-section">输出: 3</span>
+<span class="hljs-section">解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3</span>
+请注意，你的答案必须是 子串 的长度，<span class="hljs-string">"pwke"</span> 是一个子序列，不是子串</code></pre>
 
-<p><strong>示例 2：</strong></p>
-<pre><code class="hljs 限制：">输入：A &#x3D; [3,4,5,1,2], B &#x3D; [4,1]
-输出：true</code></pre>
-
-<p><strong>限制：</strong></p>
-<pre><code class="hljs basic"><span class="hljs-symbol">0 </span>&lt;= 节点个数 &lt;= <span class="hljs-number">10000</span></code></pre>
-
-
-
-
-
-<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ol>
-<li>先序遍历树A中的每个节点na </li>
-<li>判断树A中以na为根节点的子树是否包含树B   <strong>对应函数recur（A，B）</strong></li>
-</ol>
-<h4 id="recur-A-B"><a href="#recur-A-B" class="headerlink" title="recur(A,B)"></a>recur(A,B)</h4><ol>
-<li>终止条件：<ol>
-<li>当节点B为空：说明树B匹配完成，返回true</li>
-<li>当节点A为空，说明已经越过树A叶子节点，返回false</li>
-<li>当节点A和节点B的值不同，返回false</li>
-</ol>
+<ul>
+<li><code>s.length &lt;= 40000</code></li>
+</ul>
+<h4 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h4><p>​    这题可以用动态规划来分析：</p>
+<ul>
+<li><p><strong>状态定义</strong>： 设动态规划列表dp，dp[j] 代表以字符s[j] 为结尾的 “最长不重复子字符串”的长度</p>
 </li>
-<li>返回值<ol>
-<li>判断A和B的左子树节点是否相等，<code>recur(A-&gt;left,B-&gt;right)</code></li>
-<li>判断A和B的右子树节点是否相等,   <code>recur(A-&gt;right,B-&gt;right)</code></li>
-</ol>
+<li><p><strong>转移方程</strong>： 固定右边界j，设字符串s[j] 左边距离最近的相同的字符串为s[i] ，s[i] = s[j]</p>
+<ul>
+<li>当i &lt; 0,说明s[j]左边没有相同字符，dp[j] = dp[j-1] + 1</li>
+<li>当dp[j-1] &lt; j - i ,说明s[i] 在子字符串dp[j-1]区间之外，那么dp[j] = dp[j-1] + 1</li>
+<li>当dp[j-1]&gt;j - i,说明s[i] 在子字符串dp[j-1]区间之中，那么dp[j] = j - i；</li>
+</ul>
 </li>
-</ol>
-<h4 id="isSubStructure-A-B"><a href="#isSubStructure-A-B" class="headerlink" title="isSubStructure(A,B)"></a>isSubStructure(A,B)</h4><ol>
-<li>空值处理，返回false</li>
-<li>若树B是树A的子结构，满足以下三种情况<ol>
-<li>以<strong>节点A为根节点</strong>的子树包含B  <code>recur(A,B)</code></li>
-<li>树B是<strong>树A左子树</strong>的子结构，对应 <code>isSubStructure(A-&gt;left,B)</code></li>
-<li>树B是<strong>树A右子树</strong>的子结构，对应 <code>isSubStructure(A-&gt;right,B)</code>；</li>
-</ol>
+<li><p>那么得出状态转移方程</p>
+<p>dp[j] = dp[j-1] + 1;    (dp[j-1] &lt; j - i)</p>
+<p>dp[j] = j - i;                (dp[j-1]  &gt;= j - i)</p>
 </li>
-</ol>
-<h5 id="AC代码"><a href="#AC代码" class="headerlink" title="AC代码"></a>AC代码</h5><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<li><p>返回值返回max(dp)，利用循环赋值找最大值即可</p>
+</li>
+</ul>
+<h4 id="AC代码"><a href="#AC代码" class="headerlink" title="AC代码"></a>AC代码</h4><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
 <span class="hljs-keyword">public</span>:
-    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">isSubStructure</span><span class="hljs-params">(TreeNode* A, TreeNode* B)</span> </span>&#123;
-        <span class="hljs-keyword">if</span>(A == <span class="hljs-literal">NULL</span>||B == <span class="hljs-literal">NULL</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-        <span class="hljs-keyword">return</span> recur(A,B)||isSubStructure(A-&gt;left,B)||isSubStructure(A-&gt;right,B);
-    &#125;
-    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">recur</span><span class="hljs-params">(TreeNode* A,TreeNode* B)</span></span>&#123;
-        <span class="hljs-keyword">if</span>(B == <span class="hljs-literal">NULL</span>)   <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
-        <span class="hljs-keyword">if</span>(A == <span class="hljs-literal">NULL</span> || A-&gt;val != B-&gt;val)   <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
-        <span class="hljs-keyword">return</span> recur(A-&gt;left,B-&gt;left)&amp;&amp;recur(A-&gt;right,B-&gt;right);
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">lengthOfLongestSubstring</span><span class="hljs-params">(<span class="hljs-built_in">string</span> s)</span> </span>&#123;
+        <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>,tmp = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;j &lt; s.<span class="hljs-built_in">size</span>();j++)
+        &#123;
+            <span class="hljs-keyword">int</span> i = j<span class="hljs-number">-1</span>;
+            <span class="hljs-keyword">while</span>(i&gt;=<span class="hljs-number">0</span>&amp;&amp;s[i]!=s[j]) i--;		<span class="hljs-comment">//线性遍历寻找s[i] == s[j]中i的下标</span>
+            tmp = tmp &lt; j-i?tmp+<span class="hljs-number">1</span>:j-i;			<span class="hljs-comment">//状态转移方程组</span>
+            res = <span class="hljs-built_in">max</span>(res,tmp);					<span class="hljs-comment">//循环赋值寻找最大值</span>
+        &#125;
+        <span class="hljs-keyword">return</span> res;								<span class="hljs-comment">//返回dp最大值</span>
     &#125;
 &#125;;</code></pre>
 
@@ -288,7 +275,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a>
+                      <a class="hover-with-bg" href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">动态规划</a>
                     
                   </div>
                 
@@ -301,18 +288,12 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/09/26/%E6%9C%80%E9%95%BF%E4%B8%8D%E5%90%AB%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">最长不含重复字符的子字符串</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/09/16/%E5%8F%8D%E8%BD%AC%E9%93%BE%E8%A1%A8/">
-                        <span class="hidden-mobile">反转链表</span>
+                      <a href="/2020/09/20/%E6%A0%91%E7%9A%84%E5%AD%90%E7%BB%93%E6%9E%84/">
+                        <span class="hidden-mobile">树的子结构</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -451,7 +432,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "树的子结构&nbsp;",
+        "最长不含重复字符的子字符串&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,

@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>最长不含重复字符的子字符串</title>
+    <link href="/2020/09/26/%E6%9C%80%E9%95%BF%E4%B8%8D%E5%90%AB%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
+    <url>/2020/09/26/%E6%9C%80%E9%95%BF%E4%B8%8D%E5%90%AB%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2/</url>
+    
+    <content type="html"><![CDATA[<h1 id="剑指-Offer-48-最长不含重复字符的子字符串"><a href="#剑指-Offer-48-最长不含重复字符的子字符串" class="headerlink" title="剑指 Offer 48. 最长不含重复字符的子字符串"></a><a href="https://leetcode-cn.com/problems/zui-chang-bu-han-zhong-fu-zi-fu-de-zi-zi-fu-chuan-lcof/" target="_blank" rel="noopener">剑指 Offer 48. 最长不含重复字符的子字符串</a></h1><p><strong>请从字符串中找出一个最长的不包含重复字符的子字符串，计算该最长子字符串的长度。</strong></p><pre><code class="hljs makefile"><span class="hljs-section">输入: "abcabcbb"</span><span class="hljs-section">输出: 3 </span><span class="hljs-section">解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。</span></code></pre><pre><code class="hljs makefile"><span class="hljs-section">输入: "bbbbb"</span><span class="hljs-section">输出: 1</span><span class="hljs-section">解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。</span></code></pre><pre><code class="hljs makefile"><span class="hljs-section">输入: "pwwkew"</span><span class="hljs-section">输出: 3</span><span class="hljs-section">解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3</span>请注意，你的答案必须是 子串 的长度，<span class="hljs-string">"pwke"</span> 是一个子序列，不是子串</code></pre><ul><li><code>s.length &lt;= 40000</code></li></ul><h4 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h4><p>​    这题可以用动态规划来分析：</p><ul><li><p><strong>状态定义</strong>： 设动态规划列表dp，dp[j] 代表以字符s[j] 为结尾的 “最长不重复子字符串”的长度</p></li><li><p><strong>转移方程</strong>： 固定右边界j，设字符串s[j] 左边距离最近的相同的字符串为s[i] ，s[i] = s[j]</p><ul><li>当i &lt; 0,说明s[j]左边没有相同字符，dp[j] = dp[j-1] + 1</li><li>当dp[j-1] &lt; j - i ,说明s[i] 在子字符串dp[j-1]区间之外，那么dp[j] = dp[j-1] + 1</li><li>当dp[j-1]&gt;j - i,说明s[i] 在子字符串dp[j-1]区间之中，那么dp[j] = j - i；</li></ul></li><li><p>那么得出状态转移方程</p><p>dp[j] = dp[j-1] + 1;    (dp[j-1] &lt; j - i)</p><p>dp[j] = j - i;                (dp[j-1]  &gt;= j - i)</p></li><li><p>返回值返回max(dp)，利用循环赋值找最大值即可</p></li></ul><h4 id="AC代码"><a href="#AC代码" class="headerlink" title="AC代码"></a>AC代码</h4><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><span class="hljs-keyword">public</span>:    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">lengthOfLongestSubstring</span><span class="hljs-params">(<span class="hljs-built_in">string</span> s)</span> </span>&#123;        <span class="hljs-keyword">int</span> res = <span class="hljs-number">0</span>,tmp = <span class="hljs-number">0</span>;        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;j &lt; s.<span class="hljs-built_in">size</span>();j++)        &#123;            <span class="hljs-keyword">int</span> i = j<span class="hljs-number">-1</span>;            <span class="hljs-keyword">while</span>(i&gt;=<span class="hljs-number">0</span>&amp;&amp;s[i]!=s[j]) i--;<span class="hljs-comment">//线性遍历寻找s[i] == s[j]中i的下标</span>            tmp = tmp &lt; j-i?tmp+<span class="hljs-number">1</span>:j-i;<span class="hljs-comment">//状态转移方程组</span>            res = <span class="hljs-built_in">max</span>(res,tmp);<span class="hljs-comment">//循环赋值寻找最大值</span>        &#125;        <span class="hljs-keyword">return</span> res;<span class="hljs-comment">//返回dp最大值</span>    &#125;&#125;;</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>剑指offer</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>动态规划</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>树的子结构</title>
     <link href="/2020/09/20/%E6%A0%91%E7%9A%84%E5%AD%90%E7%BB%93%E6%9E%84/"/>
     <url>/2020/09/20/%E6%A0%91%E7%9A%84%E5%AD%90%E7%BB%93%E6%9E%84/</url>
