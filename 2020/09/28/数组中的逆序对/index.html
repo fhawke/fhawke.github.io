@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      911 字
+      955 字
     </span>
   
 
@@ -223,10 +223,10 @@
 <p>由于题目要求：<strong>前面一个数字大于后面数字，则组成逆序对</strong></p>
 <p>那么我们可以想到使用 <strong>归并排序</strong> ，因为归并的过程中首先拆分，然后自然的进行1对1的大小比对，进行排序，我们只需要在过程中加入一个变量count进行累加，便可以return回结果</p>
 <p><strong>那么题目思路确认：归并排序改动</strong></p>
-<p>如何确认count的自增呢？这是一个非常重要的问题，可以看下面的解释</p>
+<p><strong>如何确认count的自增呢？</strong>这是一个非常重要的问题，可以看下面的解释</p>
 <p>下面摘自 <a href="https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/solution/shu-zu-zhong-de-ni-xu-dui-by-leetcode-solution/" target="_blank" rel="noopener">LeetCode官方题解</a></p>
 <p>那么求逆序对和归并排序又有什么关系呢？关键就在于「归并」当中「并」的过程。我们通过一个实例来看看。</p>
-<p>假设我们有两个已排序的序列等待合并，分别是 L = { 8, 12, 16, 22, 100 }L={8,12,16,22,100} 和 R = { 9, 26, 55, 64, 91 }R={9,26,55,64,91}。</p>
+<p>假设我们有两个已排序的序列等待合并，分别是 <code>L = { 8, 12, 16, 22, 100 }``L={8,12,16,22,100}</code> 和 <code>R = { 9, 26, 55, 64, 91 }``R={9,26,55,64,91}</code></p>
 <p>一开始我们用指针 lPtr = 0 指向 L 的首部，rPtr = 0 指向 R 的头部。记已经合并好的部分为 M。</p>
 <pre><code class="hljs angelscript">L = [<span class="hljs-number">8</span>, <span class="hljs-number">12</span>, <span class="hljs-number">16</span>, <span class="hljs-number">22</span>, <span class="hljs-number">100</span>]   R = [<span class="hljs-number">9</span>, <span class="hljs-number">26</span>, <span class="hljs-number">55</span>, <span class="hljs-number">64</span>, <span class="hljs-number">91</span>]  M = []
      |                          |
@@ -237,14 +237,15 @@
         |                       |
       lPtr                     rPtr</code></pre>
 
-<p>这个时候我们把左边的 8 加入了答案，我们发现右边没有数比 8 小，所以 8 对逆序对总数的「贡献」为 0。</p>
-<p>接着我们继续合并，把 9 加入了答案，此时 lPtr 指向 12，rPtr 指向 26。</p>
+<p>这个时候我们把左边的 <strong>8</strong> 加入了答案，我们发现右边没有数比 <strong>8</strong> 小，所以 <strong>8</strong> 对逆序对总数的「贡献」为 <strong>0</strong>。</p>
+<p>接着我们继续合并，把 <strong>9</strong> 加入了答案，此时 <code>lPtr</code> 指向 <strong>12</strong>，<code>rPtr</code> 指向 <strong>26</strong>。</p>
 <pre><code class="hljs angelscript">L = [<span class="hljs-number">8</span>, <span class="hljs-number">12</span>, <span class="hljs-number">16</span>, <span class="hljs-number">22</span>, <span class="hljs-number">100</span>]   R = [<span class="hljs-number">9</span>, <span class="hljs-number">26</span>, <span class="hljs-number">55</span>, <span class="hljs-number">64</span>, <span class="hljs-number">91</span>]  M = [<span class="hljs-number">8</span>, <span class="hljs-number">9</span>]
         |                          |
        lPtr                       rPtr</code></pre>
 
 <p>此时 <code>lPtr</code> 比 <code>rPtr</code> 小，把 lPtr 对应的数加入答案，并考虑它对逆序对总数的贡献为 <code>rPtr</code> 相对<strong>R</strong>首位置的偏移 <strong>1</strong>（即右边只有一个数比 12 小，所以只有它和 12 构成逆序对），以此类推。</p>
 <p>我们发现用这种「算贡献」的思想在合并的过程中计算逆序对的数量的时候，只在 lPtr 右移的时候计算，是基于这样的事实：当前 <code>lPtr</code> 指向的数字比 <code>rPtr</code> 小，但是比 RR 中 <code>[0 ... rPtr - 1]</code> 的其他数字大，<code>[0 ... rPtr - 1]</code> 的其他数字本应当排在 lPtr 对应数字的左边，但是它排在了右边，所以这里就贡献了 <code>rPtr</code> 个逆序对。</p>
+<p><strong>实际上，如果令 j = mid + 1, j在归并排序过程中发生变化，如果是nums[i] &lt; nums[j] ，那么增加的逆序数对就是 <code>j - (mid + 1)</code></strong></p>
 <p><strong>AC代码：</strong></p>
 <pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
 <span class="hljs-keyword">public</span>:
