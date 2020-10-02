@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
-  <title>数组中的逆序对 - Hexo</title>
+  <title>和为s的连续正数序列 - Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -152,8 +152,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-09-28 22:55">
-      September 28, 2020 pm
+    <time datetime="2020-10-02 18:37">
+      October 2, 2020 pm
     </time>
   </div>
 
@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      955 字
+      278 字
     </span>
   
 
@@ -173,7 +173,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      12
+      3
        分钟
     </span>
   
@@ -208,82 +208,53 @@
           <div class="post-content mx-auto" id="post">
             
             <article class="markdown-body">
-              <h1 id="剑指-Offer-51-数组中的逆序对"><a href="#剑指-Offer-51-数组中的逆序对" class="headerlink" title="剑指 Offer 51. 数组中的逆序对"></a><a href="https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/" target="_blank" rel="noopener">剑指 Offer 51. 数组中的逆序对</a></h1><p><strong>在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组，求出这个数组中的逆序对的总数。</strong></p>
-<p><strong>示例 1:</strong></p>
-<pre><code class="hljs angelscript">输入: [<span class="hljs-number">7</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">4</span>]
-输出: <span class="hljs-number">5</span></code></pre>
+              <h1 id="剑指-Offer-57-II-和为s的连续正数序列"><a href="#剑指-Offer-57-II-和为s的连续正数序列" class="headerlink" title="剑指 Offer 57 - II. 和为s的连续正数序列"></a><a href="https://leetcode-cn.com/problems/he-wei-sde-lian-xu-zheng-shu-xu-lie-lcof/" target="_blank" rel="noopener">剑指 Offer 57 - II. 和为s的连续正数序列</a></h1><p><strong>输入一个正整数 target ，输出所有和为 target 的连续正整数序列（至少含有两个数）。</strong></p>
+<p><strong>序列内的数字由小到大排列，不同序列按照首个数字从小到大排列。</strong></p>
+<p><strong>示例 1：</strong></p>
+<pre><code class="hljs angelscript">输入：target = <span class="hljs-number">9</span>
+输出：[[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]]</code></pre>
 
-<p><strong>限制：</strong></p>
-<pre><code class="hljs basic"><span class="hljs-symbol">0 </span>&lt;= 数组长度 &lt;= <span class="hljs-number">50000</span></code></pre>
+<p><strong>示例 2：</strong></p>
+<pre><code class="hljs angelscript">输入：target = <span class="hljs-number">15</span>
+输出：[[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>],[<span class="hljs-number">7</span>,<span class="hljs-number">8</span>]]</code></pre>
 
 
 
-<p><strong>解题思路:</strong></p>
-<p>此题要求两个数字的逆序对，首先，暴力法不可能实现，因为此题难度为hard，那么我们自然要寻找其他方法</p>
-<p>由于题目要求：<strong>前面一个数字大于后面数字，则组成逆序对</strong></p>
-<p>那么我们可以想到使用 <strong>归并排序</strong> ，因为归并的过程中首先拆分，然后自然的进行1对1的大小比对，进行排序，我们只需要在过程中加入一个变量count进行累加，便可以return回结果</p>
-<p><strong>那么题目思路确认：归并排序改动</strong></p>
-<p><strong>如何确认count的自增呢？</strong>这是一个非常重要的问题，可以看下面的解释</p>
-<p>下面摘自 <a href="https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/solution/shu-zu-zhong-de-ni-xu-dui-by-leetcode-solution/" target="_blank" rel="noopener">LeetCode官方题解</a></p>
-<p>那么求逆序对和归并排序又有什么关系呢？关键就在于「归并」当中「并」的过程。我们通过一个实例来看看。</p>
-<p>假设我们有两个已排序的序列等待合并，分别是 <code>L = { 8, 12, 16, 22, 100 }``L={8,12,16,22,100}</code> 和 <code>R = { 9, 26, 55, 64, 91 }``R={9,26,55,64,91}</code></p>
-<p>一开始我们用指针 lPtr = 0 指向 L 的首部，rPtr = 0 指向 R 的头部。记已经合并好的部分为 M。</p>
-<pre><code class="hljs angelscript">L = [<span class="hljs-number">8</span>, <span class="hljs-number">12</span>, <span class="hljs-number">16</span>, <span class="hljs-number">22</span>, <span class="hljs-number">100</span>]   R = [<span class="hljs-number">9</span>, <span class="hljs-number">26</span>, <span class="hljs-number">55</span>, <span class="hljs-number">64</span>, <span class="hljs-number">91</span>]  M = []
-     |                          |
-   lPtr                       rPtr</code></pre>
-
-<p>我们发现 <code>lPtr</code> 指向的元素小于 <code>rPtr</code> 指向的元素，于是把 <code>lPtr</code> 指向的元素放入答案，并把 <code>lPtr</code> 后移一位。</p>
-<pre><code class="hljs angelscript">L = [<span class="hljs-number">8</span>, <span class="hljs-number">12</span>, <span class="hljs-number">16</span>, <span class="hljs-number">22</span>, <span class="hljs-number">100</span>]   R = [<span class="hljs-number">9</span>, <span class="hljs-number">26</span>, <span class="hljs-number">55</span>, <span class="hljs-number">64</span>, <span class="hljs-number">91</span>]  M = [<span class="hljs-number">8</span>]
-        |                       |
-      lPtr                     rPtr</code></pre>
-
-<p>这个时候我们把左边的 <strong>8</strong> 加入了答案，我们发现右边没有数比 <strong>8</strong> 小，所以 <strong>8</strong> 对逆序对总数的「贡献」为 <strong>0</strong>。</p>
-<p>接着我们继续合并，把 <strong>9</strong> 加入了答案，此时 <code>lPtr</code> 指向 <strong>12</strong>，<code>rPtr</code> 指向 <strong>26</strong>。</p>
-<pre><code class="hljs angelscript">L = [<span class="hljs-number">8</span>, <span class="hljs-number">12</span>, <span class="hljs-number">16</span>, <span class="hljs-number">22</span>, <span class="hljs-number">100</span>]   R = [<span class="hljs-number">9</span>, <span class="hljs-number">26</span>, <span class="hljs-number">55</span>, <span class="hljs-number">64</span>, <span class="hljs-number">91</span>]  M = [<span class="hljs-number">8</span>, <span class="hljs-number">9</span>]
-        |                          |
-       lPtr                       rPtr</code></pre>
-
-<p>此时 <code>lPtr</code> 比 <code>rPtr</code> 小，把 lPtr 对应的数加入答案，并考虑它对逆序对总数的贡献为 <code>rPtr</code> 相对<strong>R</strong>首位置的偏移 <strong>1</strong>（即右边只有一个数比 12 小，所以只有它和 12 构成逆序对），以此类推。</p>
-<p>我们发现用这种「算贡献」的思想在合并的过程中计算逆序对的数量的时候，只在 lPtr 右移的时候计算，是基于这样的事实：当前 <code>lPtr</code> 指向的数字比 <code>rPtr</code> 小，但是比 RR 中 <code>[0 ... rPtr - 1]</code> 的其他数字大，<code>[0 ... rPtr - 1]</code> 的其他数字本应当排在 lPtr 对应数字的左边，但是它排在了右边，所以这里就贡献了 <code>rPtr</code> 个逆序对。</p>
-<p><strong>实际上，如果令 j = mid + 1, j在归并排序过程中发生变化，如果是nums[i] &lt; nums[j] ，那么增加的逆序数对就是 <code>j - (mid + 1)</code></strong></p>
-<p><strong>AC代码：</strong></p>
+<p><strong>解题思路：滑动窗口</strong></p>
+<ul>
+<li>也没什么好说的，简单来说就是双指针首先同时指向一个位置，如果窗口内的和小于目标值，那么就扩大，右边增加，同时增加窗口和，如果小于，就缩小，左边减少，同时减少窗口和。</li>
+<li>直接上代码</li>
+</ul>
 <pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
 <span class="hljs-keyword">public</span>:
-    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">reversePairs</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>&#123;
-        <span class="hljs-keyword">int</span> n = nums.<span class="hljs-built_in">size</span>();
-        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">tmp</span><span class="hljs-params">(n)</span></span>;
-        <span class="hljs-keyword">return</span> mergeSort(nums,tmp,<span class="hljs-number">0</span>,n<span class="hljs-number">-1</span>);
-    &#125;
-    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">mergeSort</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums,<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; tmp,<span class="hljs-keyword">int</span> l,<span class="hljs-keyword">int</span> r)</span></span>&#123;
-        <span class="hljs-keyword">if</span>(l &gt;= r)
-        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-        <span class="hljs-keyword">int</span> mid = (l+r)/<span class="hljs-number">2</span>;
-        <span class="hljs-keyword">int</span> count = mergeSort(nums,tmp,l,mid) + mergeSort(nums,tmp,mid+<span class="hljs-number">1</span>,r);
-        <span class="hljs-keyword">int</span> i = l,j = mid+<span class="hljs-number">1</span>,pos = l;
-        <span class="hljs-keyword">while</span>(i &lt;= mid&amp;&amp;j &lt;= r)
+    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; <span class="hljs-title">findContinuousSequence</span><span class="hljs-params">(<span class="hljs-keyword">int</span> target)</span> </span>&#123;
+        <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt; vec;
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>,j = <span class="hljs-number">1</span>,sum = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span>(i &lt;= target/<span class="hljs-number">2</span>)
         &#123;
-            <span class="hljs-keyword">if</span>(nums[i]&lt;=nums[j])
+            <span class="hljs-keyword">if</span>(sum &lt; target)
             &#123;
-                tmp[pos] = nums[i];
-                i++;
-                count += (j - (mid+<span class="hljs-number">1</span>));
-            &#125;<span class="hljs-keyword">else</span>&#123;
-                tmp[pos] = nums[j];
+                sum += j;
                 j++;
             &#125;
-            pos++;
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(sum &gt; target)
+            &#123;
+                sum -= i;
+                i++;
+            &#125;
+            <span class="hljs-keyword">else</span>
+            &#123;
+                <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; ans;
+                <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> k = i;k &lt; j;k++)
+                &#123;
+                    ans.push_back(k);
+                &#125;
+                vec.push_back(ans);
+                sum -= i;
+                i++;
+            &#125;
         &#125;
-        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> k = i;k &lt;= mid;k++)
-        &#123;
-            tmp[pos++] = nums[k];
-            count += (j - (mid+<span class="hljs-number">1</span>));
-        &#125;
-        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> k = j;k &lt;= r;k++)
-        &#123;
-            tmp[pos++] = nums[k];
-        &#125;
-        copy(tmp.<span class="hljs-built_in">begin</span>()+l,tmp.<span class="hljs-built_in">begin</span>()+r+<span class="hljs-number">1</span>,nums.<span class="hljs-built_in">begin</span>()+l);
-        <span class="hljs-keyword">return</span> count;
+        <span class="hljs-keyword">return</span> vec;
     &#125;
 &#125;;</code></pre>
 
@@ -304,7 +275,7 @@
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/%E6%8E%92%E5%BA%8F/">排序</a>
+                      <a class="hover-with-bg" href="/tags/%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3/">滑动窗口</a>
                     
                   </div>
                 
@@ -317,18 +288,12 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/10/02/%E5%92%8C%E4%B8%BAs%E7%9A%84%E8%BF%9E%E7%BB%AD%E6%AD%A3%E6%95%B0%E5%BA%8F%E5%88%97/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">和为s的连续正数序列</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/09/26/%E6%9C%80%E9%95%BF%E4%B8%8D%E5%90%AB%E9%87%8D%E5%A4%8D%E5%AD%97%E7%AC%A6%E7%9A%84%E5%AD%90%E5%AD%97%E7%AC%A6%E4%B8%B2/">
-                        <span class="hidden-mobile">最长不含重复字符的子字符串</span>
+                      <a href="/2020/09/28/%E6%95%B0%E7%BB%84%E4%B8%AD%E7%9A%84%E9%80%86%E5%BA%8F%E5%AF%B9/">
+                        <span class="hidden-mobile">数组中的逆序对</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -467,7 +432,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "数组中的逆序对&nbsp;",
+        "和为s的连续正数序列&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
