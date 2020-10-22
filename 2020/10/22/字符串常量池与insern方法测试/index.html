@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
-  <title>构建乘积数组 - Hexo</title>
+  <title>字符串常量池与insern方法测试 - Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -152,8 +152,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-10-19 19:42">
-      October 19, 2020 pm
+    <time datetime="2020-10-22 21:47">
+      October 22, 2020 pm
     </time>
   </div>
 
@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      213 字
+      685 字
     </span>
   
 
@@ -173,7 +173,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      3
+      8
        分钟
     </span>
   
@@ -208,46 +208,66 @@
           <div class="post-content mx-auto" id="post">
             
             <article class="markdown-body">
-              <h1 id="构建乘积数组"><a href="#构建乘积数组" class="headerlink" title="构建乘积数组"></a><a href="https://leetcode-cn.com/problems/gou-jian-cheng-ji-shu-zu-lcof/" target="_blank" rel="noopener">构建乘积数组</a></h1><p>给定一个数组 <code>A[0,1,…,n-1]</code>，请构建一个数组 <code>B[0,1,…,n-1]</code>，其中 <code>B</code> 中的元素 <code>B[i]=A[0]×A[1]×…×A[i-1]×A[i+1]×…×A[n-1]</code>。不能使用除法。</p>
-<p><strong>示例:</strong></p>
-<pre><code class="hljs angelscript">输入: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>]
-输出: [<span class="hljs-number">120</span>,<span class="hljs-number">60</span>,<span class="hljs-number">40</span>,<span class="hljs-number">30</span>,<span class="hljs-number">24</span>]</code></pre>
+              <h2 id="深入理解Java虚拟机案例代码P63代码"><a href="#深入理解Java虚拟机案例代码P63代码" class="headerlink" title="深入理解Java虚拟机案例代码P63代码"></a><strong>深入理解Java虚拟机案例代码P63代码</strong></h2><p><strong>首先给出代码</strong></p>
+<pre><code class="hljs java"><span class="hljs-keyword">package</span> com.lsh.java.stackoverflow;
+
+<span class="hljs-keyword">import</span> java.util.HashSet;
+<span class="hljs-keyword">import</span> java.util.Set;
+
+<span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * 运行时常量池导致的内存溢出异常</span>
+<span class="hljs-comment"> * 由于在JDK7以后，字符串常量池从方法区移动到了Java堆区，</span>
+<span class="hljs-comment"> * 因此我们需要显示Java堆区的最大容量便可以很轻易的让程序出现OOM</span>
+<span class="hljs-comment"> *</span>
+<span class="hljs-comment"> * -Xmx6M</span>
+<span class="hljs-comment"> * OutOfMemoryError:GC overhead limit exceeded</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RuntimeConstantPoolOOM</span> </span>&#123;
+<span class="hljs-comment">//    public static void main(String[] args) &#123;</span>
+<span class="hljs-comment">//        Set&lt;String&gt; set = new HashSet&lt;String&gt;();</span>
+<span class="hljs-comment">//        short i = 0;</span>
+<span class="hljs-comment">//        while(true)&#123;</span>
+<span class="hljs-comment">//            set.add(String.valueOf(i++).intern());</span>
+<span class="hljs-comment">//        &#125;</span>
+<span class="hljs-comment">//    &#125;</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
+    String str1 = <span class="hljs-keyword">new</span> StringBuilder(<span class="hljs-string">"计算机"</span>).append(<span class="hljs-string">"软件"</span>).toString();
+    System.out.println(str1.intern() == str1);
 
 
+    String str3 = <span class="hljs-string">"java"</span>;
+    <span class="hljs-comment">//创建str3 == java，那么字符串常量池中已经有java，那么str2创建的java字符串在Java堆内存中</span>
+    <span class="hljs-comment">//自然，判断str2 == str3的话，地址不同，显然为false</span>
+    String str2 = <span class="hljs-keyword">new</span> StringBuilder(<span class="hljs-string">"ja"</span>).append(<span class="hljs-string">"va"</span>).toString();
+    <span class="hljs-comment">//System.out.println(str3==str2);</span>
+    <span class="hljs-comment">//由于java字符串已经在字符串常量池中有引用，不符合intern方法的“首次遇到”原则，因此判断也是false</span>
+    <span class="hljs-comment">//如果注释掉String str3 = "java";  那么判断就会返回true，因为字符串常量池中并没有java，所以str2.intern方法会返回一个引用</span>
+    <span class="hljs-comment">// 这个引用与str2相同，因此返回true</span>
+    System.out.println(str2.intern() == str2);
+&#125;
+&#125;</code></pre>
 
-<p><strong>提示：</strong></p>
+<blockquote>
+<p>方法的解释在代码注释中已经写的很清晰了，在这里再做以下总结</p>
+</blockquote>
 <ul>
-<li>所有元素乘积之和不会溢出 32 位整数</li>
-<li><code>a.length &lt;= 100000</code></li>
+<li>首先，本次环境是JDK8，书上给出案例是7</li>
+<li>书上给出代码与本地实现有差别，具体差别表现在</li>
 </ul>
-<h2 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h2><p>由于题目规定，不能使用除法，那么我们只能使用乘法生成数组B，列出表格（对称遍历）</p>
-<img src="/2020/10/19/%E6%9E%84%E5%BB%BA%E4%B9%98%E7%A7%AF%E6%95%B0%E7%BB%84/hexo\source\_posts\构建乘积数组\6056c7a5009cb7a4674aab28505e598c502a7f7c60c45b9f19a8a64f31304745-Picture1.png" srcset="/img/loading.gif" alt="6056c7a5009cb7a4674aab28505e598c502a7f7c60c45b9f19a8a64f31304745-Picture1" style="zoom:67%;">
+<pre><code class="hljs java">String str2 = <span class="hljs-keyword">new</span> StringBuilder(<span class="hljs-string">"ja"</span>).append(<span class="hljs-string">"va"</span>).toString();
+System.out.println(str2.intern() == str2);</code></pre>
 
-
-
-
-
-<h2 id="AC代码"><a href="#AC代码" class="headerlink" title="AC代码"></a>AC代码</h2><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
-<span class="hljs-keyword">public</span>:
-    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">constructArr</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; a)</span> </span>&#123;
-        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">b</span><span class="hljs-params">(a.<span class="hljs-built_in">size</span>())</span></span>;
-        <span class="hljs-keyword">if</span>(a.<span class="hljs-built_in">size</span>()==<span class="hljs-number">0</span>)
-        <span class="hljs-keyword">return</span> b;
-        b[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;
-        <span class="hljs-keyword">int</span> tmp = <span class="hljs-number">1</span>;
-        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">1</span>;i &lt; a.<span class="hljs-built_in">size</span>();i++)
-        &#123;
-            b[i] = b[i<span class="hljs-number">-1</span>] * a[i<span class="hljs-number">-1</span>];
-        &#125;
-        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = a.<span class="hljs-built_in">size</span>()<span class="hljs-number">-2</span>;i &gt;= <span class="hljs-number">0</span>;i--)
-        &#123;
-            tmp *= a[i+<span class="hljs-number">1</span>];
-            b[i] *= tmp;
-        &#125;
-        <span class="hljs-keyword">return</span> b;
-    &#125;
-&#125;;</code></pre>
-
+<ul>
+<li>书上给出的答案为 false ，原因如下<ul>
+<li>因为”Java”这个字符串在执行<code>String-Builder-toString()</code>的时候就已经出现过了，那么字符串常量池就有他的引用</li>
+<li>而对于<code>intern</code>方法，如果在常量池中没有字符串的引用，那么就生成一个在常量池中的引用，相反，则不生成，生成的引用和堆中的对象地址相同</li>
+<li>在这里已经有<code>java</code>的引用了，不符合intern方法要求首次遇到的原则，那么判断自然会返回<strong>false</strong></li>
+</ul>
+</li>
+<li>注意，书上的环境为JDK7，<code>java</code>在加载<code>sun.misc.Version</code>这个类的时候进入常量池</li>
+<li>现在，在JDK8的环境下，以上代码运行结果为<strong>true</strong>，原因是在JDK8中并没有把Java加载进入字符串常量池</li>
+<li>那么我们必须要在程序的开头加上一句<code>String str3 = &quot;java&quot;;</code> 这样我们就定义了一个字符串 <code>java</code>进入常量池，这样intern就不会返回和堆中对象地址相同的引用，自然也会返回false</li>
+</ul>
 
             </article>
             <hr>
@@ -257,10 +277,17 @@
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/%E5%89%91%E6%8C%87offer/">剑指offer</a>
+                      <a class="hover-with-bg" href="/categories/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3java%E8%99%9A%E6%8B%9F%E6%9C%BA/">深入理解java虚拟机</a>
                     
                   </div>
                 
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F%E6%B1%A0-Java%E6%96%B9%E6%B3%95%E5%A0%86/">字符串常量池&Java方法堆</a>
+                    
+                  </div>
                 
               </div>
               
@@ -271,18 +298,12 @@
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/10/22/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F%E6%B1%A0%E4%B8%8Einsern%E6%96%B9%E6%B3%95%E6%B5%8B%E8%AF%95/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">字符串常量池与insern方法测试</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/10/19/%E8%82%A1%E7%A5%A8%E7%9A%84%E6%9C%80%E5%A4%A7%E5%88%A9%E6%B6%A6/">
-                        <span class="hidden-mobile">股票的最大利润</span>
+                      <a href="/2020/10/19/%E6%9E%84%E5%BB%BA%E4%B9%98%E7%A7%AF%E6%95%B0%E7%BB%84/">
+                        <span class="hidden-mobile">构建乘积数组</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -421,7 +442,7 @@
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "构建乘积数组&nbsp;",
+        "字符串常量池与insern方法测试&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
