@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
-  <title>字符串常量池与insern方法测试 - Hexo</title>
+  <title>最大二叉树 - Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -152,8 +152,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-10-22 21:47">
-      October 22, 2020 pm
+    <time datetime="2020-11-19 23:01">
+      November 19, 2020 pm
     </time>
   </div>
 
@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      685 字
+      559 字
     </span>
   
 
@@ -173,7 +173,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      8
+      7
        分钟
     </span>
   
@@ -208,66 +208,71 @@
           <div class="post-content mx-auto" id="post">
             
             <article class="markdown-body">
-              <h2 id="深入理解Java虚拟机案例代码P63代码"><a href="#深入理解Java虚拟机案例代码P63代码" class="headerlink" title="深入理解Java虚拟机案例代码P63代码"></a><strong>深入理解Java虚拟机案例代码P63代码</strong></h2><p><strong>首先给出代码</strong></p>
-<pre><code class="hljs java"><span class="hljs-keyword">package</span> com.lsh.java.stackoverflow;
+              <h2 id="654-最大二叉树"><a href="#654-最大二叉树" class="headerlink" title="654. 最大二叉树"></a><a href="https://leetcode-cn.com/problems/maximum-binary-tree/" target="_blank" rel="noopener">654. 最大二叉树</a></h2><p>难度中等215收藏分享切换为英文接收动态反馈</p>
+<p>给定一个不含重复元素的整数数组。一个以此数组构建的最大二叉树定义如下：</p>
+<ol>
+<li>二叉树的根是数组中的最大元素。</li>
+<li>左子树是通过数组中最大值左边部分构造出的最大二叉树。</li>
+<li>右子树是通过数组中最大值右边部分构造出的最大二叉树。</li>
+</ol>
+<p>通过给定的数组构建最大二叉树，并且输出这个树的根节点。</p>
+<pre><code class="hljs angelscript">输入：[<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">6</span>,<span class="hljs-number">0</span>,<span class="hljs-number">5</span>]
+输出：返回下面这棵树的根节点：
+  	  <span class="hljs-number">6</span>
+    /   \
+   <span class="hljs-number">3</span>     <span class="hljs-number">5</span>
+    \    / 
+     <span class="hljs-number">2</span>  <span class="hljs-number">0</span>   
+       \
+        <span class="hljs-number">1</span></code></pre>
 
-<span class="hljs-keyword">import</span> java.util.HashSet;
-<span class="hljs-keyword">import</span> java.util.Set;
-
-<span class="hljs-comment">/**</span>
-<span class="hljs-comment"> * 运行时常量池导致的内存溢出异常</span>
-<span class="hljs-comment"> * 由于在JDK7以后，字符串常量池从方法区移动到了Java堆区，</span>
-<span class="hljs-comment"> * 因此我们需要显示Java堆区的最大容量便可以很轻易的让程序出现OOM</span>
-<span class="hljs-comment"> *</span>
-<span class="hljs-comment"> * -Xmx6M</span>
-<span class="hljs-comment"> * OutOfMemoryError:GC overhead limit exceeded</span>
+<h3 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h3><h3 id="递归："><a href="#递归：" class="headerlink" title="递归："></a>递归：</h3><p>构造函数  <code>construct(int[] nums,int l,int r)</code> 表示构造数组nums， l  -&gt; r 的最大二叉树</p>
+<h4 id="代码："><a href="#代码：" class="headerlink" title="代码："></a>代码：</h4><pre><code class="hljs java"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Definition for a binary tree node.</span>
+<span class="hljs-comment"> * public class TreeNode &#123;</span>
+<span class="hljs-comment"> *     int val;</span>
+<span class="hljs-comment"> *     TreeNode left;</span>
+<span class="hljs-comment"> *     TreeNode right;</span>
+<span class="hljs-comment"> *     TreeNode(int x) &#123; val = x; &#125;</span>
+<span class="hljs-comment"> * &#125;</span>
 <span class="hljs-comment"> */</span>
-<span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RuntimeConstantPoolOOM</span> </span>&#123;
-<span class="hljs-comment">//    public static void main(String[] args) &#123;</span>
-<span class="hljs-comment">//        Set&lt;String&gt; set = new HashSet&lt;String&gt;();</span>
-<span class="hljs-comment">//        short i = 0;</span>
-<span class="hljs-comment">//        while(true)&#123;</span>
-<span class="hljs-comment">//            set.add(String.valueOf(i++).intern());</span>
-<span class="hljs-comment">//        &#125;</span>
-<span class="hljs-comment">//    &#125;</span>
-<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;
-    String str1 = <span class="hljs-keyword">new</span> StringBuilder(<span class="hljs-string">"计算机"</span>).append(<span class="hljs-string">"软件"</span>).toString();
-    System.out.println(str1.intern() == str1);
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> </span>&#123;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> TreeNode <span class="hljs-title">constructMaximumBinaryTree</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums)</span> </span>&#123;
+        <span class="hljs-keyword">return</span> construct(nums,<span class="hljs-number">0</span>,nums.length);
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> TreeNode <span class="hljs-title">construct</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums,<span class="hljs-keyword">int</span> l,<span class="hljs-keyword">int</span> r)</span></span>&#123;
+        <span class="hljs-keyword">if</span>(r == l) 
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
 
-
-    String str3 = <span class="hljs-string">"java"</span>;
-    <span class="hljs-comment">//创建str3 == java，那么字符串常量池中已经有java，那么str2创建的java字符串在Java堆内存中</span>
-    <span class="hljs-comment">//自然，判断str2 == str3的话，地址不同，显然为false</span>
-    String str2 = <span class="hljs-keyword">new</span> StringBuilder(<span class="hljs-string">"ja"</span>).append(<span class="hljs-string">"va"</span>).toString();
-    <span class="hljs-comment">//System.out.println(str3==str2);</span>
-    <span class="hljs-comment">//由于java字符串已经在字符串常量池中有引用，不符合intern方法的“首次遇到”原则，因此判断也是false</span>
-    <span class="hljs-comment">//如果注释掉String str3 = "java";  那么判断就会返回true，因为字符串常量池中并没有java，所以str2.intern方法会返回一个引用</span>
-    <span class="hljs-comment">// 这个引用与str2相同，因此返回true</span>
-    System.out.println(str2.intern() == str2);
-&#125;
+        <span class="hljs-keyword">int</span> max_i = max(nums,l,r);
+        TreeNode root = <span class="hljs-keyword">new</span> TreeNode(nums[max_i]);
+        root.left = construct(nums,l,max_i);
+        root.right = construct(nums,max_i+<span class="hljs-number">1</span>,r);
+        <span class="hljs-keyword">return</span> root;
+    &#125;
+    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">int</span> <span class="hljs-title">max</span><span class="hljs-params">(<span class="hljs-keyword">int</span>[] nums,<span class="hljs-keyword">int</span> l,<span class="hljs-keyword">int</span> r)</span></span>&#123;
+        <span class="hljs-keyword">int</span> max_i = l;
+        <span class="hljs-comment">//System.out.println("ser"+max_i);</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = l;i &lt; r;i++)&#123;
+            <span class="hljs-keyword">if</span>(nums[max_i] &lt; nums[i])
+             max_i = i;
+        &#125;
+        <span class="hljs-comment">//System.out.println(max_i);</span>
+        <span class="hljs-keyword">return</span> max_i;
+    &#125;
 &#125;</code></pre>
 
-<blockquote>
-<p>方法的解释在代码注释中已经写的很清晰了，在这里再做以下总结</p>
-</blockquote>
-<ul>
-<li>首先，本次环境是JDK8，书上给出案例是7</li>
-<li>书上给出代码与本地实现有差别，具体差别表现在</li>
-</ul>
-<pre><code class="hljs java">String str2 = <span class="hljs-keyword">new</span> StringBuilder(<span class="hljs-string">"ja"</span>).append(<span class="hljs-string">"va"</span>).toString();
-System.out.println(str2.intern() == str2);</code></pre>
 
-<ul>
-<li>书上给出的答案为 false ，原因如下<ul>
-<li>因为”Java”这个字符串在执行<code>String-Builder-toString()</code>的时候就已经出现过了，那么字符串常量池就有他的引用</li>
-<li>而对于<code>intern</code>方法，如果在常量池中没有字符串的引用，那么就生成一个在常量池中的引用，相反，则不生成，生成的引用和堆中的对象地址相同</li>
-<li>在这里已经有<code>java</code>的引用了，不符合intern方法要求首次遇到的原则，那么判断自然会返回<strong>false</strong></li>
-</ul>
-</li>
-<li>注意，书上的环境为JDK7，<code>java</code>在加载<code>sun.misc.Version</code>这个类的时候进入常量池</li>
-<li>现在，在JDK8的环境下，以上代码运行结果为<strong>true</strong>，原因是在JDK8中并没有把Java加载进入字符串常量池</li>
-<li>那么我们必须要在程序的开头加上一句<code>String str3 = &quot;java&quot;;</code> 这样我们就定义了一个字符串 <code>java</code>进入常量池，这样intern就不会返回和堆中对象地址相同的引用，自然也会返回false</li>
-</ul>
+
+
+
+<h4 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h4><p>​    有关于二叉树的题目一般要想到递归，对于此题，题目要求构造二叉树，并且是最大二叉树</p>
+<p>那么，我们要想到构造二叉树显然是一个递归的过程，递归构造二叉树分为两个过程—递归构造左子树，递归构造右子树</p>
+<p>我们就想到函数 <code>construct</code> 带有三个参数，分别是 <code>数组nums  左边界l 右边界r</code></p>
+<p>在函数内，自然通过改变 <code>l 和 r</code>来在函数体内进行递归  </p>
+<p>题目要求构造最大二叉树，因此我们需要找到数组中最大的数，以此为分界点，左边为左子树，右边为右子树</p>
+<pre><code>root.left = construct(nums,l,max_i);
+root.right = construct(nums,max_i+1,r);</code></pre><p>由此得到左子树，右子树，这样递归就完成了，返回根节点root即可</p>
 
             </article>
             <hr>
@@ -277,7 +282,7 @@ System.out.println(str2.intern() == str2);</code></pre>
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3java%E8%99%9A%E6%8B%9F%E6%9C%BA/">深入理解java虚拟机</a>
+                      <a class="hover-with-bg" href="/categories/LeetCode/">LeetCode</a>
                     
                   </div>
                 
@@ -285,7 +290,7 @@ System.out.println(str2.intern() == str2);</code></pre>
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F%E6%B1%A0-Java%E6%96%B9%E6%B3%95%E5%A0%86/">字符串常量池&Java方法堆</a>
+                      <a class="hover-with-bg" href="/tags/Tree/">Tree</a>
                     
                   </div>
                 
@@ -298,18 +303,12 @@ System.out.println(str2.intern() == str2);</code></pre>
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/11/19/%E6%9C%80%E5%A4%A7%E4%BA%8C%E5%8F%89%E6%A0%91/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">最大二叉树</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/10/19/%E6%9E%84%E5%BB%BA%E4%B9%98%E7%A7%AF%E6%95%B0%E7%BB%84/">
-                        <span class="hidden-mobile">构建乘积数组</span>
+                      <a href="/2020/10/22/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F%E6%B1%A0%E4%B8%8Einsern%E6%96%B9%E6%B3%95%E6%B5%8B%E8%AF%95/">
+                        <span class="hidden-mobile">字符串常量池与insern方法测试</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -448,7 +447,7 @@ System.out.println(str2.intern() == str2);</code></pre>
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "字符串常量池与insern方法测试&nbsp;",
+        "最大二叉树&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
