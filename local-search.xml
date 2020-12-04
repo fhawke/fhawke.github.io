@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>双指针法</title>
+    <link href="/2020/12/04/%E5%8F%8C%E6%8C%87%E9%92%88%E6%B3%95/"/>
+    <url>/2020/12/04/%E5%8F%8C%E6%8C%87%E9%92%88%E6%B3%95/</url>
+    
+    <content type="html"><![CDATA[<h1 id="双指针法"><a href="#双指针法" class="headerlink" title="双指针法"></a>双指针法</h1><p>首先给出例题:</p><h2 id="167-两数之和-II-输入有序数组"><a href="#167-两数之和-II-输入有序数组" class="headerlink" title="167. 两数之和 II - 输入有序数组"></a><a href="https://leetcode-cn.com/problems/two-sum-ii-input-array-is-sorted/" target="_blank" rel="noopener">167. 两数之和 II - 输入有序数组</a></h2><p>给定一个已按照<strong><em>升序排列</em></strong> 的有序数组，找到两个数使得它们相加之和等于目标数。</p><p>函数应该返回这两个下标值 index1 和 index2，其中 index1 必须小于 index2。</p><pre><code class="hljs angelscript">输入: numbers = [<span class="hljs-number">2</span>, <span class="hljs-number">7</span>, <span class="hljs-number">11</span>, <span class="hljs-number">15</span>], target = <span class="hljs-number">9</span>输出: [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]解释: <span class="hljs-number">2</span> 与 <span class="hljs-number">7</span> 之和等于目标数 <span class="hljs-number">9</span> 。因此 index1 = <span class="hljs-number">1</span>, index2 = <span class="hljs-number">2</span> 。</code></pre><h3 id="思路一："><a href="#思路一：" class="headerlink" title="思路一："></a>思路一：</h3><p>暴力循环，O(n2)时间复杂度，因为2层循环，肯定会超时</p><h3 id="思路二："><a href="#思路二：" class="headerlink" title="思路二："></a>思路二：</h3><p>上面的思路显然不行，那么我们换一种思路，我们使用双指针，在遍历的时候一次性删除多种可能性即可</p><p>定义 <code>A[i][j] 是numbers[i] + numbers[j]</code></p><p>定义 <code>i = 0,j = numbers.size()-1</code></p><p>定义 <code>sum = numbers[i] + numbers[j]</code></p><ul><li><code>sum &lt; target</code>    那么代表 <code>A[0][length]</code> 小于target，由于数组已经排序，那么numbers[i] 是最小的，那么就让numbers[i]变大即可</li><li>即 <code>i++</code> ，那么就排除了A[i]一整行的数据，时间复杂度降低</li><li><code>sum &gt; target</code>    那么代表  <code>A[0][length]</code>大于target，numbers[0] 是最小的，我们需要找和更小的两个数，那么我们需要把length减少</li><li>即 <code>j--</code>  ,  那么就排除了A[j]一整列的数据，时间复杂度降低</li></ul><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span><span class="hljs-keyword">public</span>:    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">twoSum</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; numbers, <span class="hljs-keyword">int</span> target)</span> </span>&#123;        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;        <span class="hljs-keyword">int</span> j = numbers.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>;        <span class="hljs-keyword">while</span>(i &lt; j)        &#123;            <span class="hljs-keyword">int</span> sum = numbers[i] + numbers[j];            <span class="hljs-keyword">if</span>(sum &lt; target)&#123;                i++;            &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(sum &gt; target)&#123;                j--;            &#125;<span class="hljs-keyword">else</span>&#123;                <span class="hljs-keyword">return</span> <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&#123;i+<span class="hljs-number">1</span>,j+<span class="hljs-number">1</span>&#125;;            &#125;        &#125;        <span class="hljs-keyword">return</span> <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&#123;<span class="hljs-number">-1</span>,<span class="hljs-number">-1</span>&#125;;    &#125;&#125;;</code></pre>]]></content>
+    
+    
+    <categories>
+      
+      <category>leetcode</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>双指针</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>贪心算法</title>
     <link href="/2020/12/03/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/"/>
     <url>/2020/12/03/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/</url>
