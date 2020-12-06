@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      628 字
+      1k 字
     </span>
   
 
@@ -173,7 +173,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      7
+      12
        分钟
     </span>
   
@@ -251,6 +251,37 @@
 
 
 
+
+
+<h2 id="142-环形链表-II"><a href="#142-环形链表-II" class="headerlink" title="142. 环形链表 II"></a><a href="https://leetcode-cn.com/problems/linked-list-cycle-ii/" target="_blank" rel="noopener">142. 环形链表 II</a></h2><p>给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 <code>null</code>。</p>
+<p>为了表示给定链表中的环，我们使用整数 <code>pos</code> 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 <code>pos</code> 是 <code>-1</code>，则在该链表中没有环。<strong>注意，<code>pos</code> 仅仅是用于标识环的情况，并不会作为参数传递到函数中。</strong></p>
+<p><strong>说明：</strong>不允许修改给定的链表。</p>
+<pre><code class="hljs angelscript">输入：head = [<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-4</span>], pos = <span class="hljs-number">1</span>
+输出：返回索引为 <span class="hljs-number">1</span> 的链表节点
+解释：链表中有一个环，其尾部连接到第二个节点。</code></pre>
+
+<pre><code class="hljs angelscript">输入：head = [<span class="hljs-number">1</span>], pos = <span class="hljs-number">-1</span>
+输出：返回 <span class="hljs-literal">null</span>
+解释：链表中没有环。</code></pre>
+
+
+
+<h3 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h3><p><strong>这里牵扯到一个很经典的问题，如何判断是否有环？</strong></p>
+<ul>
+<li>快慢指针法<ul>
+<li>指定两个指针，第二个速度是第一个的两倍</li>
+<li>如果这个链表不是环状，那么第一个除了在原点和第二个相遇，接下来不可能相遇</li>
+<li>如果是环状，那么第二个一定会碰到第一个点</li>
+<li>那么反过来，如果两个点相遇，就一定有环</li>
+</ul>
+</li>
+<li>再思考：我们如何判断入环点？<ul>
+<li>回到上句，我们现在已经判断出有环状，即两个指针重叠</li>
+<li>那么我们让快的指针指向远点，然后调整两指针都是一个一个的遍历(速度相等)</li>
+<li>当两个点再次相遇的时候，就一定是入环点</li>
+</ul>
+</li>
+</ul>
 
             </article>
             <hr>
