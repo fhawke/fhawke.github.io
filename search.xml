@@ -2383,6 +2383,240 @@ dp[i][<span class="hljs-number">1</span>] = <span class="hljs-built_in">max</spa
 </ul>
 </li>
 </ul>
+<pre><code class="hljs c++"><span class="hljs-comment">/**</span>
+<span class="hljs-comment"> * Definition for singly-linked list.</span>
+<span class="hljs-comment"> * struct ListNode &#123;</span>
+<span class="hljs-comment"> *     int val;</span>
+<span class="hljs-comment"> *     ListNode *next;</span>
+<span class="hljs-comment"> *     ListNode(int x) : val(x), next(NULL) &#123;&#125;</span>
+<span class="hljs-comment"> * &#125;;</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function">ListNode *<span class="hljs-title">detectCycle</span><span class="hljs-params">(ListNode *head)</span> </span>&#123;
+        ListNode *fast = head;
+        ListNode *slow = head;
+        <span class="hljs-keyword">do</span>&#123;
+            <span class="hljs-keyword">if</span>(!fast || !fast-&gt;next)    <span class="hljs-keyword">return</span> <span class="hljs-literal">NULL</span>;
+            fast = fast-&gt;next-&gt;next;
+            slow = slow-&gt;next;
+        &#125;<span class="hljs-keyword">while</span>(fast != slow);
+        fast = head;
+        <span class="hljs-keyword">while</span>(fast != slow)
+        &#123;
+            slow = slow-&gt;next;
+            fast = fast-&gt;next;
+        &#125;
+        <span class="hljs-keyword">return</span> fast;
+    &#125;
+&#125;;</code></pre>
+
+
+
+<h2 id="76-最小覆盖子串"><a href="#76-最小覆盖子串" class="headerlink" title="76. 最小覆盖子串"></a><a href="https://leetcode-cn.com/problems/minimum-window-substring/" target="_blank" rel="noopener">76. 最小覆盖子串</a></h2><p>给你一个字符串 <code>s</code> 、一个字符串 <code>t</code> 。返回 <code>s</code> 中涵盖 <code>t</code> 所有字符的最小子串。如果 <code>s</code> 中不存在涵盖 <code>t</code> 所有字符的子串，则返回空字符串 <code>&quot;&quot;</code> 。</p>
+<p>即给定两个字符串 S 和 T，求 S 中包含 T 所有字符的最短连续子字符串的长度</p>
+<p><strong>注意：</strong>如果 <code>s</code> 中存在这样的子串，我们保证它是唯一的答案。</p>
+<pre><code class="hljs nix">输入：<span class="hljs-attr">s</span> = <span class="hljs-string">"ADOBECODEBANC"</span>, <span class="hljs-attr">t</span> = <span class="hljs-string">"ABC"</span>
+输出：<span class="hljs-string">"BANC"</span></code></pre>
+
+<pre><code class="hljs smalltalk">输入：s = <span class="hljs-comment">"a"</span>, t = <span class="hljs-comment">"a"</span>
+输出：<span class="hljs-comment">"a"</span></code></pre>
+
+
+
+<h3 id="思路：滑动窗口"><a href="#思路：滑动窗口" class="headerlink" title="思路：滑动窗口"></a>思路：滑动窗口</h3><ul>
+<li>时间复杂度不得超过O(n)</li>
+<li>定义两个指针 l 和 r 从左向右移动，l 的位置一定在 r 的左边</li>
+<li>本题使用两个vector数组来映射字符</li>
+<li>chars 表示每个字符缺少的数量</li>
+<li>flag 表示每个字符是否在T中存在</li>
+</ul>
+<pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-built_in">string</span> <span class="hljs-title">minWindow</span><span class="hljs-params">(<span class="hljs-built_in">string</span> s, <span class="hljs-built_in">string</span> t)</span> </span>&#123;
+        <span class="hljs-comment">//slip window</span>
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">chars</span><span class="hljs-params">(<span class="hljs-number">128</span>,<span class="hljs-number">0</span>)</span></span>;
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">bool</span>&gt; <span class="hljs-title">flag</span><span class="hljs-params">(<span class="hljs-number">128</span>,<span class="hljs-literal">false</span>)</span></span>;
+        <span class="hljs-comment">//统计涵盖的字符和涵盖字符出现的次数</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; t.<span class="hljs-built_in">size</span>();i++)
+        &#123;
+            flag[t[i]] = <span class="hljs-literal">true</span>;
+            ++chars[t[i]];
+        &#125;
+        
+        <span class="hljs-keyword">int</span> cnt = <span class="hljs-number">0</span>,l = <span class="hljs-number">0</span>,min_l = <span class="hljs-number">0</span>,min_size = s.<span class="hljs-built_in">size</span>() + <span class="hljs-number">1</span>;
+        <span class="hljs-comment">//滑动窗口自增</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> r = <span class="hljs-number">0</span>;r &lt; s.<span class="hljs-built_in">size</span>();r++)
+        &#123;
+            <span class="hljs-keyword">if</span>(flag[s[r]])&#123;
+                <span class="hljs-keyword">if</span>(--chars[s[r]] &gt;= <span class="hljs-number">0</span>)&#123;
+                    ++cnt;
+                &#125;
+                <span class="hljs-comment">//寻找最小窗口,此时已经找到了所有字母</span>
+                <span class="hljs-keyword">while</span>(cnt == t.<span class="hljs-built_in">size</span>())
+                &#123;
+                    <span class="hljs-keyword">if</span>(r - l + <span class="hljs-number">1</span> &lt; min_size)&#123;
+                        min_l = l;
+                        min_size = r - l + <span class="hljs-number">1</span>;
+                    &#125;
+                    <span class="hljs-comment">//左边l边界往右走,然后判断s[l]是否符合</span>
+                    <span class="hljs-keyword">if</span>(flag[s[l]] &amp;&amp; ++chars[s[l]] &gt; <span class="hljs-number">0</span>)&#123;
+                        --cnt;
+                    &#125;
+                    ++l;
+                &#125;
+            &#125;
+        &#125;
+        <span class="hljs-keyword">return</span> min_size &gt; s.<span class="hljs-built_in">size</span>() ? <span class="hljs-string">""</span> : s.substr(min_l,min_size);
+    &#125;
+&#125;;</code></pre>
+
+
+
+<h2 id="633-平方数之和"><a href="#633-平方数之和" class="headerlink" title="633. 平方数之和"></a><a href="https://leetcode-cn.com/problems/sum-of-square-numbers/" target="_blank" rel="noopener">633. 平方数之和</a></h2><p>给定一个非负整数 <code>c</code> ，你要判断是否存在两个整数 <code>a</code> 和 <code>b</code>，使得 <code>a2 + b2 = c</code> 。</p>
+<pre><code class="hljs angelscript">输入：c = <span class="hljs-number">5</span>
+输出：<span class="hljs-literal">true</span>
+解释：<span class="hljs-number">1</span> * <span class="hljs-number">1</span> + <span class="hljs-number">2</span> * <span class="hljs-number">2</span> = <span class="hljs-number">5</span></code></pre>
+
+<pre><code class="hljs angelscript">输入：c = <span class="hljs-number">3</span>
+输出：<span class="hljs-literal">false</span></code></pre>
+
+
+
+<h3 id="解题思路：暴力-剪枝"><a href="#解题思路：暴力-剪枝" class="headerlink" title="解题思路：暴力 + 剪枝"></a>解题思路：暴力 + 剪枝</h3><ul>
+<li>左指针初始化为0，右指针初始化为 sqrt(c)</li>
+<li>让左指针依次遍历即可，这样时间复杂度为O(sqrt(c))，空间复杂度O(1)</li>
+</ul>
+<pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">judgeSquareSum</span><span class="hljs-params">(<span class="hljs-keyword">int</span> c)</span> </span>&#123;
+        <span class="hljs-keyword">if</span>(c &lt; <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">int</span> left = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">int</span> right = <span class="hljs-built_in">sqrt</span>(c);
+        <span class="hljs-keyword">while</span>(left &lt;= right)
+        &#123;
+            <span class="hljs-keyword">if</span>(left*left == c - right*right)&#123;
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+            &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(c - right*right &gt; left*left)&#123;
+                left++;
+            &#125;<span class="hljs-keyword">else</span>&#123;
+                right--;
+            &#125;
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    &#125;
+&#125;;</code></pre>
+
+
+
+<h2 id="680-验证回文字符串-Ⅱ"><a href="#680-验证回文字符串-Ⅱ" class="headerlink" title="680. 验证回文字符串 Ⅱ"></a><a href="https://leetcode-cn.com/problems/valid-palindrome-ii/" target="_blank" rel="noopener">680. 验证回文字符串 Ⅱ</a></h2><p>给定一个非空字符串 <code>s</code>，<strong>最多</strong>删除一个字符。判断是否能成为回文字符串。</p>
+<pre><code class="hljs ada">输入: <span class="hljs-string">"aba"</span>
+输出: <span class="hljs-literal">True</span></code></pre>
+
+<pre><code class="hljs makefile"><span class="hljs-section">输入: "abca"</span>
+<span class="hljs-section">输出: True</span>
+<span class="hljs-section">解释: 你可以删除c字符。</span></code></pre>
+
+
+
+<h3 id="解题思路：双指针法"><a href="#解题思路：双指针法" class="headerlink" title="解题思路：双指针法"></a>解题思路：双指针法</h3><ul>
+<li>定义一个验证回文串的函数</li>
+<li>例如 <code>abca</code></li>
+<li>当a = a ，双指针往中间走, 发现 <code>b != c</code></li>
+<li>那么此时有2种选择，左指针往右/右指针往左</li>
+</ul>
+<pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">isPalindrome</span><span class="hljs-params">(<span class="hljs-keyword">const</span> <span class="hljs-built_in">string</span>&amp; s,<span class="hljs-keyword">int</span> low,<span class="hljs-keyword">int</span> high)</span></span>&#123;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = low,j = high;i &lt; j;++i,--j)&#123;
+            <span class="hljs-keyword">if</span>(s[i] != s[j])
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">validPalindrome</span><span class="hljs-params">(<span class="hljs-built_in">string</span> s)</span> </span>&#123;
+        <span class="hljs-keyword">int</span> low = <span class="hljs-number">0</span>,high = s.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span>(low &lt; high)&#123;
+            <span class="hljs-keyword">char</span> c1 = s[low],c2 = s[high];
+            <span class="hljs-keyword">if</span>(c1 == c2)&#123;
+                ++low;
+                --high;
+            &#125;<span class="hljs-keyword">else</span>&#123;
+                <span class="hljs-keyword">return</span> isPalindrome(s,low,high<span class="hljs-number">-1</span>) || isPalindrome(s,low+<span class="hljs-number">1</span>,high);
+            &#125;
+        &#125;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    &#125;
+&#125;;</code></pre>
+
+
+
+
+
+<h2 id="524-通过删除字母匹配到字典里最长单词"><a href="#524-通过删除字母匹配到字典里最长单词" class="headerlink" title="524. 通过删除字母匹配到字典里最长单词"></a><a href="https://leetcode-cn.com/problems/longest-word-in-dictionary-through-deleting/" target="_blank" rel="noopener">524. 通过删除字母匹配到字典里最长单词</a></h2><p>给定一个字符串和一个字符串字典，找到字典里面最长的字符串，该字符串可以通过删除给定字符串的某些字符来得到。如果答案不止一个，返回长度最长且字典顺序最小的字符串。如果答案不存在，则返回空字符串。</p>
+<pre><code class="hljs makefile"><span class="hljs-section">输入:</span>
+s = <span class="hljs-string">"abpcplea"</span>, d = [<span class="hljs-string">"ale"</span>,<span class="hljs-string">"apple"</span>,<span class="hljs-string">"monkey"</span>,<span class="hljs-string">"plea"</span>]
+
+<span class="hljs-section">输出: </span>
+<span class="hljs-string">"apple"</span></code></pre>
+
+<pre><code class="hljs makefile"><span class="hljs-section">输入:</span>
+s = <span class="hljs-string">"abpcplea"</span>, d = [<span class="hljs-string">"a"</span>,<span class="hljs-string">"b"</span>,<span class="hljs-string">"c"</span>]
+
+<span class="hljs-section">输出: </span>
+<span class="hljs-string">"a"</span></code></pre>
+
+
+
+<h3 id="解题思路：双指针法-lambda表达式实现自定义排序"><a href="#解题思路：双指针法-lambda表达式实现自定义排序" class="headerlink" title="解题思路：双指针法  + lambda表达式实现自定义排序"></a>解题思路：双指针法  + lambda表达式实现自定义排序</h3><ul>
+<li>首先定义一个函数<code>isSub(string s,string target)</code> ，验证字符串target是否可以由字符串s通过删减得到</li>
+<li>定义一个vector，把所有符合定义的字符串放入容器中</li>
+<li>然后对容器进行自定义排序，长度优先，长度相等按字符串</li>
+</ul>
+<pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-built_in">string</span> <span class="hljs-title">findLongestWord</span><span class="hljs-params">(<span class="hljs-built_in">string</span> s, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">string</span>&gt;&amp; d)</span> </span>&#123;
+        <span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">string</span>&gt; res;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; d.<span class="hljs-built_in">size</span>();i++)&#123;
+            <span class="hljs-keyword">if</span>(isSub(s,d[i]))&#123;
+                res.push_back(d[i]);
+            &#125;
+        &#125;
+	    <span class="hljs-comment">//依据长度/字典序排序</span>
+        sort(res.<span class="hljs-built_in">begin</span>(),res.<span class="hljs-built_in">end</span>(),[](<span class="hljs-keyword">const</span> <span class="hljs-built_in">string</span>&amp; a,<span class="hljs-keyword">const</span> <span class="hljs-built_in">string</span>&amp; b)&#123;
+                <span class="hljs-keyword">if</span>(a.<span class="hljs-built_in">size</span>() &lt; b.<span class="hljs-built_in">size</span>())&#123;
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+                &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(a.<span class="hljs-built_in">size</span>() &gt; b.<span class="hljs-built_in">size</span>())&#123;
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+                &#125;<span class="hljs-keyword">else</span>&#123;
+                    <span class="hljs-keyword">return</span> a &gt; b;
+                &#125;
+            &#125;);
+        
+        <span class="hljs-keyword">if</span>(!res.empty())
+        <span class="hljs-keyword">return</span> res[res.<span class="hljs-built_in">size</span>()<span class="hljs-number">-1</span>];
+        <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">""</span>;
+    &#125;
+    <span class="hljs-comment">//字符串是否符合要求</span>
+    <span class="hljs-function"><span class="hljs-keyword">bool</span> <span class="hljs-title">isSub</span><span class="hljs-params">(<span class="hljs-built_in">string</span> s,<span class="hljs-built_in">string</span> target)</span></span>&#123;
+        <span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>,j = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span>(i &lt; s.<span class="hljs-built_in">size</span>()&amp;&amp;j &lt; target.<span class="hljs-built_in">size</span>())&#123;
+            <span class="hljs-keyword">if</span>(s[i] == target[j])&#123;
+                j++;
+            &#125;
+            i++;
+        &#125;
+        <span class="hljs-keyword">return</span> j == target.<span class="hljs-built_in">size</span>();
+    &#125;
+&#125;;</code></pre>
+
+
+
+
+
 ]]></content>
       <categories>
         <category>leetcode</category>
