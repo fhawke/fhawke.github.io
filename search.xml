@@ -6514,4 +6514,37 @@ CREATE TABLE &#96;undo_log&#96; (
         <tag>JavaSE</tag>
       </tags>
   </entry>
+  <entry>
+    <title>nginx反向代理</title>
+    <url>/2020/12/14/nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/</url>
+    <content><![CDATA[<h1 id="nginx方向代理隐藏域名"><a href="#nginx方向代理隐藏域名" class="headerlink" title="nginx方向代理隐藏域名"></a>nginx方向代理隐藏域名</h1><p><code>vim /etc/nginx/conf.d/onestar.conf</code>,  创建 <code>onestar.conf</code> 文件，添加如下内容</p>
+<pre><code class="hljs shell">upstream simc&#123;
+        server 81.70.168.126:8080;
+&#125;
+server &#123;
+    listen       80;		//监听端口号，浏览器默认访问80端口
+    server_name  myblog.fhawke.ltd;		//申请的二级域名
+    server_name_in_redirect off;	
+    location / &#123;
+        proxy_pass  http://81.70.168.126:8080;
+        index  index.html index.htm;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-Ip $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+    &#125;
+
+&#125;</code></pre>
+
+
+
+<p>添加 <code>upstream {server 81.70.168.126:8080}</code></p>
+<p>可以隐藏端口号，在访问页面时无需访问端口号便可直接跳转</p>
+]]></content>
+      <categories>
+        <category>nginx</category>
+      </categories>
+      <tags>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
 </search>
