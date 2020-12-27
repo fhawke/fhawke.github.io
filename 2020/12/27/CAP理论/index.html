@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
-  <title>nginx反向代理 - Hexo</title>
+  <title>CAP理论 - Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -152,8 +152,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-12-14 18:18">
-      December 14, 2020 pm
+    <time datetime="2020-12-27 13:20">
+      December 27, 2020 pm
     </time>
   </div>
 
@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      133 字
+      710 字
     </span>
   
 
@@ -173,7 +173,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      7
        分钟
     </span>
   
@@ -208,28 +208,44 @@
           <div class="post-content mx-auto" id="post">
             
             <article class="markdown-body">
-              <h1 id="nginx方向代理隐藏域名"><a href="#nginx方向代理隐藏域名" class="headerlink" title="nginx方向代理隐藏域名"></a>nginx方向代理隐藏域名</h1><p><code>vim /etc/nginx/conf.d/onestar.conf</code>,  创建 <code>onestar.conf</code> 文件，添加如下内容</p>
-<pre><code class="hljs shell">upstream simc&#123;
-        server 81.70.168.126:8080;
-&#125;
-server &#123;
-    listen       80;		//监听端口号，浏览器默认访问80端口
-    server_name  myblog.fhawke.ltd;		//申请的二级域名
-    server_name_in_redirect off;	
-    location / &#123;
-        proxy_pass  http://81.70.168.126:8080;
-        index  index.html index.htm;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-Ip $remote_addr;
-        proxy_set_header X-Forwarded-For $remote_addr;
-    &#125;
-
-&#125;</code></pre>
-
-
-
-<p>添加 <code>upstream {server 81.70.168.126:8080}</code></p>
-<p>可以隐藏端口号，在访问页面时无需访问端口号便可直接跳转</p>
+              <h1 id="CAP"><a href="#CAP" class="headerlink" title="CAP"></a>CAP</h1><h2 id="CAP原理介绍"><a href="#CAP原理介绍" class="headerlink" title="CAP原理介绍"></a>CAP原理介绍</h2><ul>
+<li>C:Consistency <ul>
+<li>一致性，即访问所有节点得到的数据都应该是一致的，这里的一致性是指<strong>强一致性</strong>(数据更新完，访问任何节点看到的数据完全一致)，这里和弱一致性和最终一致性有区别</li>
+</ul>
+</li>
+<li>A:Availability<ul>
+<li>可用性，所有的节点都保持高可用性，也就是说，任务没有发生故障的服务必须在有限的时间内返回合理的结果集</li>
+</ul>
+</li>
+<li>P:Partiton tolerance<ul>
+<li>分区容忍性，这里的分区指网络意义上的分区，如果出现节点之间无法通信的情况，要保证系统可以正常服务</li>
+</ul>
+</li>
+</ul>
+<p><strong>CAP理论</strong>,一个数据分布式系统不可能同时满足C,A,P三个条件，大多数开源的分布式系统都会实现P，也就是分区容忍性，之后在C和A之间做抉择。</p>
+<p>CAP原理实际上是一个对分布式数据存储系统的一个定论，我们对于CAP的讨论的实际场景，更多的是针对那些有数据存储，数据复制场景，也就是所谓的NoSQL数据库</p>
+<h2 id="CAP原理简单实例"><a href="#CAP原理简单实例" class="headerlink" title="CAP原理简单实例"></a>CAP原理简单实例</h2><ul>
+<li><p>现在假设有两个节点,a1,a2</p>
+</li>
+<li><p>有一个数据number = 1,之后向a1提交更新，将数据number 设置为2</p>
+</li>
+<li><p>然后，a1把数据更新推送给a2，让a2也更新number</p>
+</li>
+</ul>
+<h3 id="保证C和P"><a href="#保证C和P" class="headerlink" title="保证C和P"></a>保证C和P</h3><ul>
+<li><p>保证数据一致性，a1将数据复制给a2，那么a1和a2需要进行通信，我们保证了P，也就是分区容忍性，这时a2不一定能及时收到a1的数据复制消息，当有请求向a2访问number数据时，为了保证数据的强一致性，a2只能阻塞，等待数据同步完成后返回，这时，<strong>无法保证高可用(A)</strong></p>
+</li>
+<li><p>所以，保证C和P时，<strong>无法保证A</strong></p>
+<h3 id="保证A和P"><a href="#保证A和P" class="headerlink" title="保证A和P"></a>保证A和P</h3></li>
+<li><p>为了保证高可用，a1和a2都必须在有限时间内返回，由于网络的不可靠，可能a2还没有收到a1发来的数据更新消息，就返回给客户端数据，这时候返回给客户端的可能是旧的数据，和a1不一致，因此违反了C，<strong>无法保证一致性(C)</strong></p>
+</li>
+<li><p>所以，保证A和P时，<strong>无法保证C</strong></p>
+<h3 id="保证A和C"><a href="#保证A和C" class="headerlink" title="保证A和C"></a>保证A和C</h3></li>
+<li><p>如果要保证一致性和高可用，那么网络状况必须良好，a1发送给a2的数据更新，a2必须马上能收到，但在实际情况下，网络通常是不可靠的，可能存在丢包等现象，所以如果要满足即时更新，必须将a1和a2放到一个区内才可以，这样就放弃了P，整个系统也不再是一个分布式系统了</p>
+</li>
+<li><p>所以，保证A和C，<strong>无法保证P</strong></p>
+</li>
+</ul>
 
             </article>
             <hr>
@@ -239,7 +255,7 @@ server &#123;
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/nginx/">nginx</a>
+                      <a class="hover-with-bg" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%A6%E4%B9%A0/">分布式学习</a>
                     
                   </div>
                 
@@ -247,7 +263,7 @@ server &#123;
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/nginx/">nginx</a>
+                      <a class="hover-with-bg" href="/tags/CAP/">CAP</a>
                     
                   </div>
                 
@@ -260,18 +276,12 @@ server &#123;
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/12/27/CAP%E7%90%86%E8%AE%BA/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">CAP理论</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/12/11/Java%E5%9F%BA%E7%A1%80/">
-                        <span class="hidden-mobile"> Java基础</span>
+                      <a href="/2020/12/14/nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/">
+                        <span class="hidden-mobile">nginx反向代理</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -410,7 +420,7 @@ server &#123;
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "nginx反向代理&nbsp;",
+        "CAP理论&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
