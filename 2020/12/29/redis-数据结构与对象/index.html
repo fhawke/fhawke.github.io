@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  <title>redis:数据结构与对象 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fhawke</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-12-29 19:05">
+      December 29, 2020 pm
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      17
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <h1 id="数据结构与对象"><a href="#数据结构与对象" class="headerlink" title="数据结构与对象"></a>数据结构与对象</h1><h2 id="简单动态字符串-SDS"><a href="#简单动态字符串-SDS" class="headerlink" title="简单动态字符串(SDS)"></a>简单动态字符串(SDS)</h2><blockquote>
+<p>Redis并没有使用C语言传统的字符串表示(以空字符串节为的字符数组)，而是自己构建了一种名为简单动态字符串(SDS)</p>
+</blockquote>
+<p>例如客户端执行命令 </p>
+<p><code>redis: SET msg &quot;hello world&quot;</code></p>
+<ul>
+<li>Redis将在数据库中创建一个新的键值对</li>
+<li>键值对的键是一个字符串对象，对象的底层实现是一个保存着字符串<code>&quot;msg&quot;</code>的<strong>SDS</strong></li>
+<li>键值对的值也是一个字符串对象，对象的底层实现是一个保存着字符串<code>&quot;hello world&quot;</code>的<strong>SDS</strong></li>
+</ul>
+<p>SDS除了用来保存数据库中的字符串值以外，还可以用作缓冲区，AOF模块中的AOF缓冲区，以及客户端状态中的输入缓冲区，都是由SDS实现的</p>
+<h3 id="The-Design-of-SDS"><a href="#The-Design-of-SDS" class="headerlink" title="The Design of SDS"></a>The Design of SDS</h3><p>每个<code>sds.h/sdshdr</code>结构表示一个SDS值</p>
+<pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">sdshdr</span>&#123;</span>
+	<span class="hljs-comment">//记录buf数组已使用字节的数量</span>
+	<span class="hljs-comment">//等于SDS所保存字符串长度</span>
+	<span class="hljs-keyword">int</span> len;
+	
+	<span class="hljs-comment">//记录buf数组中未使用字节的数量</span>
+	<span class="hljs-keyword">int</span> <span class="hljs-built_in">free</span>;
+	
+	<span class="hljs-comment">//字节数组，用来保存字符串</span>
+	<span class="hljs-keyword">char</span> buf[];
+&#125;</code></pre>
+
+
+
+<p><strong>与C的字符串一样，SDS为空字符分配额外的1字节空间，以及添加空字符到字符串末尾等操作由SDS函数自动完成，由于SDS末尾也有额外空字符，SDS也可以使用部分<code>string.h</code>函数，例如<code>print(&quot;%s&quot;,s-&gt;buf)</code></strong></p>
+<h3 id="why-SDS"><a href="#why-SDS" class="headerlink" title="why SDS?"></a>why SDS?</h3><h4 id="1-常数复杂度获取字符串长度"><a href="#1-常数复杂度获取字符串长度" class="headerlink" title="1. 常数复杂度获取字符串长度"></a>1. 常数复杂度获取字符串长度</h4><ul>
+<li>C字符串本身不记录自身的长度信息，如果要获取一个C字符串的长度，必须遍历整个字符串，时间复杂度<code>O(n)</code></li>
+<li>而SDS是结构体结构，有元素<code>len</code>记录SDS本身长度，因此获取长度时间复杂度<code>O(1)</code></li>
+<li>设置和更新SDS长度的工作是由SDS的API在执行时自动完成，使用SDS无需任何手动修改长度的工作</li>
+</ul>
+<h4 id="2-杜绝缓冲区溢出"><a href="#2-杜绝缓冲区溢出" class="headerlink" title="2. 杜绝缓冲区溢出"></a>2. 杜绝缓冲区溢出</h4><ul>
+<li>C字符串不记录自身长度会带来另外一个问题：<strong>容易造成缓冲区溢出</strong><ul>
+<li>如果使用<code>&lt;string.h&gt;/strcat</code>函数，将两个字符串进行拼接，如果事先没有声明足够长的数组，会导致出现缓冲区溢出的情况</li>
+</ul>
+</li>
+<li>对于SDS来说，SDS的空间分配策略完全杜绝了发生缓冲区溢出的可能性<ul>
+<li>当SDS API 需要对SDS进行修改时，API会先检查SDS的空间是否满足修改所需的要求，如果不满足，API自动将SDS的空间扩展到执行修改所需的大小</li>
+<li>所以使用SDS不需要手动修改空间大小，也不会出现缓冲区溢出问题</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-减少修改字符串时带来的内存重分配次数"><a href="#3-减少修改字符串时带来的内存重分配次数" class="headerlink" title="3. 减少修改字符串时带来的内存重分配次数"></a>3. 减少修改字符串时带来的内存重分配次数</h4><ul>
+<li>由于C字符串不记录自身长度，对于一个包含了N个字符串的C字符串来说，C字符串底层是一个N+1字符长的数组，因此每次增长或缩短一个字符串，程序需要对保存这个C字符串的数组进行一次<strong>内存重分配操作</strong><ul>
+<li>如果增长字符串，例如<code>append</code>，<strong>执行操作之前</strong>，程序需要先通过内存重分配来扩展底层数组的空间大小，否则会导致缓冲区溢出</li>
+<li>如果缩短字符串，例如<code>trim</code>，<strong>执行操作之后</strong>，程序需要通过内存重分配来释放字符串不再使用的那部分空间，否则会导致内存泄漏</li>
+<li>内存重分配涉及的算法较为复杂，是一个比较耗时的操作</li>
+</ul>
+</li>
+<li>SDS通过未使用空间<code>(free)</code>，解决了字符串长度和底层数组长度的关联，在SDS中，buf数组的长度不一定是字符数量加一，数组里面可以包含未使用的字节，长度用<code>free</code>指定<ul>
+<li>空间预分配<ul>
+<li>当SDS的一个API需要对SDS进行修改，并且需要对SDS进行扩展，程序不仅会为SDS分配修改所必须要的空间，<strong>还会为SDS分配额外的未使用空间</strong><ul>
+<li>如果对SDS进行修改之后，SDS长度小于1MB，那么程序分配和<code>len</code>属性同样大小的未使用空间</li>
+<li>如果对SDS进行修改之后，SDS长度大于等于1MB，那么程序会分配1MB的未使用空间</li>
+</ul>
+</li>
+<li>这样，<strong>SDS将连续增长N此字符串所需的内存重分配次数从必定N次降低为最多N次</strong></li>
+</ul>
+</li>
+<li>惰性空间释放<ul>
+<li>惰性空间释放用于优化SDS的字符串缩短操作</li>
+<li>当SDS的API需要缩短SDS保存的字符串时，程序并不立即使用内存重分配来回收缩短后多出来的字节，而是用<code>free</code>来将这些字节的数量记录起来</li>
+<li>如果在进行缩短后，马上进行拼接，就可以不用进行内存重分配，直接将<code>free</code>的长度分配给需要拼接的字符串即可，提升了效率</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-二进制安全"><a href="#4-二进制安全" class="headerlink" title="4. 二进制安全"></a>4. 二进制安全</h4><blockquote>
+<p>C字符串中的字符必须符合某种编码(ASCII)，因此字符串里面不能包含空字符，自然无法保存音频，视频，图片等二进制数据</p>
+</blockquote>
+<p>对于Redis，允许中间出现空字符，所以程序不会对SDS中的数据做任何的限制，过滤等情况</p>
+<p>因此，Redis可以用SDS来保存一系列二进制数据</p>
+<h4 id="5-兼容部分C字符串函数"><a href="#5-兼容部分C字符串函数" class="headerlink" title="5. 兼容部分C字符串函数"></a>5. 兼容部分C字符串函数</h4><p>​    前面提过，SDS同样以空字符作为结尾标志，因此它也可以使用部分<code>&lt;string.h&gt;</code>中的函数</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><table>
+<thead>
+<tr>
+<th>C字符串</th>
+<th>SDS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>获取字符串长度的复杂度为O(n)</td>
+<td>获取字符串长度的复杂度为O(1)</td>
+</tr>
+<tr>
+<td>API是不安全的，可能造成缓冲区溢出</td>
+<td>API安全，不会造成缓冲区溢出</td>
+</tr>
+<tr>
+<td>修改字符串N次必定执行N次内存重分配</td>
+<td>修改字符串N次最多执行N次内存重分配</td>
+</tr>
+<tr>
+<td>只能保存文本数据</td>
+<td>可以保存文本或二进制数据(图像，视频，音频…)</td>
+</tr>
+<tr>
+<td>可以使用<code>&lt;string.h&gt;</code>库中所有函数</td>
+<td>可以使用部分<code>&lt;string.h&gt;</code>库中的函数</td>
+</tr>
+</tbody></table>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Redis/">Redis</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AF%B9%E8%B1%A1/">数据结构与对象</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/29/%E6%95%99%E8%82%B2%E5%B9%B3%E5%8F%B0%E5%BC%80%E5%8F%91%E6%89%80%E9%81%87%E9%97%AE%E9%A2%98/">
+                        <span class="hidden-mobile">教育平台开发所遇问题</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "redis:数据结构与对象&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
