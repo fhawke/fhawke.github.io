@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  <title>教育平台开发所遇问题 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fhawke</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-12-29 10:21">
+      December 29, 2020 am
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      3.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      52
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <h1 id="教育平台搭建过程所遇的问题"><a href="#教育平台搭建过程所遇的问题" class="headerlink" title="教育平台搭建过程所遇的问题"></a>教育平台搭建过程所遇的问题</h1><h2 id="pom文件无法成功导入问题"><a href="#pom文件无法成功导入问题" class="headerlink" title="pom文件无法成功导入问题"></a>pom文件无法成功导入问题</h2><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">java.version</span>&gt;</span>1.8<span class="hljs-tag">&lt;/<span class="hljs-name">java.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">guli.version</span>&gt;</span>0.0.1-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">guli.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">mybatis-plus.version</span>&gt;</span>3.0.5<span class="hljs-tag">&lt;/<span class="hljs-name">mybatis-plus.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">velocity.version</span>&gt;</span>2.0<span class="hljs-tag">&lt;/<span class="hljs-name">velocity.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">swagger.version</span>&gt;</span>2.7.0<span class="hljs-tag">&lt;/<span class="hljs-name">swagger.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">aliyun.oss.version</span>&gt;</span>3.1.0<span class="hljs-tag">&lt;/<span class="hljs-name">aliyun.oss.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">jodatime.version</span>&gt;</span>2.10.1<span class="hljs-tag">&lt;/<span class="hljs-name">jodatime.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">poi.version</span>&gt;</span>3.17<span class="hljs-tag">&lt;/<span class="hljs-name">poi.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">commons-fileupload.version</span>&gt;</span>1.3.1<span class="hljs-tag">&lt;/<span class="hljs-name">commons-fileupload.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">commons-io.version</span>&gt;</span>2.6<span class="hljs-tag">&lt;/<span class="hljs-name">commons-io.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">httpclient.version</span>&gt;</span>4.5.1<span class="hljs-tag">&lt;/<span class="hljs-name">httpclient.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">jwt.version</span>&gt;</span>0.7.0<span class="hljs-tag">&lt;/<span class="hljs-name">jwt.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">aliyun-java-sdk-core.version</span>&gt;</span>4.3.3<span class="hljs-tag">&lt;/<span class="hljs-name">aliyun-java-sdk-core.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">aliyun-sdk-oss.version</span>&gt;</span>3.1.0<span class="hljs-tag">&lt;/<span class="hljs-name">aliyun-sdk-oss.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">aliyun-java-sdk-vod.version</span>&gt;</span>2.15.2<span class="hljs-tag">&lt;/<span class="hljs-name">aliyun-java-sdk-vod.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">aliyun-java-vod-upload.version</span>&gt;</span>1.4.11<span class="hljs-tag">&lt;/<span class="hljs-name">aliyun-java-vod-upload.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">aliyun-sdk-vod-upload.version</span>&gt;</span>1.4.11<span class="hljs-tag">&lt;/<span class="hljs-name">aliyun-sdk-vod-upload.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">fastjson.version</span>&gt;</span>1.2.28<span class="hljs-tag">&lt;/<span class="hljs-name">fastjson.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">gson.version</span>&gt;</span>2.8.2<span class="hljs-tag">&lt;/<span class="hljs-name">gson.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">json.version</span>&gt;</span>20170516<span class="hljs-tag">&lt;/<span class="hljs-name">json.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">commons-dbutils.version</span>&gt;</span>1.7<span class="hljs-tag">&lt;/<span class="hljs-name">commons-dbutils.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">canal.client.version</span>&gt;</span>1.1.0<span class="hljs-tag">&lt;/<span class="hljs-name">canal.client.version</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">docker.image.prefix</span>&gt;</span>zx<span class="hljs-tag">&lt;/<span class="hljs-name">docker.image.prefix</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">cloud-alibaba.version</span>&gt;</span>0.2.2.RELEASE<span class="hljs-tag">&lt;/<span class="hljs-name">cloud-alibaba.version</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span></code></pre>
+
+<pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span>
+            <span class="hljs-comment">&lt;!--Spring Cloud--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-dependencies<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>Hoxton.RELEASE<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>pom<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>import<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-alibaba-dependencies<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;cloud-alibaba.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>pom<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>import<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-comment">&lt;!--mybatis-plus 持久层--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.baomidou<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-plus-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;mybatis-plus.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+            <span class="hljs-comment">&lt;!-- velocity 模板引擎, Mybatis Plus 代码生成器需要 --&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.velocity<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>velocity-engine-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;velocity.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+            <span class="hljs-comment">&lt;!--swagger--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>io.springfox<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>springfox-swagger2<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;swagger.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-comment">&lt;!--swagger ui--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>io.springfox<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>springfox-swagger-ui<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;swagger.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+            <span class="hljs-comment">&lt;!--aliyunOSS--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.aliyun.oss<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>aliyun-sdk-oss<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;aliyun.oss.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+            <span class="hljs-comment">&lt;!--日期时间工具--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>joda-time<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>joda-time<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;jodatime.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+            <span class="hljs-comment">&lt;!--xls--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.poi<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>poi<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;poi.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-comment">&lt;!--xlsx--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.poi<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>poi-ooxml<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;poi.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+            <span class="hljs-comment">&lt;!--文件上传--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>commons-fileupload<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>commons-fileupload<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;commons-fileupload.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+            <span class="hljs-comment">&lt;!--commons-io--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>commons-io<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>commons-io<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;commons-io.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+            <span class="hljs-comment">&lt;!--httpclient--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.httpcomponents<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>httpclient<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;httpclient.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.google.code.gson<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>gson<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;gson.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+            <span class="hljs-comment">&lt;!-- JWT --&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>io.jsonwebtoken<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>jjwt<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;jwt.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+            <span class="hljs-comment">&lt;!--aliyun--&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.aliyun<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>aliyun-java-sdk-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;aliyun-java-sdk-core.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.aliyun.oss<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>aliyun-sdk-oss<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;aliyun-sdk-oss.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.aliyun<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>aliyun-java-sdk-vod<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;aliyun-java-sdk-vod.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.aliyun<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>aliyun-java-vod-upload<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;aliyun-java-vod-upload.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.aliyun<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>aliyun-sdk-vod-upload<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;aliyun-sdk-vod-upload.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.alibaba<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>fastjson<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;fastjson.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.json<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>json<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;json.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>commons-dbutils<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>commons-dbutils<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;commons-dbutils.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+            <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.alibaba.otter<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>canal.client<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;canal.client.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span></code></pre>
+
+
+
+<p>导入上述文件有一个问题，aliyun-sdk-vod-upload 和 aliyun-sdk-vod-upload引入报错</p>
+<p><strong>原因</strong></p>
+<ul>
+<li>阿里云的这个模块是不开源的，无法通过maven直接导入，需要先在官网下载解压包</li>
+<li>解压后，在lib目录下执行指令 <code>mvn install:install-file -DgroupId=com.aliyun -DartifactId=aliyun-sdk-vod-upload -Dversion=1.4.11 -Dpackaging=jar -Dfile=aliyun-java-vod-upload-1.4.11.jar</code></li>
+<li><code>-DgroupId</code> 对应 <code>&lt;groupId&gt;&lt;/groupId&gt;</code></li>
+<li><code>-DartifactId=</code> 对应 <code>&lt;artifactId&gt;&lt;/artifactId&gt;</code> </li>
+<li><code>-Dversion=</code> 对应 <code>&lt;version&gt;&lt;/version&gt;</code></li>
+<li><code>-Dpackaging</code> 对应本地目录位置 </li>
+<li><code>BuildSuccess</code>后，就可以在<code>pom.xml</code>文件中直接引入</li>
+</ul>
+<h2 id="如果微服务启动过程报错，找不到xml文件"><a href="#如果微服务启动过程报错，找不到xml文件" class="headerlink" title="如果微服务启动过程报错，找不到xml文件"></a>如果微服务启动过程报错，找不到xml文件</h2><p><code>AbstractHandlerExceptionResolver.java:194 |org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver |Resolved exception caused by handler execution: org.apache.ibatis.binding.BindingException: Invalid bound statement (not found): com.guli.edu.mapper.CourseMapper.getCoursePublishVoById</code></p>
+<ul>
+<li>可以查看dao层编译后的mapper文件，看看target文件夹里面有没有xml文件，如果没有，说明没有编译进去</li>
+<li>需要手动在pom文件中加打包配置</li>
+</ul>
+<pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- 项目打包时会将java目录中的*.xml文件也进行打包 --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">resources</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">resource</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">directory</span>&gt;</span>src/main/java<span class="hljs-tag">&lt;/<span class="hljs-name">directory</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">includes</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">include</span>&gt;</span>**/*.xml<span class="hljs-tag">&lt;/<span class="hljs-name">include</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">includes</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">filtering</span>&gt;</span>false<span class="hljs-tag">&lt;/<span class="hljs-name">filtering</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">resource</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">resources</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span></code></pre>
+
+<ul>
+<li>然后在配置文件 <code>application.yml/application.properties</code>中加</li>
+</ul>
+<pre><code class="hljs properties"><span class="hljs-comment">#配置mapper xml文件的路径</span>
+<span class="hljs-meta">mybatis-plus.mapper-locations</span>=<span class="hljs-string">classpath:com/guli/edu/mapper/xml/*.xml</span></code></pre>
+
+
+
+<h2 id="Nginx配置"><a href="#Nginx配置" class="headerlink" title="Nginx配置"></a>Nginx配置</h2><pre><code class="hljs xml">http &#123;
+    server &#123;
+        listen       81;
+        ......
+    &#125;，
+    
+    ......
+	server &#123;
+
+		listen 8201;
+		server_name localhost;
+
+		location ~ /edu/ &#123;           
+			 proxy_pass http://localhost:8101;
+		&#125;
+		
+		location ~ /user/ &#123;   
+			 rewrite /(.+)$ /mock/5950a2419adc231f356a6636/vue-admin/$1  break; 
+			 proxy_pass https://www.easy-mock.com;
+		&#125;
+	&#125;
+&#125;</code></pre>
+
+<ul>
+<li>在server中加需要转发的节点，格式如上所示</li>
+<li>nginx配置的关键作用就是，在前端的路由转发的时候，每一个微服务调用的都是不同的接口</li>
+<li>那么前端自然也不能都使用同样的接口，那么我们就需要使用nginx进行配置转发</li>
+<li>首先在nginx.conf中自己定义一个nginx启动的接口9001，然后配置server将所有访问nginx的路由根据访问前缀转发到不同的接口</li>
+</ul>
+<h2 id="Redis缓存配置"><a href="#Redis缓存配置" class="headerlink" title="Redis缓存配置"></a>Redis缓存配置</h2><p>Redis是当前比较热门的NOSQL系统之一，它是一个开源的使用ANSI c语言编写的key-value存储系统（区别于MySQL的二维表格的形式存储。）。和Memcache类似，但很大程度补偿了Memcache的不足。和Memcache一样，Redis数据都是缓存在计算机内存中，不同的是，Memcache只能将数据缓存到内存中，无法自动定期写入硬盘，这就表示，一断电或重启，内存清空，数据丢失。所以Memcache的应用场景适用于缓存无需持久化的数据。而Redis不同的是它会周期性的把更新的数据写入磁盘或者把修改操作写入追加的记录文件，实现数据的持久化。</p>
+<p>Redis的特点：</p>
+<p>1，Redis读取的速度是110000次/s，写的速度是81000次/s；</p>
+<p>2，原子 。Redis的所有操作都是原子性的，同时Redis还支持对几个操作全并后的原子性执行。</p>
+<p>3，支持多种数据结构：string（字符串）；list（列表）；hash（哈希），set（集合）；zset(有序集合)</p>
+<p>4，持久化，集群部署</p>
+<p>5，支持过期时间，支持事务，消息订阅</p>
+<h3 id="需要配置文件"><a href="#需要配置文件" class="headerlink" title="需要配置文件"></a>需要配置文件</h3><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- redis --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span>
+
+<span class="hljs-comment">&lt;!-- spring2.X集成redis所需common-pool2--&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.commons<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>commons-pool2<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.6.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></code></pre>
+
+
+
+<p>添加配置类</p>
+<p>@EnableCaching<br>@Configuration<br>public class RedisConfig extends CachingConfigurerSupport {</p>
+<pre><code class="hljs java"><span class="hljs-meta">@Bean</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> RedisTemplate&lt;String, Object&gt; <span class="hljs-title">redisTemplate</span><span class="hljs-params">(RedisConnectionFactory factory)</span> </span>&#123;
+    RedisTemplate&lt;String, Object&gt; template = <span class="hljs-keyword">new</span> RedisTemplate&lt;&gt;();
+    RedisSerializer&lt;String&gt; redisSerializer = <span class="hljs-keyword">new</span> StringRedisSerializer();
+    Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = <span class="hljs-keyword">new</span> Jackson2JsonRedisSerializer(Object<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+    ObjectMapper om = <span class="hljs-keyword">new</span> ObjectMapper();
+    om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+    om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    jackson2JsonRedisSerializer.setObjectMapper(om);
+    template.setConnectionFactory(factory);
+    <span class="hljs-comment">//key序列化方式</span>
+    template.setKeySerializer(redisSerializer);
+    <span class="hljs-comment">//value序列化</span>
+    template.setValueSerializer(jackson2JsonRedisSerializer);
+    <span class="hljs-comment">//value hashmap序列化</span>
+    template.setHashValueSerializer(jackson2JsonRedisSerializer);
+    <span class="hljs-keyword">return</span> template;
+&#125;
+
+<span class="hljs-meta">@Bean</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> CacheManager <span class="hljs-title">cacheManager</span><span class="hljs-params">(RedisConnectionFactory factory)</span> </span>&#123;
+    RedisSerializer&lt;String&gt; redisSerializer = <span class="hljs-keyword">new</span> StringRedisSerializer();
+    Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = <span class="hljs-keyword">new</span> Jackson2JsonRedisSerializer(Object<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;
+    <span class="hljs-comment">//解决查询缓存转换异常的问题</span>
+    ObjectMapper om = <span class="hljs-keyword">new</span> ObjectMapper();
+    om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+    om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+    jackson2JsonRedisSerializer.setObjectMapper(om);
+    <span class="hljs-comment">// 配置序列化（解决乱码的问题）,过期时间600秒</span>
+    RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
+            .entryTtl(Duration.ofSeconds(<span class="hljs-number">600</span>))
+          .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer))
+            .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))
+            .disableCachingNullValues();
+    RedisCacheManager cacheManager = RedisCacheManager.builder(factory)
+            .cacheDefaults(config)
+            .build();
+    <span class="hljs-keyword">return</span> cacheManager;
+&#125;</code></pre>
+
+<p>}</p>
+<h3 id="使用注解的方式在接口中添加Redis缓存"><a href="#使用注解的方式在接口中添加Redis缓存" class="headerlink" title="使用注解的方式在接口中添加Redis缓存"></a>使用注解的方式在接口中添加Redis缓存</h3><h3 id="存-Cacheable"><a href="#存-Cacheable" class="headerlink" title="存@Cacheable"></a>存@Cacheable</h3><p>根据方法对其返回结果进行缓存，下次请求时，如果缓存存在，则直接读取缓存数据返回；如果缓存不存在，则执行方法，并把返回的结果存入缓存中。一般用在查询方法上。</p>
+<p>查看源码，属性值如下：</p>
+<table>
+<thead>
+<tr>
+<th><strong>属性/方法名</strong></th>
+<th><strong>解释</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>value</td>
+<td>缓存名，必填，它指定了你的缓存存放在哪块命名空间</td>
+</tr>
+<tr>
+<td>cacheNames</td>
+<td>与 value 差不多，二选一即可</td>
+</tr>
+<tr>
+<td>key</td>
+<td>可选属性，可以使用 SpEL 标签自定义缓存的key</td>
+</tr>
+</tbody></table>
+<h3 id="（2）缓存-CachePut"><a href="#（2）缓存-CachePut" class="headerlink" title="（2）缓存@CachePut"></a>（2）缓存@CachePut</h3><p>使用该注解标志的方法，每次都会执行，并将结果存入指定的缓存中。其他方法可以直接从响应的缓存中读取缓存数据，而不需要再去查询数据库。一般用在新增方法上。</p>
+<p>查看源码，属性值如下：</p>
+<table>
+<thead>
+<tr>
+<th><strong>属性/方法名</strong></th>
+<th><strong>解释</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>value</td>
+<td>缓存名，必填，它指定了你的缓存存放在哪块命名空间</td>
+</tr>
+<tr>
+<td>cacheNames</td>
+<td>与 value 差不多，二选一即可</td>
+</tr>
+<tr>
+<td>key</td>
+<td>可选属性，可以使用 SpEL 标签自定义缓存的key</td>
+</tr>
+</tbody></table>
+<h3 id="（3）缓存-CacheEvict"><a href="#（3）缓存-CacheEvict" class="headerlink" title="（3）缓存@CacheEvict"></a>（3）缓存@CacheEvict</h3><p>使用该注解标志的方法，会清空指定的缓存。一般用在更新或者删除方法上</p>
+<p>查看源码，属性值如下：</p>
+<table>
+<thead>
+<tr>
+<th><strong>属性/方法名</strong></th>
+<th><strong>解释</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>value</td>
+<td>缓存名，必填，它指定了你的缓存存放在哪块命名空间</td>
+</tr>
+<tr>
+<td>cacheNames</td>
+<td>与 value 差不多，二选一即可</td>
+</tr>
+<tr>
+<td>key</td>
+<td>可选属性，可以使用 SpEL 标签自定义缓存的key</td>
+</tr>
+<tr>
+<td>allEntries</td>
+<td>是否清空所有缓存，默认为 false。如果指定为 true，则方法调用后将立即清空所有的缓存</td>
+</tr>
+<tr>
+<td>beforeInvocation</td>
+<td>是否在方法执行前就清空，默认为 false。如果指定为 true，则在方法执行前就会清空缓存</td>
+</tr>
+</tbody></table>
+<h3 id="Redis缓存配置文件"><a href="#Redis缓存配置文件" class="headerlink" title="Redis缓存配置文件"></a>Redis缓存配置文件</h3><pre><code class="hljs properties"><span class="hljs-meta">spring.redis.host</span>=<span class="hljs-string">192.168.44.132</span>
+<span class="hljs-meta">spring.redis.port</span>=<span class="hljs-string">6379</span>
+<span class="hljs-meta">spring.redis.database</span>= <span class="hljs-string">0</span>
+<span class="hljs-meta">spring.redis.timeout</span>=<span class="hljs-string">1800000</span>
+
+<span class="hljs-meta">spring.redis.lettuce.pool.max-active</span>=<span class="hljs-string">20</span>
+<span class="hljs-meta">spring.redis.lettuce.pool.max-wait</span>=<span class="hljs-string">-1</span>
+<span class="hljs-comment">#最大阻塞等待时间(负数表示没限制)</span>
+<span class="hljs-meta">spring.redis.lettuce.pool.max-idle</span>=<span class="hljs-string">5</span>
+<span class="hljs-meta">spring.redis.lettuce.pool.min-idle</span>=<span class="hljs-string">0</span></code></pre>
+
+<pre><code class="hljs java"><span class="hljs-meta">@Cacheable</span>(value = <span class="hljs-string">"banner"</span>, key = <span class="hljs-string">"'selectIndexList'"</span>)</code></pre>
+
+<p>注意上面代码中的key ，在<code>&quot;&quot;</code>中加了一个 <code>&#39;&#39;</code> ，不然会报错 </p>
+<h2 id="Node-js-nuxt端口冲突问题"><a href="#Node-js-nuxt端口冲突问题" class="headerlink" title="Node.js  nuxt端口冲突问题"></a>Node.js  nuxt端口冲突问题</h2><ul>
+<li><p>在成功启动vue后台管理后，启动前台用户界面时，报端口冲突</p>
+</li>
+<li><p>类似报错信息</p>
+</li>
+<li><pre><code class="js"><span class="number">24</span> error Failed at the voting_app@<span class="number">1.1</span><span class="number">.0</span> start script <span class="string">'npm run server'</span>.
+<span class="number">24</span> error Make sure you have the latest version <span class="keyword">of</span> node.js and npm installed.
+<span class="number">24</span> error If you <span class="keyword">do</span>, <span class="keyword">this</span> is most likely a problem <span class="keyword">with</span> the voting_app package,
+<span class="number">24</span> error not <span class="keyword">with</span> npm itself.
+<span class="number">24</span> error Tell the author that <span class="keyword">this</span> fails on your system:
+<span class="number">24</span> error     npm run server
+<span class="number">24</span> error You can <span class="keyword">get</span> information on how to open an issue for this project with:
+24 error     npm bugs voting_app
+24 error Or if that isn't available, you can <span class="keyword">get</span> their info via:
+24 error     npm owner ls voting_app
+24 error There is likely additional logging output above.
+25 verbose exit [ 1, true ]
+<pre><code class="hljs">
+
+
+### 解决方式
+
+- `npm cache clean --force`
+- ` rm -rf node_modules package-lock.json`
+- `npm install`
+- ` npm start`
+
+然后重启电脑，即可成功访问
+
+
+
+
+
+## 用户登陆方式问题
+
+
+
+### 带token的登陆方式
+
+- 本项目的登陆方法使用带token的记录方式
+
+```java
+@ApiOperation(value = "根据token令牌获取登陆信息")
+    @GetMapping("auth/getLoginInfo")
+    public R getLoginInfo(HttpServletRequest request)&#123;
+        try&#123;
+            String memberId = JwtUtils.getMemberIdByJwtToken(request);
+            LoginInfoVo loginInfoVo = ucenterMemberService.getLoginInfo(memberId);
+            return R.ok().data("item",loginInfoVo);
+        &#125;catch (Exception e)&#123;
+            e.printStackTrace();
+            throw new EduException(20001,"无法获取到token");
+        &#125;
+    &#125;</code></pre>
+</code></pre>
+</li>
+</ul>
+<p>后端传参数<code>item</code>到前端，前端获取到参数以后根据 token令牌 判断用户登陆状态</p>
+<h3 id="权限管理模块编写完成后，前端根据数据库的值，通过动态路由来定位页面"><a href="#权限管理模块编写完成后，前端根据数据库的值，通过动态路由来定位页面" class="headerlink" title="权限管理模块编写完成后，前端根据数据库的值，通过动态路由来定位页面"></a>权限管理模块编写完成后，前端根据数据库的值，通过动态路由来定位页面</h3><ul>
+<li>通过SpringSecurity来实现登陆和权限验证</li>
+<li>在前后台整合完毕后，注意在此过程中<strong>必须保证</strong>Redis客户端开启，因为Redis客户端一段时间没有连接维持，就会自动关闭</li>
+<li>这样前台登陆时，就会显示超时，因为项目首先会把前端传来的用户名和密码存储至Redis进行缓冲</li>
+</ul>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E9%A1%B9%E7%9B%AE/">项目</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/SpringCloud/">SpringCloud</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/29/%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E8%BF%87%E7%A8%8B/">
+                        <span class="hidden-mobile">博客系统开发过程</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "教育平台开发所遇问题&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
