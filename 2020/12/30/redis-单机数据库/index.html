@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  <title>redis:单机数据库 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/github-markdown-css/4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    <link  rel="stylesheet" href="https://cdn.staticfile.org/highlight.js/10.0.0/styles/github-gist.min.css" />
+  
+
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_yg9cfy8wd6.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_pjno9b9zyxs.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script  src="/js/utils.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>Fhawke</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                About
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="view intro-2" id="background" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="container text-center white-text fadeInUp">
+            <span class="h2" id="subtitle">
+              
+            </span>
+
+            
+              
+  <div class="mt-3 post-meta">
+    <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+    <time datetime="2020-12-30 21:59">
+      December 30, 2020 pm
+    </time>
+  </div>
+
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.3k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      14
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-md">
+      <div class="container nopadding-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <div class="post-content mx-auto" id="post">
+            
+            <article class="markdown-body">
+              <h1 id="单机数据库"><a href="#单机数据库" class="headerlink" title="单机数据库"></a>单机数据库</h1><h2 id="服务器中的数据库"><a href="#服务器中的数据库" class="headerlink" title="服务器中的数据库"></a>服务器中的数据库</h2><p>Redis服务器将所有数据库都保存在服务器状态<code>redis.h/redisServer</code>结构的db数组中，db数组的每个项都是一个<code>redis.h/redisDb</code>结构，每个<code>redisDb</code>结构代表一个数据库</p>
+<pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">redisServer</span>&#123;</span>
+    <span class="hljs-comment">//...</span>
+    <span class="hljs-comment">//一个数组，保存服务器中所有数据库</span>
+	redisDb *db;
+    <span class="hljs-comment">//...</span>
+&#125;;</code></pre>
+
+<p>在初始化服务器时，程序会根据服务器状态的dbnum属性来决定应该创建多少个数据库(默认为16个)</p>
+<pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">redisServer</span>&#123;</span>
+    <span class="hljs-comment">//...</span>
+    <span class="hljs-comment">//服务器的数据库数量</span>
+    <span class="hljs-keyword">int</span> dbnum;
+    <span class="hljs-comment">//...</span>
+&#125;</code></pre>
+
+
+
+<h2 id="切换数据库"><a href="#切换数据库" class="headerlink" title="切换数据库"></a>切换数据库</h2><p>每个Redis客户端都有自己的目标数据库，每当客户端执行数据库写/读命令时，目标数据库会成为这些命令的操作对象</p>
+<p>默认情况下，Redis客户端的目标数据库是0号数据库，可以通过<code>SELECT</code>命令来切换目标数据库</p>
+<p><strong>实际上</strong></p>
+<p>在服务器内部，客户端状态<code>redisClient</code>结构的<code>db</code>属性记录了客户端当前的目标数据库，<code>db</code>是一个指向<code>redisDb</code>结构的指针</p>
+<pre><code class="hljs c++"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">redisClient</span>&#123;</span>
+	<span class="hljs-comment">//...</span>
+    <span class="hljs-comment">//记录客户端当前正在使用的数据库</span>
+    redisDb *db;
+    <span class="hljs-comment">//...</span>
+&#125;redisClient;</code></pre>
+
+<p><strong>通过修改<code>redisClient.db</code>指针，让它指向服务器中的不同数据库，从而实现切换数据库的功能，这就是<code>SELECT</code>命令的实现原理</strong></p>
+<h2 id="数据库键空间"><a href="#数据库键空间" class="headerlink" title="数据库键空间"></a>数据库键空间</h2><blockquote>
+<p>Redis是一个键值对数据库服务器</p>
+</blockquote>
+<p>服务器中的每个数据库都由一个<code>redis.h/redisDb</code>结构表示，其中,<code>redisDb</code>结构的<code>dict</code>字典保存了数据库中的所有键值对，我们将这个字典称为键空间</p>
+<pre><code class="hljs c++"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">redisDb</span>&#123;</span>
+    <span class="hljs-comment">//...</span>
+    <span class="hljs-comment">//数据库键空间，保存着数据库中的所有键值对</span>
+    dict *dict;
+    <span class="hljs-comment">//...</span>
+&#125;redisDb;</code></pre>
+
+
+
+<ul>
+<li>键空间的键也就是数据库的键，每个键都是一个字符串对象</li>
+<li>键空间的值也就是数据库的值，每个值可以是5种基本对象中的任何一种</li>
+</ul>
+<h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><blockquote>
+<p><code>SET,GET,DEL</code> 分别代表 添加/更新，取得，删除</p>
+</blockquote>
+<p><code>FLUSHDB</code>清空当前数据库</p>
+<p><code>EXPIRE/PEXPIRE</code>    客户端可以通过这些命令，以秒/毫秒为精度为数据库中的某个键设置生存时间(TTL)</p>
+<p><strong>过期时间是一个UNIX时间戳，当键的过期时间来临，服务器会自动从数据库中删除这个键</strong></p>
+<h3 id="过期键删除策略"><a href="#过期键删除策略" class="headerlink" title="过期键删除策略"></a>过期键删除策略</h3><ul>
+<li>定时删除<ul>
+<li>在设置键的过期时间的同时，创建一个定时器，让定时器在键的过期时间来临时，立即执行对键的删除操作</li>
+</ul>
+</li>
+<li>惰性删除<ul>
+<li>放任键过期不管，但是每次从键空间获取键时，都检查取得的键是否过期，如果过期则删除</li>
+</ul>
+</li>
+<li>定期删除<ul>
+<li>每隔一段时间，程序对数据库进行一次检查，删除里面的过期键，至于要删除多少过期键，以及要检查多少数据库，由算法决定</li>
+</ul>
+</li>
+</ul>
+<p>Redis一般使用<strong>惰性删除+定期删除</strong></p>
+<p><strong>数据库主要由<code>dict expires</code>两个字典构成，其中<code>dict</code>字典负责保存键值对，<code>expires</code>字典则负责保存键的过期时间</strong></p>
+<h2 id="AOF-RDB"><a href="#AOF-RDB" class="headerlink" title="AOF/RDB"></a>AOF/RDB</h2><h4 id="生成RDB文件"><a href="#生成RDB文件" class="headerlink" title="生成RDB文件"></a>生成RDB文件</h4><p>在执行SAVE或者BGSAVE命令创建一个新的RDB文件时，程序会对数据库中的键进行检查，已过期的键不会被保存到新创建的RDB文件中</p>
+<p><strong>因此，数据库中包含过期键不会对生成新的RDB文件造成影响</strong></p>
+<h4 id="载入RDB文件"><a href="#载入RDB文件" class="headerlink" title="载入RDB文件"></a>载入RDB文件</h4><ul>
+<li>主服务器：载入RDB文件时，程序会对文件中保存的键进行检查，未过期的键载入数据库，过期键被忽略</li>
+<li>从服务器：载入RDB文件时，文件中保存的所有键全部载入到数据库，在后面的主从服务器数据同步时，从服务器的数据库被清空</li>
+</ul>
+<h4 id="AOF文件写入"><a href="#AOF文件写入" class="headerlink" title="AOF文件写入"></a>AOF文件写入</h4><p>服务器以AOF持久化模式运行时，如果某个键已过期，同时没有被删除，AOF文件不会因为这个过期键产生任何影响</p>
+<p>在过期键被惰性删除或定期删除后，程序会向AOF文件追加(append)一条<code>DEL</code>命令显示的记录该键已被删除</p>
+<h4 id="AOF重写"><a href="#AOF重写" class="headerlink" title="AOF重写"></a>AOF重写</h4><p>在执行AOF重写的过程中，程序会对数据库中的键做检查，已过期的键不会保存到重写后的AOF文件中</p>
+<p>所谓重写：就是过滤重复语句</p>
+<blockquote>
+<p>例如</p>
+</blockquote>
+<pre><code class="hljs c++">RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"a"</span> <span class="hljs-string">"b"</span>
+RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"c"</span>
+RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"d"</span> <span class="hljs-string">"e"</span></code></pre>
+
+<p>重写后</p>
+<pre><code class="hljs c++">RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"a"</span> <span class="hljs-string">"b"</span> <span class="hljs-string">"c"</span> <span class="hljs-string">"d"</span> <span class="hljs-string">"e"</span></code></pre>
+
+<p><strong>过滤了部分重复语句，节省了AOF文件空间</strong></p>
+<h3 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h3><blockquote>
+<p>当服务器运行在复制模式下时，从服务器的过期键删除动作由主服务器控制</p>
+</blockquote>
+<ul>
+<li>主服务器在删除一个过期键后，会显式的向所有从服务器发送一个<code>DEL</code>命令，告知从服务器删除这个过期键</li>
+<li>从服务器在执行客户端发送的读命令时，即使碰到过期键也不会主动将其删除，而是继续处理</li>
+<li>从服务器只有在街道主服务器发送的<code>DEL</code>命令后，采后删除过期键</li>
+</ul>
+<p><strong>如此，通过主服务器控制从服务器统一地删除过期键，可以保证主从服务器的一致性</strong></p>
+
+            </article>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Redis/">Redis</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" target="_blank" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！</p>
+              
+              
+                <div class="post-prevnext row">
+                  <div class="post-prev col-6">
+                    
+                    
+                  </div>
+                  <div class="post-next col-6">
+                    
+                    
+                      <a href="/2020/12/29/redis-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AF%B9%E8%B1%A1/">
+                        <span class="hidden-mobile">redis:数据结构与对象</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </div>
+                </div>
+              
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;TOC</p>
+  <div id="tocbot"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+  </main>
+
+  
+    <a id="scroll-top-button" href="#" role="button">
+      <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+    </a>
+  
+
+  
+    <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+  
+
+  
+
+  <footer class="mt-5">
+  <div class="text-center py-3">
+    <div>
+      <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+      <i class="iconfont icon-love"></i>
+      <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener">
+        <span>Fluid</span></a>
+    </div>
+    
+
+    
+
+    
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script  src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js" ></script>
+<script  src="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/main.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/lazyload.js" ></script>
+  
+
+
+
+  <script defer src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js" ></script>
+  <script  src="/js/clipboard-use.js" ></script>
+
+
+
+
+
+
+
+  <script  src="https://cdn.staticfile.org/tocbot/4.11.1/tocbot.min.js" ></script>
+  <script>
+    $(document).ready(function () {
+      var boardCtn = $('#board-ctn');
+      var boardTop = boardCtn.offset().top;
+
+      tocbot.init({
+        tocSelector: '#tocbot',
+        contentSelector: 'article.markdown-body',
+        headingSelector: 'h1,h2,h3,h4,h5,h6',
+        linkClass: 'tocbot-link',
+        activeLinkClass: 'tocbot-active-link',
+        listClass: 'tocbot-list',
+        isCollapsedClass: 'tocbot-is-collapsed',
+        collapsibleClass: 'tocbot-is-collapsible',
+        collapseDepth: 0,
+        scrollSmooth: true,
+        headingsOffset: -boardTop
+      });
+      if ($('.toc-list-item').length > 0) {
+        $('#toc').css('visibility', 'visible');
+      }
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/typed.js/2.0.11/typed.min.js" ></script>
+  <script>
+    var typed = new Typed('#subtitle', {
+      strings: [
+        '  ',
+        "redis:单机数据库&nbsp;",
+      ],
+      cursorChar: "_",
+      typeSpeed: 70,
+      loop: false,
+    });
+    typed.stop();
+    $(document).ready(function () {
+      $(".typed-cursor").addClass("h2");
+      typed.start();
+    });
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/anchor-js/4.2.2/anchor.min.js" ></script>
+  <script>
+    anchors.options = {
+      placement: "right",
+      visible: "hover",
+      
+    };
+    var el = "h1,h2,h3,h4,h5,h6".split(",");
+    var res = [];
+    for (item of el) {
+      res.push(".markdown-body > " + item)
+    }
+    anchors.add(res.join(", "))
+  </script>
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    var path = "/local-search.xml";
+    var inputArea = document.querySelector("#local-search-input");
+    inputArea.onclick = function () {
+      searchFunc(path, 'local-search-input', 'local-search-result');
+      this.onclick = null
+    }
+  </script>
+
+
+
+  <script  src="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.staticfile.org/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <script>
+    $('#post img:not(.no-zoom img, img[no-zoom]), img[zoom]').each(
+      function () {
+        var element = document.createElement('a');
+        $(element).attr('data-fancybox', 'images');
+        $(element).attr('href', $(this).attr('src'));
+        $(this).wrap(element);
+      }
+    );
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

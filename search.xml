@@ -11040,4 +11040,114 @@ return null;</code></pre><p>  }</p>
         <tag>数据结构与对象</tag>
       </tags>
   </entry>
+  <entry>
+    <title>redis:单机数据库</title>
+    <url>/2020/12/30/redis-%E5%8D%95%E6%9C%BA%E6%95%B0%E6%8D%AE%E5%BA%93/</url>
+    <content><![CDATA[<h1 id="单机数据库"><a href="#单机数据库" class="headerlink" title="单机数据库"></a>单机数据库</h1><h2 id="服务器中的数据库"><a href="#服务器中的数据库" class="headerlink" title="服务器中的数据库"></a>服务器中的数据库</h2><p>Redis服务器将所有数据库都保存在服务器状态<code>redis.h/redisServer</code>结构的db数组中，db数组的每个项都是一个<code>redis.h/redisDb</code>结构，每个<code>redisDb</code>结构代表一个数据库</p>
+<pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">redisServer</span>&#123;</span>
+    <span class="hljs-comment">//...</span>
+    <span class="hljs-comment">//一个数组，保存服务器中所有数据库</span>
+	redisDb *db;
+    <span class="hljs-comment">//...</span>
+&#125;;</code></pre>
+
+<p>在初始化服务器时，程序会根据服务器状态的dbnum属性来决定应该创建多少个数据库(默认为16个)</p>
+<pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">redisServer</span>&#123;</span>
+    <span class="hljs-comment">//...</span>
+    <span class="hljs-comment">//服务器的数据库数量</span>
+    <span class="hljs-keyword">int</span> dbnum;
+    <span class="hljs-comment">//...</span>
+&#125;</code></pre>
+
+
+
+<h2 id="切换数据库"><a href="#切换数据库" class="headerlink" title="切换数据库"></a>切换数据库</h2><p>每个Redis客户端都有自己的目标数据库，每当客户端执行数据库写/读命令时，目标数据库会成为这些命令的操作对象</p>
+<p>默认情况下，Redis客户端的目标数据库是0号数据库，可以通过<code>SELECT</code>命令来切换目标数据库</p>
+<p><strong>实际上</strong></p>
+<p>在服务器内部，客户端状态<code>redisClient</code>结构的<code>db</code>属性记录了客户端当前的目标数据库，<code>db</code>是一个指向<code>redisDb</code>结构的指针</p>
+<pre><code class="hljs c++"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">redisClient</span>&#123;</span>
+	<span class="hljs-comment">//...</span>
+    <span class="hljs-comment">//记录客户端当前正在使用的数据库</span>
+    redisDb *db;
+    <span class="hljs-comment">//...</span>
+&#125;redisClient;</code></pre>
+
+<p><strong>通过修改<code>redisClient.db</code>指针，让它指向服务器中的不同数据库，从而实现切换数据库的功能，这就是<code>SELECT</code>命令的实现原理</strong></p>
+<h2 id="数据库键空间"><a href="#数据库键空间" class="headerlink" title="数据库键空间"></a>数据库键空间</h2><blockquote>
+<p>Redis是一个键值对数据库服务器</p>
+</blockquote>
+<p>服务器中的每个数据库都由一个<code>redis.h/redisDb</code>结构表示，其中,<code>redisDb</code>结构的<code>dict</code>字典保存了数据库中的所有键值对，我们将这个字典称为键空间</p>
+<pre><code class="hljs c++"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">redisDb</span>&#123;</span>
+    <span class="hljs-comment">//...</span>
+    <span class="hljs-comment">//数据库键空间，保存着数据库中的所有键值对</span>
+    dict *dict;
+    <span class="hljs-comment">//...</span>
+&#125;redisDb;</code></pre>
+
+
+
+<ul>
+<li>键空间的键也就是数据库的键，每个键都是一个字符串对象</li>
+<li>键空间的值也就是数据库的值，每个值可以是5种基本对象中的任何一种</li>
+</ul>
+<h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><blockquote>
+<p><code>SET,GET,DEL</code> 分别代表 添加/更新，取得，删除</p>
+</blockquote>
+<p><code>FLUSHDB</code>清空当前数据库</p>
+<p><code>EXPIRE/PEXPIRE</code>    客户端可以通过这些命令，以秒/毫秒为精度为数据库中的某个键设置生存时间(TTL)</p>
+<p><strong>过期时间是一个UNIX时间戳，当键的过期时间来临，服务器会自动从数据库中删除这个键</strong></p>
+<h3 id="过期键删除策略"><a href="#过期键删除策略" class="headerlink" title="过期键删除策略"></a>过期键删除策略</h3><ul>
+<li>定时删除<ul>
+<li>在设置键的过期时间的同时，创建一个定时器，让定时器在键的过期时间来临时，立即执行对键的删除操作</li>
+</ul>
+</li>
+<li>惰性删除<ul>
+<li>放任键过期不管，但是每次从键空间获取键时，都检查取得的键是否过期，如果过期则删除</li>
+</ul>
+</li>
+<li>定期删除<ul>
+<li>每隔一段时间，程序对数据库进行一次检查，删除里面的过期键，至于要删除多少过期键，以及要检查多少数据库，由算法决定</li>
+</ul>
+</li>
+</ul>
+<p>Redis一般使用<strong>惰性删除+定期删除</strong></p>
+<p><strong>数据库主要由<code>dict expires</code>两个字典构成，其中<code>dict</code>字典负责保存键值对，<code>expires</code>字典则负责保存键的过期时间</strong></p>
+<h2 id="AOF-RDB"><a href="#AOF-RDB" class="headerlink" title="AOF/RDB"></a>AOF/RDB</h2><h4 id="生成RDB文件"><a href="#生成RDB文件" class="headerlink" title="生成RDB文件"></a>生成RDB文件</h4><p>在执行SAVE或者BGSAVE命令创建一个新的RDB文件时，程序会对数据库中的键进行检查，已过期的键不会被保存到新创建的RDB文件中</p>
+<p><strong>因此，数据库中包含过期键不会对生成新的RDB文件造成影响</strong></p>
+<h4 id="载入RDB文件"><a href="#载入RDB文件" class="headerlink" title="载入RDB文件"></a>载入RDB文件</h4><ul>
+<li>主服务器：载入RDB文件时，程序会对文件中保存的键进行检查，未过期的键载入数据库，过期键被忽略</li>
+<li>从服务器：载入RDB文件时，文件中保存的所有键全部载入到数据库，在后面的主从服务器数据同步时，从服务器的数据库被清空</li>
+</ul>
+<h4 id="AOF文件写入"><a href="#AOF文件写入" class="headerlink" title="AOF文件写入"></a>AOF文件写入</h4><p>服务器以AOF持久化模式运行时，如果某个键已过期，同时没有被删除，AOF文件不会因为这个过期键产生任何影响</p>
+<p>在过期键被惰性删除或定期删除后，程序会向AOF文件追加(append)一条<code>DEL</code>命令显示的记录该键已被删除</p>
+<h4 id="AOF重写"><a href="#AOF重写" class="headerlink" title="AOF重写"></a>AOF重写</h4><p>在执行AOF重写的过程中，程序会对数据库中的键做检查，已过期的键不会保存到重写后的AOF文件中</p>
+<p>所谓重写：就是过滤重复语句</p>
+<blockquote>
+<p>例如</p>
+</blockquote>
+<pre><code class="hljs c++">RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"a"</span> <span class="hljs-string">"b"</span>
+RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"c"</span>
+RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"d"</span> <span class="hljs-string">"e"</span></code></pre>
+
+<p>重写后</p>
+<pre><code class="hljs c++">RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"a"</span> <span class="hljs-string">"b"</span> <span class="hljs-string">"c"</span> <span class="hljs-string">"d"</span> <span class="hljs-string">"e"</span></code></pre>
+
+<p><strong>过滤了部分重复语句，节省了AOF文件空间</strong></p>
+<h3 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h3><blockquote>
+<p>当服务器运行在复制模式下时，从服务器的过期键删除动作由主服务器控制</p>
+</blockquote>
+<ul>
+<li>主服务器在删除一个过期键后，会显式的向所有从服务器发送一个<code>DEL</code>命令，告知从服务器删除这个过期键</li>
+<li>从服务器在执行客户端发送的读命令时，即使碰到过期键也不会主动将其删除，而是继续处理</li>
+<li>从服务器只有在街道主服务器发送的<code>DEL</code>命令后，采后删除过期键</li>
+</ul>
+<p><strong>如此，通过主服务器控制从服务器统一地删除过期键，可以保证主从服务器的一致性</strong></p>
+]]></content>
+      <categories>
+        <category>Redis</category>
+      </categories>
+      <tags>
+        <tag>数据库</tag>
+      </tags>
+  </entry>
 </search>
