@@ -11213,4 +11213,35 @@ RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"d"</spa
         <tag>JUC</tag>
       </tags>
   </entry>
+  <entry>
+    <title>synchronized</title>
+    <url>/2020/12/31/synchronized/</url>
+    <content><![CDATA[<h1 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h1><blockquote>
+<p>synchronized可以保证方法或代码块运行时，同一时刻只有一个方法可以进入到临界区，还可以保证共享变量的内存可见性</p>
+</blockquote>
+<p>同步代码块使用<code>monitorenter</code>和<code>monitorexit</code>来进入和退出同步块，对于同步方法来说，是依靠方法修饰符的<code>ACC_SYNCHRONIZED</code>完成。</p>
+<p>无论采取哪种方式，本质上都是对monitor对象的获取，这个获取过程是排他的，也就是说，同一时刻只能有一个线程获取到由<code>synchronized</code>所保护对象的监视器</p>
+<p>当对象由方法块或者这个对象的同步方法调用时，执行方法的线程必须先获取该对象的监视器才能进入方法块和同步方法，而没有获取到监视器的线程将会被阻塞到同步块和同步方法的入口处，进入<strong>阻塞状态</strong></p>
+<p>Java对象头和monitor是实现synchronized的基础</p>
+<p>Java对象头包括两部分</p>
+<ul>
+<li>Mark Word    标记字段，用于存储对象自身的运行时数据，比如哈希码，GC分代，锁状态标志，偏向线程ID等</li>
+<li>Class Pointer   对象指向它的类元数据的指针，虚拟机通过这个指针来确定对象是哪个类的实例</li>
+</ul>
+<blockquote>
+<p>偏向锁</p>
+</blockquote>
+<p>当一个线程访问同步块并获得锁时，会在对象头(Mark Word)和栈帧的锁记录里存储锁偏向的线程ID，以后线程在进入和退出同步块时，不需要通过CAS来加锁和解锁，只需简单的测试一下对象头的<code>Mark Word</code>里是否存储着指向当前线程的偏向锁，如果其他线程竞争该锁，则尝试用CAS将对象的偏向锁指向当前线程</p>
+<blockquote>
+<p>轻量级锁</p>
+</blockquote>
+<p>线程在执行同步以前，JVM会在当前线程的栈帧里创建用于存储锁记录的空间，并将对象头的<code>Mark Word</code>复制到锁记录中，官方称为<code>Displaced Mark Word</code>，然后线程尝试使用CAS将对象头中的<code>Mark Word</code>替换为指向锁记录的指针，如果成功，当前线程获得锁，如果失败，表示其他线程竞争锁，当前线程尝试使用自旋来获取锁</p>
+]]></content>
+      <categories>
+        <category>多线程</category>
+      </categories>
+      <tags>
+        <tag>JUC</tag>
+      </tags>
+  </entry>
 </search>
