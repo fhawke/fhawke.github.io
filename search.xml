@@ -11150,4 +11150,46 @@ RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"d"</spa
         <tag>数据库</tag>
       </tags>
   </entry>
+  <entry>
+    <title>ThreadLocal</title>
+    <url>/2020/12/31/ThreadLocal/</url>
+    <content><![CDATA[<h1 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><blockquote>
+<p>ThreadLocal：线程变量，是一个以ThreadLocal对象为键，任意对象为值的一个存储结构。</p>
+</blockquote>
+<p>这个结构被附带在线程上，线程可以根据一个<code>ThreadLocal</code>对象查询到绑定在这个线程的一个值</p>
+<ul>
+<li>Thread类中有一个成员变量属于<code>ThreadLocalMap</code>，他是一个map类，它的key是ThreadLocal的实例对象</li>
+<li>当为<code>ThreadLocal</code>类型的变量执行<code>set</code>操作时，首先获取当前线程的<code>TheadLocalMap</code>变量，然后以<code>ThreadLocal</code>类的对象为key，设定<code>value</code>，get操作类似</li>
+<li><code>ThreadLocal</code>变量的活动范围为某线程，是该线程独有的，这里是解决相同变量被多个线程访问的<strong>另一种思路</strong>，<code>ThreadLocal.set()</code>到线程中的对象是该线程自己使用的对象，其他线程是无法访问的，线程终止后，该值作为垃圾被回收</li>
+<li><code>ThreadLocal</code>变量的工作原理是：每个线程独自拥有一个变量，对变量的操作是线程本地的操作</li>
+</ul>
+<h2 id="set-get注意点"><a href="#set-get注意点" class="headerlink" title="set/get注意点"></a>set/get注意点</h2><blockquote>
+<p>每次<code>set/get</code>值，并不是直接使用线程<code>id</code>作为<code>TheadLocalMap</code>的key，而是使用<code>ThreadLocal</code>作为key</p>
+</blockquote>
+<ul>
+<li>如果直接使用线程id作为key，无法区分放入<code>ThreadLocalMap</code>的多个value</li>
+<li>使用<code>ThreadLocal</code>作为key，因为每一个<code>ThreadLocal</code>对象都可以由<code>ThreadLocalHashCode</code>属性唯一区分</li>
+</ul>
+<h3 id="那么如何保证ThreadLocalHashCode唯一呢？"><a href="#那么如何保证ThreadLocalHashCode唯一呢？" class="headerlink" title="那么如何保证ThreadLocalHashCode唯一呢？"></a>那么如何保证<code>ThreadLocalHashCode</code>唯一呢？</h3><p>​    在<code>ThreadLocal</code>类中，包含了一个<code>static AtomicInteger nextHashCode</code>类变量和一个<code>static final</code>修饰的常量(作为相邻两个<code>nextHashCode</code>的差值)。因为<code>nextHashCode</code>是类变量，所以每一次创建<code>ThreadLocal</code>对象都可以保证<code>nextHashCode</code>被更新到新的值，并且下一次调用<code>ThreadLocal</code>类这个被更新的值仍然可用，同时使用的<code>AtomicInteger</code>保证每次自增都是原子性的。</p>
+<h2 id="ThreadLocal和线程同步机制"><a href="#ThreadLocal和线程同步机制" class="headerlink" title="ThreadLocal和线程同步机制"></a>ThreadLocal和线程同步机制</h2><blockquote>
+<p>他们都是为了解决多线程中相同变量的访问冲突问题</p>
+</blockquote>
+<ul>
+<li>在同步机制中，通过对象的锁机制保证同一时间只有一个线程访问变量，这时该变量是多个线程共享的，使用同步机制要求程序员分析什么时候对变量进行读写，较为麻烦</li>
+<li>而<code>ThreadLocal</code>从另一个角度出发，它为每一个线程提供了一个独立的变量副本，从而隔离了多个线程对统一变量的访问冲突，因为每一个线程访问/操作的都是自己的本地变量，因此也没有必要对变量进行同步了，<code>ThreadLocal</code>提供了线程安全的共享对象</li>
+<li>总的来说，对于多线程资源共享问题，同步机制采取了<strong>时间换空间</strong>，而<code>ThreadLocal</code>采取了<strong>空间换时间</strong>，前者提供一份变量，让不同线程排队访问，后者为每一个线程提供一份变量，同时可以相互访问不受影响</li>
+</ul>
+<h2 id="ThreadLocalMap"><a href="#ThreadLocalMap" class="headerlink" title="ThreadLocalMap"></a>ThreadLocalMap</h2><p><code>ThreadLocalMap</code>作为hash表的一种实现方式，是通过<strong>开放寻址法</strong>来解决哈希冲突，与HashMap不同</p>
+<p>开放寻址法</p>
+<ul>
+<li>如果出现散列冲突，就重新探测一个空闲位置，将其插入，往散列表中插入数据时，如果某个数据经过散列函数散列之后，存储位置已经被占用，我们就从当前位置开始，以此往后寻找，看是否由空闲位置，直到找到为止</li>
+</ul>
+]]></content>
+      <categories>
+        <category>多线程</category>
+      </categories>
+      <tags>
+        <tag>JUC</tag>
+      </tags>
+  </entry>
 </search>

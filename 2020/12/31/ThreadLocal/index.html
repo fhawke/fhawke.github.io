@@ -17,7 +17,7 @@
   <meta name="description" content="">
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
-  <title>redis:单机数据库 - Hexo</title>
+  <title>ThreadLocal - Hexo</title>
 
   <link  rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 
@@ -152,8 +152,8 @@
               
   <div class="mt-3 post-meta">
     <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-    <time datetime="2020-12-30 21:59">
-      December 30, 2020 pm
+    <time datetime="2020-12-31 18:40">
+      December 31, 2020 pm
     </time>
   </div>
 
@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.3k 字
+      842 字
     </span>
   
 
@@ -173,7 +173,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      14
+      8
        分钟
     </span>
   
@@ -208,105 +208,37 @@
           <div class="post-content mx-auto" id="post">
             
             <article class="markdown-body">
-              <h1 id="单机数据库"><a href="#单机数据库" class="headerlink" title="单机数据库"></a>单机数据库</h1><h2 id="服务器中的数据库"><a href="#服务器中的数据库" class="headerlink" title="服务器中的数据库"></a>服务器中的数据库</h2><p>Redis服务器将所有数据库都保存在服务器状态<code>redis.h/redisServer</code>结构的db数组中，db数组的每个项都是一个<code>redis.h/redisDb</code>结构，每个<code>redisDb</code>结构代表一个数据库</p>
-<pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">redisServer</span>&#123;</span>
-    <span class="hljs-comment">//...</span>
-    <span class="hljs-comment">//一个数组，保存服务器中所有数据库</span>
-	redisDb *db;
-    <span class="hljs-comment">//...</span>
-&#125;;</code></pre>
-
-<p>在初始化服务器时，程序会根据服务器状态的dbnum属性来决定应该创建多少个数据库(默认为16个)</p>
-<pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">redisServer</span>&#123;</span>
-    <span class="hljs-comment">//...</span>
-    <span class="hljs-comment">//服务器的数据库数量</span>
-    <span class="hljs-keyword">int</span> dbnum;
-    <span class="hljs-comment">//...</span>
-&#125;</code></pre>
-
-
-
-<h2 id="切换数据库"><a href="#切换数据库" class="headerlink" title="切换数据库"></a>切换数据库</h2><p>每个Redis客户端都有自己的目标数据库，每当客户端执行数据库写/读命令时，目标数据库会成为这些命令的操作对象</p>
-<p>默认情况下，Redis客户端的目标数据库是0号数据库，可以通过<code>SELECT</code>命令来切换目标数据库</p>
-<p><strong>实际上</strong></p>
-<p>在服务器内部，客户端状态<code>redisClient</code>结构的<code>db</code>属性记录了客户端当前的目标数据库，<code>db</code>是一个指向<code>redisDb</code>结构的指针</p>
-<pre><code class="hljs c++"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">redisClient</span>&#123;</span>
-	<span class="hljs-comment">//...</span>
-    <span class="hljs-comment">//记录客户端当前正在使用的数据库</span>
-    redisDb *db;
-    <span class="hljs-comment">//...</span>
-&#125;redisClient;</code></pre>
-
-<p><strong>通过修改<code>redisClient.db</code>指针，让它指向服务器中的不同数据库，从而实现切换数据库的功能，这就是<code>SELECT</code>命令的实现原理</strong></p>
-<h2 id="数据库键空间"><a href="#数据库键空间" class="headerlink" title="数据库键空间"></a>数据库键空间</h2><blockquote>
-<p>Redis是一个键值对数据库服务器</p>
+              <h1 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><blockquote>
+<p>ThreadLocal：线程变量，是一个以ThreadLocal对象为键，任意对象为值的一个存储结构。</p>
 </blockquote>
-<p>服务器中的每个数据库都由一个<code>redis.h/redisDb</code>结构表示，其中,<code>redisDb</code>结构的<code>dict</code>字典保存了数据库中的所有键值对，我们将这个字典称为键空间</p>
-<pre><code class="hljs c++"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">redisDb</span>&#123;</span>
-    <span class="hljs-comment">//...</span>
-    <span class="hljs-comment">//数据库键空间，保存着数据库中的所有键值对</span>
-    dict *dict;
-    <span class="hljs-comment">//...</span>
-&#125;redisDb;</code></pre>
-
-
-
+<p>这个结构被附带在线程上，线程可以根据一个<code>ThreadLocal</code>对象查询到绑定在这个线程的一个值</p>
 <ul>
-<li>键空间的键也就是数据库的键，每个键都是一个字符串对象</li>
-<li>键空间的值也就是数据库的值，每个值可以是5种基本对象中的任何一种</li>
+<li>Thread类中有一个成员变量属于<code>ThreadLocalMap</code>，他是一个map类，它的key是ThreadLocal的实例对象</li>
+<li>当为<code>ThreadLocal</code>类型的变量执行<code>set</code>操作时，首先获取当前线程的<code>TheadLocalMap</code>变量，然后以<code>ThreadLocal</code>类的对象为key，设定<code>value</code>，get操作类似</li>
+<li><code>ThreadLocal</code>变量的活动范围为某线程，是该线程独有的，这里是解决相同变量被多个线程访问的<strong>另一种思路</strong>，<code>ThreadLocal.set()</code>到线程中的对象是该线程自己使用的对象，其他线程是无法访问的，线程终止后，该值作为垃圾被回收</li>
+<li><code>ThreadLocal</code>变量的工作原理是：每个线程独自拥有一个变量，对变量的操作是线程本地的操作</li>
 </ul>
-<h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><blockquote>
-<p><code>SET,GET,DEL</code> 分别代表 添加/更新，取得，删除</p>
-</blockquote>
-<p><code>FLUSHDB</code>清空当前数据库</p>
-<p><code>EXPIRE/PEXPIRE</code>    客户端可以通过这些命令，以秒/毫秒为精度为数据库中的某个键设置生存时间(TTL)</p>
-<p><strong>过期时间是一个UNIX时间戳，当键的过期时间来临，服务器会自动从数据库中删除这个键</strong></p>
-<h3 id="过期键删除策略"><a href="#过期键删除策略" class="headerlink" title="过期键删除策略"></a>过期键删除策略</h3><ul>
-<li>定时删除<ul>
-<li>在设置键的过期时间的同时，创建一个定时器，让定时器在键的过期时间来临时，立即执行对键的删除操作</li>
-</ul>
-</li>
-<li>惰性删除<ul>
-<li>放任键过期不管，但是每次从键空间获取键时，都检查取得的键是否过期，如果过期则删除</li>
-</ul>
-</li>
-<li>定期删除<ul>
-<li>每隔一段时间，程序对数据库进行一次检查，删除里面的过期键，至于要删除多少过期键，以及要检查多少数据库，由算法决定</li>
-</ul>
-</li>
-</ul>
-<p>Redis一般使用<strong>惰性删除+定期删除</strong></p>
-<p><strong>数据库主要由<code>dict expires</code>两个字典构成，其中<code>dict</code>字典负责保存键值对，<code>expires</code>字典则负责保存键的过期时间</strong></p>
-<h2 id="AOF-RDB"><a href="#AOF-RDB" class="headerlink" title="AOF/RDB"></a>AOF/RDB</h2><h4 id="生成RDB文件"><a href="#生成RDB文件" class="headerlink" title="生成RDB文件"></a>生成RDB文件</h4><p>在执行SAVE或者BGSAVE命令创建一个新的RDB文件时，程序会对数据库中的键进行检查，已过期的键不会被保存到新创建的RDB文件中</p>
-<p><strong>因此，数据库中包含过期键不会对生成新的RDB文件造成影响</strong></p>
-<h4 id="载入RDB文件"><a href="#载入RDB文件" class="headerlink" title="载入RDB文件"></a>载入RDB文件</h4><ul>
-<li>主服务器：载入RDB文件时，程序会对文件中保存的键进行检查，未过期的键载入数据库，过期键被忽略</li>
-<li>从服务器：载入RDB文件时，文件中保存的所有键全部载入到数据库，在后面的主从服务器数据同步时，从服务器的数据库被清空</li>
-</ul>
-<h4 id="AOF文件写入"><a href="#AOF文件写入" class="headerlink" title="AOF文件写入"></a>AOF文件写入</h4><p>服务器以AOF持久化模式运行时，如果某个键已过期，同时没有被删除，AOF文件不会因为这个过期键产生任何影响</p>
-<p>在过期键被惰性删除或定期删除后，程序会向AOF文件追加(append)一条<code>DEL</code>命令显示的记录该键已被删除</p>
-<h4 id="AOF重写"><a href="#AOF重写" class="headerlink" title="AOF重写"></a>AOF重写</h4><p>在执行AOF重写的过程中，程序会对数据库中的键做检查，已过期的键不会保存到重写后的AOF文件中</p>
-<p>所谓重写：就是过滤重复语句</p>
-<blockquote>
-<p>例如</p>
-</blockquote>
-<pre><code class="hljs c++">RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"a"</span> <span class="hljs-string">"b"</span>
-RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"c"</span>
-RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"d"</span> <span class="hljs-string">"e"</span></code></pre>
-
-<p>重写后</p>
-<pre><code class="hljs c++">RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"a"</span> <span class="hljs-string">"b"</span> <span class="hljs-string">"c"</span> <span class="hljs-string">"d"</span> <span class="hljs-string">"e"</span></code></pre>
-
-<p><strong>过滤了部分重复语句，节省了AOF文件空间</strong></p>
-<h3 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h3><blockquote>
-<p>当服务器运行在复制模式下时，从服务器的过期键删除动作由主服务器控制</p>
+<h2 id="set-get注意点"><a href="#set-get注意点" class="headerlink" title="set/get注意点"></a>set/get注意点</h2><blockquote>
+<p>每次<code>set/get</code>值，并不是直接使用线程<code>id</code>作为<code>TheadLocalMap</code>的key，而是使用<code>ThreadLocal</code>作为key</p>
 </blockquote>
 <ul>
-<li>主服务器在删除一个过期键后，会显式的向所有从服务器发送一个<code>DEL</code>命令，告知从服务器删除这个过期键</li>
-<li>从服务器在执行客户端发送的读命令时，即使碰到过期键也不会主动将其删除，而是继续处理</li>
-<li>从服务器只有在街道主服务器发送的<code>DEL</code>命令后，采后删除过期键</li>
+<li>如果直接使用线程id作为key，无法区分放入<code>ThreadLocalMap</code>的多个value</li>
+<li>使用<code>ThreadLocal</code>作为key，因为每一个<code>ThreadLocal</code>对象都可以由<code>ThreadLocalHashCode</code>属性唯一区分</li>
 </ul>
-<p><strong>如此，通过主服务器控制从服务器统一地删除过期键，可以保证主从服务器的一致性</strong></p>
+<h3 id="那么如何保证ThreadLocalHashCode唯一呢？"><a href="#那么如何保证ThreadLocalHashCode唯一呢？" class="headerlink" title="那么如何保证ThreadLocalHashCode唯一呢？"></a>那么如何保证<code>ThreadLocalHashCode</code>唯一呢？</h3><p>​    在<code>ThreadLocal</code>类中，包含了一个<code>static AtomicInteger nextHashCode</code>类变量和一个<code>static final</code>修饰的常量(作为相邻两个<code>nextHashCode</code>的差值)。因为<code>nextHashCode</code>是类变量，所以每一次创建<code>ThreadLocal</code>对象都可以保证<code>nextHashCode</code>被更新到新的值，并且下一次调用<code>ThreadLocal</code>类这个被更新的值仍然可用，同时使用的<code>AtomicInteger</code>保证每次自增都是原子性的。</p>
+<h2 id="ThreadLocal和线程同步机制"><a href="#ThreadLocal和线程同步机制" class="headerlink" title="ThreadLocal和线程同步机制"></a>ThreadLocal和线程同步机制</h2><blockquote>
+<p>他们都是为了解决多线程中相同变量的访问冲突问题</p>
+</blockquote>
+<ul>
+<li>在同步机制中，通过对象的锁机制保证同一时间只有一个线程访问变量，这时该变量是多个线程共享的，使用同步机制要求程序员分析什么时候对变量进行读写，较为麻烦</li>
+<li>而<code>ThreadLocal</code>从另一个角度出发，它为每一个线程提供了一个独立的变量副本，从而隔离了多个线程对统一变量的访问冲突，因为每一个线程访问/操作的都是自己的本地变量，因此也没有必要对变量进行同步了，<code>ThreadLocal</code>提供了线程安全的共享对象</li>
+<li>总的来说，对于多线程资源共享问题，同步机制采取了<strong>时间换空间</strong>，而<code>ThreadLocal</code>采取了<strong>空间换时间</strong>，前者提供一份变量，让不同线程排队访问，后者为每一个线程提供一份变量，同时可以相互访问不受影响</li>
+</ul>
+<h2 id="ThreadLocalMap"><a href="#ThreadLocalMap" class="headerlink" title="ThreadLocalMap"></a>ThreadLocalMap</h2><p><code>ThreadLocalMap</code>作为hash表的一种实现方式，是通过<strong>开放寻址法</strong>来解决哈希冲突，与HashMap不同</p>
+<p>开放寻址法</p>
+<ul>
+<li>如果出现散列冲突，就重新探测一个空闲位置，将其插入，往散列表中插入数据时，如果某个数据经过散列函数散列之后，存储位置已经被占用，我们就从当前位置开始，以此往后寻找，看是否由空闲位置，直到找到为止</li>
+</ul>
 
             </article>
             <hr>
@@ -316,7 +248,7 @@ RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"d"</spa
                   <div class="post-meta mr-3">
                     <i class="iconfont icon-category"></i>
                     
-                      <a class="hover-with-bg" href="/categories/Redis/">Redis</a>
+                      <a class="hover-with-bg" href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>
                     
                   </div>
                 
@@ -324,7 +256,7 @@ RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"d"</spa
                   <div class="post-meta">
                     <i class="iconfont icon-tags"></i>
                     
-                      <a class="hover-with-bg" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+                      <a class="hover-with-bg" href="/tags/JUC/">JUC</a>
                     
                   </div>
                 
@@ -337,18 +269,12 @@ RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"d"</spa
                   <div class="post-prev col-6">
                     
                     
-                      <a href="/2020/12/31/ThreadLocal/">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">ThreadLocal</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
                   </div>
                   <div class="post-next col-6">
                     
                     
-                      <a href="/2020/12/29/redis-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AF%B9%E8%B1%A1/">
-                        <span class="hidden-mobile">redis:数据结构与对象</span>
+                      <a href="/2020/12/30/redis-%E5%8D%95%E6%9C%BA%E6%95%B0%E6%8D%AE%E5%BA%93/">
+                        <span class="hidden-mobile">redis:单机数据库</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -487,7 +413,7 @@ RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"d"</spa
     var typed = new Typed('#subtitle', {
       strings: [
         '  ',
-        "redis:单机数据库&nbsp;",
+        "ThreadLocal&nbsp;",
       ],
       cursorChar: "_",
       typeSpeed: 70,
