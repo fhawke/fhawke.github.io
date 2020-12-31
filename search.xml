@@ -11192,4 +11192,25 @@ RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"d"</spa
         <tag>JUC</tag>
       </tags>
   </entry>
+  <entry>
+    <title>volatile</title>
+    <url>/2020/12/31/volatile/</url>
+    <content><![CDATA[<h1 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h1><blockquote>
+<p>volatile就是轻量级的synchronized</p>
+</blockquote>
+<p>它让多处理器开发中保证了共享变量的<strong>可见性</strong>，可见性的意思是当一个线程修改一个变量时，其他变量能读到这个修改的值，如果一个字段被声明为volatile，JMM保证所有线程看到这个变量的值是一致的</p>
+<ul>
+<li>对任意单个volatile变量的读写具有原子性，但类似于volatile++这种复合操作不具有原子性</li>
+<li>volatile可以保证可见性，当一个变量被volatile修饰后，线程对此变量的读取不能从本地内存中读取，必须要从主内存中读取，然后缓存到本地内存中</li>
+<li>volatile可以保证有序性，禁止指令重排序</li>
+</ul>
+<p><strong>volatile可以保证线程可见性且提供了一定的有序性，但是无法保证原子性，在JVM底层，volatile使用内存屏障实现</strong></p>
+]]></content>
+      <categories>
+        <category>多线程</category>
+      </categories>
+      <tags>
+        <tag>JUC</tag>
+      </tags>
+  </entry>
 </search>
