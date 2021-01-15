@@ -11610,6 +11610,50 @@ RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"d"</spa
 <p>当前线程获取同步状态并执行了相应逻辑后，就需要释放同步状态，使得后续节点能够继续获取同步状态，通过调用同步器的<code>release(int arg)</code>方法可以释放同步状态，该方法在释放了同步状态后，会唤醒其后继节点(使得后继节点重新尝试获取同步状态)</p>
 <p><strong>总结：</strong></p>
 <p>​    获取同步状态时，同步器维护一个同步队列，获取同步状态失败的线程都会封装成节点加入到队列中并在队列中自旋的获取同步状态，移出队列的条件是前驱节点为头节点且成功获取了同步状态。在释放同步状态时，同步器调用<code>tryRelease(int arg)</code>方法释放同步状态，然后唤醒头结点的后继节点</p>
+<h1 id="Condition"><a href="#Condition" class="headerlink" title="Condition"></a>Condition</h1><blockquote>
+<p>condition是同步器AQS的内部类，因为Condition的操作需要获取相关联的锁，所以作为AQS的内部类也较为合理</p>
+</blockquote>
+<h2 id="condition接口"><a href="#condition接口" class="headerlink" title="condition接口"></a>condition接口</h2><p>Condition定义了等待/通知两种类型的方法，当前线程调用这些方法时，需要提前获取到Condition对象关联的锁，Condition对象是由Lock对象创建出来的<strong>(Lock.newCondition())</strong>；</p>
+<p>调用await()方法后，当前线程会释放锁并在此等待，而其他线程调用Condition对象的signal()方法，通知当前线程后，当前线程才会从await()返回，并且在返回前已经获取了锁。</p>
+<h2 id="condition实现分析"><a href="#condition实现分析" class="headerlink" title="condition实现分析"></a>condition实现分析</h2><h3 id="等待队列"><a href="#等待队列" class="headerlink" title="等待队列"></a>等待队列</h3><p>同AQS，<strong>condition的等待队列也是一个FIFO的队列</strong>，每个节点都包含了一个线程引用，该线程就是在Condition对象上等待的线程，如果一个线程调用了await方法，那么该线程将会释放锁，构造成节点加入等待队列(从尾部加入等待队列)，进入等待状态，<strong>Conditon也有首尾节点的引用</strong>，新增节点只需要将原有的尾节点指向他，然后更新尾节点即可(节点引用更新不需要用CAS保证，因为调用await方法的线程必定是获取了锁的线程)</p>
+<h3 id="等待"><a href="#等待" class="headerlink" title="等待"></a>等待</h3><p>调用Condition的await()方法，会使当前线程进入等待队列并释放锁，同时线程状态变为等待状态，当从await返回时，线程一定获取了Condition相关联的锁，从队列的角度看，当调用await()时，<strong>相当于同步队列的首节点移到了等待队列的尾节点</strong></p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title">await</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> InterruptedException </span>&#123;
+    <span class="hljs-keyword">if</span> (Thread.interrupted())
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> InterruptedException();
+    <span class="hljs-comment">//当前线程加入等待队列</span>
+    Node node = addConditionWaiter();
+    <span class="hljs-comment">//释放同步状态，也就是释放锁</span>
+    <span class="hljs-keyword">int</span> savedState = fullyRelease(node);
+    <span class="hljs-keyword">int</span> interruptMode = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (!isOnSyncQueue(node)) &#123;
+        LockSupport.park(<span class="hljs-keyword">this</span>);
+        <span class="hljs-keyword">if</span> ((interruptMode = checkInterruptWhileWaiting(node)) != <span class="hljs-number">0</span>)
+            <span class="hljs-keyword">break</span>;
+    &#125;
+    <span class="hljs-keyword">if</span> (acquireQueued(node, savedState) &amp;&amp; interruptMode != THROW_IE)
+        interruptMode = REINTERRUPT;
+    <span class="hljs-keyword">if</span> (node.nextWaiter != <span class="hljs-keyword">null</span>) <span class="hljs-comment">// clean up if cancelled</span>
+        unlinkCancelledWaiters();
+    <span class="hljs-keyword">if</span> (interruptMode != <span class="hljs-number">0</span>)
+        reportInterruptAfterWait(interruptMode);
+&#125;</code></pre>
+
+
+
+<h3 id="通知"><a href="#通知" class="headerlink" title="通知"></a>通知</h3><p>通过调用Condition中的signal()方法，将会唤醒在等待队列中等待时间最长的节点(首节点)，在唤醒节点之前，将节点移到同步队列中</p>
+<pre><code class="hljs java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title">signal</span><span class="hljs-params">()</span> </span>&#123;
+    <span class="hljs-keyword">if</span> (!isHeldExclusively())
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalMonitorStateException();
+    Node first = firstWaiter;
+    <span class="hljs-keyword">if</span> (first != <span class="hljs-keyword">null</span>)
+        doSignal(first);
+&#125;</code></pre>
+
+
+
+<p><strong>通过调用同步器的enq方法，等待队列的头节点线程安全地移动到同步队列，当节点移动到同步队列后，当前线程使用LockSupport唤醒该节点的线程</strong></p>
+<p>被唤醒的线程，从await方法的while循环中退出，进而调用同步器的acquireQueued方法加入到获取同步状态的竞争中，成功获取到同步状态后，被唤醒的线程从之前调用的await方法中返回，此时该线程已经成功获取了锁</p>
+<p><strong>SignalAll()方法，相当于对等待队列中的每一个线程均执行一次signal方法，效果就是将等待队列中的所有节点全部移动到同步队列中，并唤醒每个节点的线程</strong></p>
 ]]></content>
       <categories>
         <category>JUC</category>
