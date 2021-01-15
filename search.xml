@@ -11340,4 +11340,52 @@ RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"d"</spa
         <tag>二叉树</tag>
       </tags>
   </entry>
+  <entry>
+    <title>礼物的最大价值</title>
+    <url>/2021/01/15/%E7%A4%BC%E7%89%A9%E7%9A%84%E6%9C%80%E5%A4%A7%E4%BB%B7%E5%80%BC/</url>
+    <content><![CDATA[<h2 id="剑指-Offer-47-礼物的最大价值"><a href="#剑指-Offer-47-礼物的最大价值" class="headerlink" title="剑指 Offer 47. 礼物的最大价值"></a><a href="https://leetcode-cn.com/problems/li-wu-de-zui-da-jie-zhi-lcof/" target="_blank" rel="noopener">剑指 Offer 47. 礼物的最大价值</a></h2><p>在一个 m*n 的棋盘的每一格都放有一个礼物，每个礼物都有一定的价值（价值大于 0）。你可以从棋盘的左上角开始拿格子里的礼物，并每次向右或者向下移动一格、直到到达棋盘的右下角。给定一个棋盘及其上面的礼物的价值，请计算你最多能拿到多少价值的礼物？</p>
+<pre><code class="hljs angelscript">输入: 
+[
+  [<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],
+  [<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>],
+  [<span class="hljs-number">4</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]
+]
+输出: <span class="hljs-number">12</span>
+解释: 路径 <span class="hljs-number">1</span>→<span class="hljs-number">3</span>→<span class="hljs-number">5</span>→<span class="hljs-number">2</span>→<span class="hljs-number">1</span> 可以拿到最多价值的礼物</code></pre>
+
+
+
+<h3 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h3><p>根据题目说明，知道某单元格只可能从上边单元格或左边单元格到达</p>
+<p>设f(i,j)为从期盼左上角走至单元格(i,j)的礼物<strong>最大累计价值</strong></p>
+<p>动态转移方程：<code>f(i,j) = max(f(i,j-1) , f(i-1,j)) + grid[i][j]</code></p>
+<p>AC代码：</p>
+<pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">maxValue</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;
+        <span class="hljs-keyword">int</span> row = grid.<span class="hljs-built_in">size</span>();
+        <span class="hljs-keyword">int</span> col = grid[<span class="hljs-number">0</span>].<span class="hljs-built_in">size</span>();
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>;i &lt; row;i++)&#123;
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j = <span class="hljs-number">0</span>;j &lt;col;j++)&#123;
+                <span class="hljs-keyword">if</span>(i == <span class="hljs-number">0</span>&amp;&amp;j == <span class="hljs-number">0</span>)
+                <span class="hljs-keyword">continue</span>;
+                <span class="hljs-keyword">if</span>(i == <span class="hljs-number">0</span>)  grid[i][j] += grid[i][j<span class="hljs-number">-1</span>];
+                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(j == <span class="hljs-number">0</span>)  grid[i][j] += grid[i<span class="hljs-number">-1</span>][j];
+                <span class="hljs-keyword">else</span>&#123;
+                    grid[i][j] += <span class="hljs-built_in">max</span>(grid[i][j<span class="hljs-number">-1</span>],grid[i<span class="hljs-number">-1</span>][j]);
+                &#125;
+            &#125;
+        &#125;
+        <span class="hljs-keyword">return</span> grid[row<span class="hljs-number">-1</span>][col<span class="hljs-number">-1</span>];
+    &#125;
+    
+&#125;;</code></pre>
+
+]]></content>
+      <categories>
+        <category>剑指offer</category>
+      </categories>
+      <tags>
+        <tag>动态规划</tag>
+      </tags>
+  </entry>
 </search>
