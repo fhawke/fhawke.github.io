@@ -11853,4 +11853,87 @@ RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"d"</spa
         <tag>ConcurrentHashMap</tag>
       </tags>
   </entry>
+  <entry>
+    <title>线程池</title>
+    <url>/2021/01/16/%E7%BA%BF%E7%A8%8B%E6%B1%A0/</url>
+    <content><![CDATA[<h1 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h1><h2 id="1-线程池的好处"><a href="#1-线程池的好处" class="headerlink" title="1. 线程池的好处"></a>1. 线程池的好处</h2><ul>
+<li><strong>降低资源消耗</strong>：通过重复利用已创建的线程降低线程创建和销毁造成的消耗</li>
+<li><strong>提高响应速度</strong>：当任务到达时，任务可以不需要等到线程创建就能立即执行</li>
+<li><strong>提高线程的可管理性</strong>：线程是稀缺资源，如果无限制的创建，那么，不仅会消耗系统资源，还会降低系统的稳定性，使用线程池可以进行统一分配，调优和监控。</li>
+</ul>
+<h2 id="2-线程池的实现原理"><a href="#2-线程池的实现原理" class="headerlink" title="2. 线程池的实现原理"></a>2. 线程池的实现原理</h2><p>当提交一个新任务到线程池时，线程池处理流程如下</p>
+<ul>
+<li>线程池判断核心线程池里的线程是否都在执行任务，如果不是，创建一个新的工作线程来执行任务，是，则进入下一个流程</li>
+<li>线程池判断工作队列是否已经满，如果工作队列没有满，则将新提交的任务存储在这个工作队列里，如果工作队列满了，进入下个流程</li>
+<li>线程池判断线程池中的线程是否都处于工作状态，如果没有，创建一个新的工作线程来处理任务，如果已经满了，就交给饱和策略来处理这个任务</li>
+</ul>
+<p><img src="/2021/01/16/%E7%BA%BF%E7%A8%8B%E6%B1%A0/C:%5CUsers%5Cfhawk%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210116184430855.png" srcset="/img/loading.gif" alt="image-20210116184430855"></p>
+<p><strong>采用以上设计思路的目的：是为了在执行execute()的时候，尽可能的避免获取全局锁</strong></p>
+<p><strong>工作线程：</strong>线程池创建线程时，会将线程封装成工作线程Worker，Worker在执行完任务后，还会循环获取工作队列里的任务来执行</p>
+<p>ThreadPoolExecutor中线程执行任务的示意图如下所示</p>
+<p><img src="/2021/01/16/%E7%BA%BF%E7%A8%8B%E6%B1%A0/C:%5CUsers%5Cfhawk%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210116185136563.png" srcset="/img/loading.gif" alt="image-20210116185136563"></p>
+<p>线程池中的线程执行任务分两种情况</p>
+<ul>
+<li>在execute()方法中创建一个线程时，会让这个线程执行当前任务</li>
+<li>这个线程执行完1中的方法后，会反复从BlockingQueue获取任务来执行</li>
+</ul>
+<h2 id="3-线程池的使用"><a href="#3-线程池的使用" class="headerlink" title="3. 线程池的使用"></a>3. 线程池的使用</h2><h3 id="3-1-线程池的创建"><a href="#3-1-线程池的创建" class="headerlink" title="3.1 线程池的创建"></a>3.1 线程池的创建</h3><pre><code class="hljs java"><span class="hljs-keyword">new</span> ThreadPoolExecutor(corePoolSize,maximumPoolSize,keepAliveTime,milliseconds,runnableTaskQueue,handler);</code></pre>
+
+<ul>
+<li><p>corePoolSize：线程池的基本大小</p>
+<ul>
+<li>当提交一个任务到线程池时，线程池会创建一个线程来执行任务，即使其他空闲的基本线程能够执行任务也会创建线程，等到需要执行的任务数大于线程池基本大小时就不再创建</li>
+</ul>
+</li>
+<li><p>runnableTaskQueue：任务队列</p>
+<ul>
+<li>用于保存等待执行的任务的阻塞队列<ul>
+<li>ArrayBlockingQueue：一个基于数组结构的有界阻塞队列，按FIFO对元素排序</li>
+<li>LinkedBlockingQueue：一个基于链表结构的阻塞队列，按FIFO排序元素，吞吐量高于ArrayBlockingQueue</li>
+<li>SynchronousQueue：一个不存储元素的阻塞队列，每个插入操作必须等待另一个线程调用移除操作，否则插入操作一直处于阻塞状态</li>
+<li>PriorityBlockingQueue：具有优先级的无限阻塞队列</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>maximumPoolSize：线程池最大数量</p>
+<ul>
+<li>线程池允许创建的最大线程数，如果队列满了，并且已创建的线程数小于最大线程数，则线程池会再创建新的线程执行任务</li>
+</ul>
+</li>
+<li><p>ThreadFactory：用于设置创建线程的工厂</p>
+</li>
+<li><p>RejectedExecutionHandler：饱和策略</p>
+<ul>
+<li>当队列和线程池都满了，说明线程池处于饱和状态，那么必须采用一种策略处理提交的新任务，默认是AbortPolicy，表示无法处理新任务时抛出异常<ul>
+<li>AbortPolicy：直接抛出异常</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-2向线程池提交任务"><a href="#3-2向线程池提交任务" class="headerlink" title="3.2向线程池提交任务"></a>3.2向线程池提交任务</h3><ul>
+<li><strong>execute()</strong><ul>
+<li>用于提交不需要返回值的任务，所以无法判断任务是否被执行成功</li>
+</ul>
+</li>
+<li><strong>submit()</strong><ul>
+<li>用于提交需要返回值的任务，线程池会返回一个future类型的对象，用于判断任务是否执行成功，并且可以通过future的get()方法来获取返回值，get方法会阻塞当前线程直到任务完成，带参数可以指定阻塞时间</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-3关闭线程池"><a href="#3-3关闭线程池" class="headerlink" title="3.3关闭线程池"></a>3.3关闭线程池</h3><p>可以调用shutdown和shutdownNow来关闭线程池</p>
+<p><strong>他们的原理是：</strong>遍历线程池中的工作线程，逐个调用线程的<code>interrupt</code>方法来中断线程，所以无法响应中断的任务可能永远无法终止</p>
+<ul>
+<li>shutdownNow首先将线程池的状态设置为stop，然后尝试停止所有正在执行或暂停任务的线程，并返回等待执行任务的列表</li>
+<li>shutdown只是将线程池的状态设置为SHUTDOWN状态，然后中断所有没有正在执行任务的线程</li>
+</ul>
+]]></content>
+      <categories>
+        <category>JUC</category>
+      </categories>
+      <tags>
+        <tag>线程池</tag>
+      </tags>
+  </entry>
 </search>

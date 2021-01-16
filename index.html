@@ -168,6 +168,53 @@
     
     
     <div class="col-12 col-md-12 mx-auto index-info">
+      <a class="index-header" href="/2021/01/16/%E7%BA%BF%E7%A8%8B%E6%B1%A0/">线程池</a>
+
+      <a href="/2021/01/16/%E7%BA%BF%E7%A8%8B%E6%B1%A0/" class="index-excerpt">
+        
+        
+          
+        
+        <div>线程池1. 线程池的好处
+降低资源消耗：通过重复利用已创建的线程降低线程创建和销毁造成的消耗
+提高响应速度：当任务到达时，任务可以不需要等到线程创建就能立即执行
+提高线程的可管理性：线程是稀缺资源，如果无限制的创建，那么，不仅会消耗系统资源，还会降低系统的稳定性，使用线程池可以进行统一分配，调优和监控。
+
+2. 线程池的实现原理当提交一个新任务到线程池时，线程池处理流程如下
+
+线程池判断核心线程池</div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>&nbsp;2021-01-16
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/JUC/">JUC</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/">线程池</a>
+            
+          </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <div class="col-12 col-md-12 mx-auto index-info">
       <a class="index-header" href="/2021/01/16/ConcurrentHashMap/">ConcurrentHashMap</a>
 
       <a href="/2021/01/16/ConcurrentHashMap/" class="index-excerpt">
@@ -583,52 +630,6 @@ Thread类中有一个成员变量属于ThreadLocalMap，他是一个map类，它
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/JUC/">JUC</a>
-            
-          </div>
-        
-      </div>
-    </div>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <div class="col-12 col-md-12 mx-auto index-info">
-      <a class="index-header" href="/2020/12/30/redis-%E5%8D%95%E6%9C%BA%E6%95%B0%E6%8D%AE%E5%BA%93/">redis:单机数据库</a>
-
-      <a href="/2020/12/30/redis-%E5%8D%95%E6%9C%BA%E6%95%B0%E6%8D%AE%E5%BA%93/" class="index-excerpt">
-        
-        
-          
-        
-        <div>单机数据库服务器中的数据库Redis服务器将所有数据库都保存在服务器状态redis.h/redisServer结构的db数组中，db数组的每个项都是一个redis.h/redisDb结构，每个redisDb结构代表一个数据库
-struct redisServer&#123;
-    //...
-    //一个数组，保存服务器中所有数据库
-	redisDb *db;
-    //...
-&#125</div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>&nbsp;2020-12-30
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Redis/">Redis</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
             
           </div>
         
