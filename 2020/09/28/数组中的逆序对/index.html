@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      955 字
+      1.4k 字
     </span>
   
 
@@ -173,7 +173,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      12
+      18
        分钟
     </span>
   
@@ -250,42 +250,79 @@
 <pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Solution</span> &#123;</span>
 <span class="hljs-keyword">public</span>:
     <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">reversePairs</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums)</span> </span>&#123;
-        <span class="hljs-keyword">int</span> n = nums.<span class="hljs-built_in">size</span>();
-        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">tmp</span><span class="hljs-params">(n)</span></span>;
-        <span class="hljs-keyword">return</span> mergeSort(nums,tmp,<span class="hljs-number">0</span>,n<span class="hljs-number">-1</span>);
+        <span class="hljs-keyword">int</span> len = nums.<span class="hljs-built_in">size</span>();
+
+        <span class="hljs-keyword">if</span> (len &lt; <span class="hljs-number">2</span>) &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; <span class="hljs-comment">// 若不存在数对，直接 return 0</span>
+        &#125;
+
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">helper</span><span class="hljs-params">(len)</span></span>;
+
+        <span class="hljs-keyword">return</span> reversePairs(nums, <span class="hljs-number">0</span>, len - <span class="hljs-number">1</span>, helper);
     &#125;
-    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">mergeSort</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums,<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; tmp,<span class="hljs-keyword">int</span> l,<span class="hljs-keyword">int</span> r)</span></span>&#123;
-        <span class="hljs-keyword">if</span>(l &gt;= r)
-        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-        <span class="hljs-keyword">int</span> mid = (l+r)/<span class="hljs-number">2</span>;
-        <span class="hljs-keyword">int</span> count = mergeSort(nums,tmp,l,mid) + mergeSort(nums,tmp,mid+<span class="hljs-number">1</span>,r);
-        <span class="hljs-keyword">int</span> i = l,j = mid+<span class="hljs-number">1</span>,pos = l;
-        <span class="hljs-keyword">while</span>(i &lt;= mid&amp;&amp;j &lt;= r)
-        &#123;
-            <span class="hljs-keyword">if</span>(nums[i]&lt;=nums[j])
-            &#123;
-                tmp[pos] = nums[i];
-                i++;
-                count += (j - (mid+<span class="hljs-number">1</span>));
-            &#125;<span class="hljs-keyword">else</span>&#123;
-                tmp[pos] = nums[j];
-                j++;
+
+<span class="hljs-keyword">private</span>:
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">reversePairs</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums, <span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> right, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; helper)</span> </span>&#123;
+        <span class="hljs-keyword">if</span> (left == right) &#123;
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; <span class="hljs-comment">// 递归终止条件是只剩一个元素了（即不存在数对了）</span>
+        &#125;
+
+        <span class="hljs-keyword">int</span> mid = left + (right - left) / <span class="hljs-number">2</span>; <span class="hljs-comment">// 此算式等同于 (left + right) / 2，是为了避免溢出</span>
+
+        <span class="hljs-keyword">int</span> leftPairs = reversePairs(nums, left, mid, helper); <span class="hljs-comment">// 计算左半部分的逆序对</span>
+        <span class="hljs-keyword">int</span> rightPairs = reversePairs(nums, mid + <span class="hljs-number">1</span>, right, helper); <span class="hljs-comment">// 计算右半部分的逆序对</span>
+
+        <span class="hljs-keyword">if</span> (nums[mid] &lt;= nums[mid + <span class="hljs-number">1</span>]) &#123;
+            <span class="hljs-comment">// 此判断用于加速，即如果左右都已排好序，而且左边的最大值 &lt;= 右边的最小值，</span>
+            <span class="hljs-comment">// 那么就不存在跨越左边和右边的逆序对了</span>
+            <span class="hljs-keyword">return</span> leftPairs + rightPairs; 
+        &#125;
+
+        <span class="hljs-keyword">int</span> crossPairs = mergeAndCount(nums, left, mid, right, helper); <span class="hljs-comment">// 计算跨越左边和右边的逆序对</span>
+
+        <span class="hljs-keyword">return</span> leftPairs + rightPairs + crossPairs;
+    &#125;
+
+    <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">mergeAndCount</span><span class="hljs-params">(<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; nums, <span class="hljs-keyword">int</span> left, <span class="hljs-keyword">int</span> mid, <span class="hljs-keyword">int</span> right, <span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt;&amp; helper)</span> </span>&#123;
+        <span class="hljs-comment">// 本函数的前提条件是：左半部分和右半部分都是已经按升序排好序了的</span>
+        <span class="hljs-comment">// 因为本函数是从左右部分都是只有一个元素的情况开始运行的（自底向上），所以是可以保证前提条件的</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = left; i &lt;= right; ++i) &#123;
+            helper[i] = nums[i]; <span class="hljs-comment">// 先填充 helper 辅助数组</span>
+        &#125;
+
+        <span class="hljs-keyword">int</span> i = left, j = mid + <span class="hljs-number">1</span>; <span class="hljs-comment">// i 和 j 分别是左半部分和右半部分的起点</span>
+        <span class="hljs-keyword">int</span> count = <span class="hljs-number">0</span>; <span class="hljs-comment">// count 用来统计逆序对数量</span>
+
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> k = left; k &lt;= right; ++k) &#123;
+            <span class="hljs-keyword">if</span> (i == mid + <span class="hljs-number">1</span>) &#123;
+                <span class="hljs-comment">// 假如 i 已经越过左边的边界，直接填充右半部分进 nums</span>
+                nums[k] = helper[j];
+                ++j;
+            &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (j == right + <span class="hljs-number">1</span>) &#123;
+                <span class="hljs-comment">// 假如 j 已经越过右边的边界，直接填充左半部分进 nums</span>
+                nums[k] = helper[i];
+                ++i;
+            &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (helper[i] &lt;= helper[j]) &#123; <span class="hljs-comment">// 注意健壮的归并排序这里要是 &lt;=</span>
+                <span class="hljs-comment">// 假如左边小于等于右边，那就不是逆序对，不用修改 count</span>
+                nums[k] = helper[i];
+                ++i;
+            &#125; <span class="hljs-keyword">else</span> &#123;
+                <span class="hljs-comment">// 假如左边大于右边，是逆序对，count += 当前左边 [i, mid] 的所有元素</span>
+                <span class="hljs-comment">// 因为假如左边是 [7,8]，右边是[5,6]，然后 i 指向 7，j 指向 5</span>
+                <span class="hljs-comment">// 那么 5 和 7、8 都构成了逆序对，也就是此时有两对新的逆序对</span>
+                <span class="hljs-comment">// 所以可以总结出规律：count += mid - i + 1</span>
+                nums[k] = helper[j];
+                count += mid - i + <span class="hljs-number">1</span>;
+                ++j;
             &#125;
-            pos++;
         &#125;
-        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> k = i;k &lt;= mid;k++)
-        &#123;
-            tmp[pos++] = nums[k];
-            count += (j - (mid+<span class="hljs-number">1</span>));
-        &#125;
-        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> k = j;k &lt;= r;k++)
-        &#123;
-            tmp[pos++] = nums[k];
-        &#125;
-        copy(tmp.<span class="hljs-built_in">begin</span>()+l,tmp.<span class="hljs-built_in">begin</span>()+r+<span class="hljs-number">1</span>,nums.<span class="hljs-built_in">begin</span>()+l);
+
         <span class="hljs-keyword">return</span> count;
     &#125;
-&#125;;</code></pre>
+&#125;;
+
+代码来自：superkakayong(LeetCode)
+链接：https:<span class="hljs-comment">//leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/solution/zi-jie-ti-ku-jian-51-kun-nan-shu-zu-zhon-eipc/</span></code></pre>
 
 
             </article>
