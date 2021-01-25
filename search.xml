@@ -12049,4 +12049,50 @@ RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"d"</spa
         <tag>原地置换</tag>
       </tags>
   </entry>
+  <entry>
+    <title>剪绳子</title>
+    <url>/2021/01/25/%E5%89%AA%E7%BB%B3%E5%AD%90/</url>
+    <content><![CDATA[<h2 id="剑指-Offer-14-I-剪绳子"><a href="#剑指-Offer-14-I-剪绳子" class="headerlink" title="剑指 Offer 14- I. 剪绳子"></a><a href="https://leetcode-cn.com/problems/jian-sheng-zi-lcof/" target="_blank" rel="noopener">剑指 Offer 14- I. 剪绳子</a></h2><p>给你一根长度为 n 的绳子，请把绳子剪成整数长度的 m 段（m、n都是整数，n&gt;1并且m&gt;1），每段绳子的长度记为 k[0],k[1]…k[m-1] 。请问 k[0]<em>k[1]</em>…*k[m-1] 可能的最大乘积是多少？例如，当绳子的长度是8时，我们把它剪成长度分别为2、3、3的三段，此时得到的最大乘积是18。</p>
+<pre><code class="hljs angelscript">输入: <span class="hljs-number">2</span>
+输出: <span class="hljs-number">1</span>
+解释: <span class="hljs-number">2</span> = <span class="hljs-number">1</span> + <span class="hljs-number">1</span>, <span class="hljs-number">1</span> × <span class="hljs-number">1</span> = <span class="hljs-number">1</span></code></pre>
+
+<pre><code class="hljs angelscript">输入: <span class="hljs-number">10</span>
+输出: <span class="hljs-number">36</span>
+解释: <span class="hljs-number">10</span> = <span class="hljs-number">3</span> + <span class="hljs-number">3</span> + <span class="hljs-number">4</span>, <span class="hljs-number">3</span> × <span class="hljs-number">3</span> × <span class="hljs-number">4</span> = <span class="hljs-number">36</span></code></pre>
+
+
+
+<h3 id="解题思路："><a href="#解题思路：" class="headerlink" title="解题思路："></a>解题思路：</h3><p>动态规划，对于长度为5的绳子，可以剪成<code>[1*4],[2*3],[3*2],[4*1]</code>，取其中最大值，显然后面两组有重合情况发生，因此我们可以进行优化</p>
+<p>这里也有个要注意的点，在长度大于等于4的时候，对于前面的dp[1],dp[2],dp[3]不能拆分，拆分会导致4后面的值也变小</p>
+<h3 id="AC代码："><a href="#AC代码：" class="headerlink" title="AC代码："></a>AC代码：</h3><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">cutRope</span><span class="hljs-params">(<span class="hljs-keyword">int</span> number)</span> </span>&#123;
+        <span class="hljs-keyword">if</span> (number &lt; <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;
+        <span class="hljs-keyword">if</span> (number == <span class="hljs-number">2</span> || number == <span class="hljs-number">3</span>)
+            <span class="hljs-keyword">return</span> number - <span class="hljs-number">1</span>;
+        <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">ans</span><span class="hljs-params">(number + <span class="hljs-number">1</span>,<span class="hljs-number">0</span>)</span></span>;
+        <span class="hljs-keyword">int</span> maxNum = <span class="hljs-number">-1</span>;
+        ans[<span class="hljs-number">1</span>] = <span class="hljs-number">1</span>;
+        ans[<span class="hljs-number">2</span>] = <span class="hljs-number">2</span>;
+        ans[<span class="hljs-number">3</span>] = <span class="hljs-number">3</span>;<span class="hljs-comment">//因为长度》=4，他们不需要拆，拆了反而会变小，对于小于4的情况我们直接开头处理</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">4</span>; i &lt;= number; ++i)
+        &#123;
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> j = <span class="hljs-number">1</span>; j &lt;= i/<span class="hljs-number">2</span>; ++j)
+            &#123;
+                maxNum = <span class="hljs-built_in">max</span>(maxNum, ans[j] * ans[i - j]);
+                ans[i] = maxNum;
+            &#125;
+        &#125;
+        <span class="hljs-keyword">return</span> ans[number];
+&#125;</code></pre>
+
+
+
+]]></content>
+      <categories>
+        <category>剑指offer</category>
+      </categories>
+      <tags>
+        <tag>动态规划</tag>
+      </tags>
+  </entry>
 </search>
