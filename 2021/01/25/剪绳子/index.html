@@ -163,7 +163,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      368 字
+      469 字
     </span>
   
 
@@ -173,7 +173,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      5
+      6
        分钟
     </span>
   
@@ -242,6 +242,26 @@
 &#125;</code></pre>
 
 
+
+
+
+<h3 id="解题思路2："><a href="#解题思路2：" class="headerlink" title="解题思路2："></a>解题思路2：</h3><p>数学法：</p>
+<p>最大乘积，就是让3的数量尽可能多</p>
+<p>那么我们只需要考虑对3取余，如果余2，直接*2，如果余1，减少一个3，乘两个2</p>
+<h3 id="AC代码：-1"><a href="#AC代码：-1" class="headerlink" title="AC代码："></a>AC代码：</h3><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">cuttingRope</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n)</span> </span>&#123;
+ 
+    <span class="hljs-keyword">if</span>(n&lt;<span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">if</span>(n&lt;<span class="hljs-number">4</span>) <span class="hljs-keyword">return</span> n<span class="hljs-number">-1</span>;
+    <span class="hljs-keyword">long</span> maxNum=<span class="hljs-number">1</span>,mod = <span class="hljs-number">1000000007</span>;
+    <span class="hljs-keyword">while</span>(n&gt;<span class="hljs-number">4</span>)&#123;
+        maxNum *= <span class="hljs-number">3</span>;
+        maxNum %=mod;
+        n -= <span class="hljs-number">3</span>;
+    &#125;
+    maxNum *= n;
+    maxNum %=mod;
+    <span class="hljs-keyword">return</span> maxNum;
+    &#125;</code></pre>
 
 
             </article>
