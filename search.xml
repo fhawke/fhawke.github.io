@@ -11554,7 +11554,7 @@ RPUSH <span class="hljs-built_in">list</span> <span class="hljs-string">"d"</spa
 <li>tryReleaseShared  共享式释放同步状态</li>
 <li>isHeldExclusively  当前同步器是否在独占模式下被线程占用</li>
 </ul>
-<h2 id="队列同步器实现分析"><a href="#队列同步器实现分析" class="headerlink" title="队列同步器实现分析"></a>队列同步器实现分析</h2><h3 id="同步队列"><a href="#同步队列" class="headerlink" title="同步队列"></a>同步队列</h3><p>同步器依赖内部的<strong>同步队列(FIFO)</strong>来完成同步状态的管理，当前线程获取同步状态失败时，同步器会把当前线程以及等待状态等信息构造成一个Node节点，并将其加入到同步队列，同时阻塞当前县城，当同步状态释放时，会把首节点中的线程唤醒，使其再次尝试获取同步状态</p>
+<h2 id="队列同步器实现分析"><a href="#队列同步器实现分析" class="headerlink" title="队列同步器实现分析"></a>队列同步器实现分析</h2><h3 id="同步队列"><a href="#同步队列" class="headerlink" title="同步队列"></a>同步队列</h3><p>同步器依赖内部的<strong>同步队列(FIFO)</strong>来完成同步状态的管理，当前线程获取同步状态失败时，同步器会把当前线程以及等待状态等信息构造成一个Node节点，并将其加入到同步队列，同时阻塞当前线程，当同步状态释放时，会把首节点中的线程唤醒，使其再次尝试获取同步状态</p>
 <p>同步队列中的Node用来<strong>保存同步状态失败的线程引用，等待状态以及前驱后继节点</strong></p>
 <p>同步器及同步队列结构如图所示</p>
 <p><img src="/2021/01/15/AQS/C:%5CUsers%5Cfhawk%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210115172135618.png" srcset="/img/loading.gif" alt="image-20210115172135618"></p>
@@ -12172,6 +12172,60 @@ digit = <span class="hljs-number">1</span> # 个位</code></pre>
       </categories>
       <tags>
         <tag>数论</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HashMap</title>
+    <url>/2021/01/27/HashMap/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>阻塞与同步</title>
+    <url>/2021/02/04/%E9%98%BB%E5%A1%9E%E4%B8%8E%E5%90%8C%E6%AD%A5/</url>
+    <content><![CDATA[<blockquote>
+<p>网上有很多关于同步阻塞的资料，阐述的方式却有所区别，本人在阅读相关博客后，记录一下自己的理解</p>
+</blockquote>
+<h2 id="阻塞，非阻塞，同步，异步，IO多路复用"><a href="#阻塞，非阻塞，同步，异步，IO多路复用" class="headerlink" title="阻塞，非阻塞，同步，异步，IO多路复用"></a>阻塞，非阻塞，同步，异步，IO多路复用</h2><p>​    在进行网络IO时，会涉及到用户态和内核态，并且会在用户态和内核态之间完成数据交换，那么我们将IO操作分为两段</p>
+<ul>
+<li><p>用户态等待内核态将数据准备好</p>
+</li>
+<li><p>将数据从内核态拷贝到用户态</p>
+<p>而同步，异步，阻塞，非阻塞的区别，就是在于对这两个阶段不同的处理方式进行分类</p>
+</li>
+</ul>
+<h4 id="同步阻塞"><a href="#同步阻塞" class="headerlink" title="同步阻塞"></a>同步阻塞</h4><ul>
+<li>第一阶段，当用户态调用read操作，这时候内核还没有准备好数据，那么<strong>用户就会一直阻塞等待</strong>，直到有数据返回</li>
+<li>第二阶段，当内核准备好数据之后，<strong>用户态继续等待内核将数据从内核拷贝到用户态</strong>之后，拿到数据使用</li>
+</ul>
+<h4 id="同步非阻塞"><a href="#同步非阻塞" class="headerlink" title="同步非阻塞"></a>同步非阻塞</h4><ul>
+<li>第一阶段，无论内核有没有将数据准备好，用户态只要发出read请求后，<strong>就会立即返回</strong>，然后监听内核数据是否已经准备好，此时不是阻塞状态</li>
+<li>第二阶段，用户态需要等待内核态把数据拷贝到用户态，才能去使用数据，这段时间仍然是处于等待状态</li>
+</ul>
+<h4 id="IO多路复用-IO多路复用基础是select-poll-epoll"><a href="#IO多路复用-IO多路复用基础是select-poll-epoll" class="headerlink" title="IO多路复用(IO多路复用基础是select, poll, epoll)"></a>IO多路复用(IO多路复用基础是select, poll, epoll)</h4><ul>
+<li>IO多路复用和同步阻塞是一样的，因为它的两个阶段同样也是阻塞的</li>
+<li>IO多路复用可以通过一个线程同时监听多个描述符，只要有一个满足就绪条件，那么内核态就返回</li>
+<li>IO多路复用可以使得一个线程同时处理多个IO请求，这就是所谓的Reactor模式</li>
+</ul>
+<h4 id="异步IO"><a href="#异步IO" class="headerlink" title="异步IO"></a>异步IO</h4><ul>
+<li>异步模式下，两个阶段都不等待</li>
+<li>用户态调用read方法后，相当于告诉内核数据：”内核数据发送完成之后通知我一下”，然后自己在这段时间可以完成别的工作，等到内核数据通知数据准备好后正常使用即可，一般会使用callback函数，当数据可用之后执行callback函数</li>
+</ul>
+<h2 id="select"><a href="#select" class="headerlink" title="select"></a>select</h2><p>函数签名如下：</p>
+<p><code>int select(int maxfdp1, fd_set *readset,fd_set *writeset,fd_set *exceptset,const struct timeval *timeout)</code></p>
+<p>maxfdp1为指定的待监听的描述符的个数，因为描述符是从0开始的，所以需要加1<br>readset为要监听的读描述符<br>writeset为要监听的写描述符<br>exceptset为要监听的异常描述符<br>timeout监听没有准备好的描述符的话，多久可以返回，支持按照秒或者毫秒来配置时间</p>
+<p><strong>select操作的逻辑是首先将要监听的读、写以及异常描述符拷贝到内核空间，然后遍历所有的描述符，如果有感兴趣的事件发生，那么就返回。</strong><br>select在使用的过程中有三个问题：<br>1、被监控的fds(描述符)集合限制为1024，1024太小了<br>2、需要将描述符集合从用户空间拷贝到内核空间<br>3、当有描述符可操作的时候都需要遍历一下整个描述符集合才能知道哪个是可操作的，效率很低。</p>
+<h2 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h2><p>函数签名如下：</p>
+<p> <code>int poll(struct pollfd[] fds, unsigned int nfds, int timeout);</code></p>
+<p> poll操作与select操作类似，仍旧避免不了描述符从用户空间拷贝到内核空间，<strong>但是poll不再有1024个描述符的限制</strong>。对于事件的触发通知还是使用遍历所有描述符的方式，因此在大量连接的情况下也存在遍历低效的问题。poll函数在传递参数的时候统一的将要监听的描述符和事件封装在了pollfd结构体数组中。</p>
+<h2 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h2><p>  epoll有三个方法：<code>epoll_create、epoll_ctl，epoll_wait，</code> <code>epoll_create</code>是创建一个epoll句柄；<code>epoll_ctl</code>是注册要监听的事件类型；<code>epoll_wait</code>则是等待事件的产生。 通过这三个方法epoll解决了select的三个问题。<br>1、1024数量限制的问题<br><strong>通过epoll_create方法来创建一个epoll句柄，这个句柄监听的描述符的数量不再有限制。</strong></p>
+<p>2、文件描述符频繁从用户空间拷贝到内核空间的问题<br>通过观察select的操作会发现描述符从用户空间到内核空间拷贝发生在调用select方法的时候，只要没有注册新的事件或者取消注册事件，每次拷贝的描述符都是一样的。因此epoll引入了epoll_ctl调用，该方法用于注册新事件和取消注册事件。而在epoll_wait的时候并不会拷贝描述符，描述符始终存在于内核空间，当需要修改的时候只要调用<strong>epoll_ctl修改一下内核的描述符即可</strong>。如此一来便省去了描述符来回拷贝的开销。</p>
+<p>3、文件描述符可操作的时候遍历整个描述符集合的问题<br>在调用epoll_ctl注册感兴趣的事件的时候，实际上会为设置的事件添加一个回调函数，当对应的感兴趣的事件发生的时候，回调函数就会触发，然后将自己加到一个链表中。<strong>epoll_wait函数的作用就是去查看这个链表中有没有已经准备就绪的事件，如果有的话就通知应用程序处理</strong>，如此操作epoll_wait只需要遍历就绪的事件描述符即可。</p>
+]]></content>
+      <categories>
+        <category>Java IO</category>
+      </categories>
+      <tags>
+        <tag>IO</tag>
       </tags>
   </entry>
 </search>

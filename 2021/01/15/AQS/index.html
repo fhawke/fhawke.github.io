@@ -229,7 +229,7 @@
 <li>tryReleaseShared  共享式释放同步状态</li>
 <li>isHeldExclusively  当前同步器是否在独占模式下被线程占用</li>
 </ul>
-<h2 id="队列同步器实现分析"><a href="#队列同步器实现分析" class="headerlink" title="队列同步器实现分析"></a>队列同步器实现分析</h2><h3 id="同步队列"><a href="#同步队列" class="headerlink" title="同步队列"></a>同步队列</h3><p>同步器依赖内部的<strong>同步队列(FIFO)</strong>来完成同步状态的管理，当前线程获取同步状态失败时，同步器会把当前线程以及等待状态等信息构造成一个Node节点，并将其加入到同步队列，同时阻塞当前县城，当同步状态释放时，会把首节点中的线程唤醒，使其再次尝试获取同步状态</p>
+<h2 id="队列同步器实现分析"><a href="#队列同步器实现分析" class="headerlink" title="队列同步器实现分析"></a>队列同步器实现分析</h2><h3 id="同步队列"><a href="#同步队列" class="headerlink" title="同步队列"></a>同步队列</h3><p>同步器依赖内部的<strong>同步队列(FIFO)</strong>来完成同步状态的管理，当前线程获取同步状态失败时，同步器会把当前线程以及等待状态等信息构造成一个Node节点，并将其加入到同步队列，同时阻塞当前线程，当同步状态释放时，会把首节点中的线程唤醒，使其再次尝试获取同步状态</p>
 <p>同步队列中的Node用来<strong>保存同步状态失败的线程引用，等待状态以及前驱后继节点</strong></p>
 <p>同步器及同步队列结构如图所示</p>
 <p><img src="/2021/01/15/AQS/C:%5CUsers%5Cfhawk%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210115172135618.png" srcset="/img/loading.gif" alt="image-20210115172135618"></p>

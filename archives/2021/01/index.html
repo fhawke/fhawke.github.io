@@ -164,12 +164,18 @@
                 
 
 <div class="list-group">
-  <p class="h4">48 posts in total.</p>
+  <p class="h4">50 posts in total.</p>
   <hr>
   
     
       
       <p class="h5">2021</p>
+    
+    <a href="/2021/01/27/HashMap/" class="list-group-item list-group-item-action">
+      <span class="archive-post-title">HashMap</span>
+      <span style="float: right;">01-27</span>
+    </a>
+  
     
     <a href="/2021/01/27/%E6%95%B4%E6%95%B0%E4%B8%AD1%E5%87%BA%E7%8E%B0%E7%9A%84%E6%AC%A1%E6%95%B0/" class="list-group-item list-group-item-action">
       <span class="archive-post-title">整数中1出现的次数</span>
@@ -224,13 +230,19 @@
       <span style="float: right;">01-15</span>
     </a>
   
-    
-    <a href="/2021/01/11/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%95%9C%E5%83%8F/" class="list-group-item list-group-item-action">
-      <span class="archive-post-title">二叉树的镜像</span>
-      <span style="float: right;">01-11</span>
-    </a>
-  
 </div>
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <span class="page-number current">1</span><a class="page-number" href="/archives/2021/01/page/2/">2</a><a class="extend next" rel="next" href="/archives/2021/01/page/2/"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+  
+  <script>
+    for (ele of document.getElementById("pagination").getElementsByTagName("a")) {
+      ele.href += '#board';
+    }
+  </script>
 
 
 
